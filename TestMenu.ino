@@ -60,7 +60,11 @@ enum CodeurActions
   SELECT
 } MenuAction;
 
-
+enum Reglages {
+  ETE,
+  MI_SAISON,
+  HIVERS
+} Reglage;
 
 
 void RotationDetectCLK(void)

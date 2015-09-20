@@ -17,6 +17,7 @@ void setup() {
   tft.setRotation(3);
   tft.fillScreen(ILI9340_BLACK);
 
-  GotoSeuils();
+  GotoMainMenu();
   MenuChanged = true;
+  Reglage = MI_SAISON;
 }

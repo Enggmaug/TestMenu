@@ -84,8 +84,14 @@ void GotoHisto(void)
 
 void GotoMainMenu(void)
 {
+  int idx;
   MenuChanged = true;
-  EcranEnCours.pt_tab_menu = (char *)&tab_MenuMain[0][0];
+  for (idx = 0; idx < ct_MenuMainNbItems; idx ++)
+  {
+    strcpy(tab_MenuTemp[idx], tab_MenuMain[idx]);
+  }
+  AddModeToLine(1);
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
   EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuMainFonct;
   EcranEnCours.NbItems = ct_MenuMainNbItems;
   EcranEnCours.SelectedItem = 1;
@@ -104,6 +110,33 @@ char* AddSeuilToLine(int idx)
   str = strncat(str + strlen(str), BlankLine, NB_CAR_LIGNE - NB_CAR_T - strlen(str));
   sprintf(DisplayedTemp, " : %2.1f", *Temp);
   str = strcat(str, DisplayedTemp);
+
+  return (str);
+}
+
+char* AddModeToLine(int idx)
+{
+  char* str;
+  switch(Reglage)
+  {
+    case ETE:
+      str = strncat(tab_MenuTemp[idx] + strlen(tab_MenuTemp[idx]), BlankLine, NB_CAR_LIGNE - strlen("ETE") - strlen(tab_MenuTemp[idx])-1);
+  str = strcat(tab_MenuTemp[idx], "ETE");
+    break;
+    case MI_SAISON : 
+      str = strncat(tab_MenuTemp[idx] + strlen(tab_MenuTemp[idx]), BlankLine, NB_CAR_LIGNE - strlen("MI-SAISON") - strlen(tab_MenuTemp[idx])-1);
+  str = strcat(tab_MenuTemp[idx], "MI-SAISON");
+    break;
+    case HIVERS:
+      str = strncat(tab_MenuTemp[idx] + strlen(tab_MenuTemp[idx]), BlankLine, NB_CAR_LIGNE - strlen("HIVERS") - strlen(tab_MenuTemp[idx])-1);
+  str = strcat(tab_MenuTemp[idx], "HIVERS");
+    break;
+    default:
+    Reglage = MI_SAISON;
+      str = strncat(tab_MenuTemp[idx] + strlen(tab_MenuTemp[idx]), BlankLine, NB_CAR_LIGNE - strlen("MI-SAISON") - strlen(tab_MenuTemp[idx])-1);
+  str = strcat(tab_MenuTemp[idx], "MI-SAISON");
+  }
+
 
   return (str);
 }

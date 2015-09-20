@@ -8,12 +8,15 @@ void BacktoFunctional(void)
 }
 void SetEte(void)
 {
+  Reglage = ETE;
 }
 void SetMiSaison(void)
 {
+  Reglage = MI_SAISON;
 }
 void SetHivers(void)
 {
+  Reglage = HIVERS;
 }
 void SetSeuilOnOff(void)
 {
@@ -40,7 +43,7 @@ void SetSeuilOnOff(void)
     EcranEnCours.Gauche = Precedent;
     tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
     tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
-    MenuChanged = true;
+    MenuChanged = false;
     MenuAction = NONE;
   }
   // on change les pointeurs de suivant / precedent vers SetSeuilUp et SetSeuilDown
