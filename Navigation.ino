@@ -40,16 +40,37 @@ void None(void)
 {
 }
 
-void GotoMode(void)
+void SetMode(void)
 {
-  MenuChanged = true;
-  EcranEnCours.pt_tab_menu = (char *)&tab_MenuMode[0][0];
-  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuModeFonct;
-  EcranEnCours.NbItems = ct_MenuModeNbItems;
-  EcranEnCours.SelectedItem = 1;
-  EcranEnCours.Droite = Suivant;
-  EcranEnCours.Gauche = Precedent;
-  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+  static bool ChangingMode = false;
+
+  ChangingMode = not(ChangingMode);
+
+  if (ChangingMode == true)
+  {
+    tft.setTextColor(ILI9340_RED);
+    tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_BLACK);
+    EcranEnCours.Droite = SetModePlus;
+    EcranEnCours.Gauche = SetModeMoins;
+    tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
+    tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
+    MenuChanged = false;
+    MenuAction = NONE;
+  }
+  else
+  {
+    tft.setTextColor(ILI9340_BLACK);
+    tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_WHITE);
+    EcranEnCours.Droite = Suivant;
+    EcranEnCours.Gauche = Precedent;
+    tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
+    tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
+    MenuChanged = false;
+    MenuAction = NONE;
+  }
+  // on change les pointeurs de suivant / precedent vers SetSeuilUp et SetSeuilDown
+
+
 }
 
 void GotoSeuils(void)
@@ -117,24 +138,29 @@ char* AddSeuilToLine(int idx)
 char* AddModeToLine(int idx)
 {
   char* str;
-  switch(Reglage)
+  str = strcpy(tab_MenuTemp[idx], tab_MenuMain[idx]);
+  Serial.println("ici");
+  switch (Reglage)
   {
+      Serial.println(str);
     case ETE:
-      str = strncat(tab_MenuTemp[idx] + strlen(tab_MenuTemp[idx]), BlankLine, NB_CAR_LIGNE - strlen("ETE") - strlen(tab_MenuTemp[idx])-1);
-  str = strcat(tab_MenuTemp[idx], "ETE");
-    break;
-    case MI_SAISON : 
-      str = strncat(tab_MenuTemp[idx] + strlen(tab_MenuTemp[idx]), BlankLine, NB_CAR_LIGNE - strlen("MI-SAISON") - strlen(tab_MenuTemp[idx])-1);
-  str = strcat(tab_MenuTemp[idx], "MI-SAISON");
-    break;
+      str = strncat(tab_MenuTemp[idx] + strlen(tab_MenuTemp[idx]), BlankLine, NB_CAR_LIGNE - strlen("ETE") - strlen(tab_MenuTemp[idx]) - 1);
+      str = strcat(tab_MenuTemp[idx], "ETE");
+      break;
+    case MI_SAISON :
+      str = strncat(tab_MenuTemp[idx] + strlen(tab_MenuTemp[idx]), BlankLine, NB_CAR_LIGNE - strlen("MI-SAISON") - strlen(tab_MenuTemp[idx]) - 1);
+      str = strcat(tab_MenuTemp[idx], "MI-SAISON");
+      break;
     case HIVERS:
-      str = strncat(tab_MenuTemp[idx] + strlen(tab_MenuTemp[idx]), BlankLine, NB_CAR_LIGNE - strlen("HIVERS") - strlen(tab_MenuTemp[idx])-1);
-  str = strcat(tab_MenuTemp[idx], "HIVERS");
-    break;
+      str = strncat(tab_MenuTemp[idx] + strlen(tab_MenuTemp[idx]), BlankLine, NB_CAR_LIGNE - strlen("HIVERS") - strlen(tab_MenuTemp[idx]) - 1);
+      str = strcat(tab_MenuTemp[idx], "HIVERS");
+      break;
     default:
-    Reglage = MI_SAISON;
-      str = strncat(tab_MenuTemp[idx] + strlen(tab_MenuTemp[idx]), BlankLine, NB_CAR_LIGNE - strlen("MI-SAISON") - strlen(tab_MenuTemp[idx])-1);
-  str = strcat(tab_MenuTemp[idx], "MI-SAISON");
+      Reglage = MI_SAISON;
+      str = strncat(tab_MenuTemp[idx] + strlen(tab_MenuTemp[idx]), BlankLine, NB_CAR_LIGNE - strlen("MI-SAISON") - strlen(tab_MenuTemp[idx]) - 1);
+      str = strcat(tab_MenuTemp[idx], "MI-SAISON");
+      Serial.println(str);
+      return (str);
   }
 
 

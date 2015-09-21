@@ -14,14 +14,13 @@
 typedef void(*FctPtr)(void);
 const int ct_NbItemMax = 7;
 const int ct_MenuMainNbItems = 6;
-const int ct_MenuModeNbItems = 5;
+const int ct_MenuModeNbItems = 3;
 const int ct_MenuSeuilsNbItems = 7;
 const int ct_MenuHistNbItems = 6;
 const int ct_SauvegarderNbItems = 4;
 const char tab_MenuMain[ct_MenuMainNbItems][NB_CAR_LIGNE] = {{"MENU"}, {"MODE"}, { "SEUILS"}, { "HISTORIQUE"}, { "MAINTENANCE"}, { "RETOUR"}};
-const FctPtr tab_MenuMainFonct[ct_MenuMainNbItems] = {None, GotoMode, GotoSeuils, GotoHisto, ToggleMaintenance, BacktoFunctional};
-const char tab_MenuMode[ct_MenuModeNbItems][NB_CAR_LIGNE] = {"MODE", "ETE", "MI-SAISON", "HIVERS" , "RETOUR"};
-const FctPtr tab_MenuModeFonct[ct_MenuModeNbItems] = {None, SetEte, SetMiSaison, SetHivers, GotoMainMenu};
+const FctPtr tab_MenuMainFonct[ct_MenuMainNbItems] = {None, SetMode, GotoSeuils, GotoHisto, ToggleMaintenance, BacktoFunctional};
+const char tab_MenuMode[ct_MenuModeNbItems][NB_CAR_LIGNE] = {"ETE", "MI-SAISON", "HIVERS"};
 const char tab_MenuSeuils[ct_MenuSeuilsNbItems][NB_CAR_LIGNE] = {"REGLAGE SEUILS", "T. EXT. BASSE", "T. EXT. HAUTE", "T. INTERIEURE", "T. CHEMINEE", "T. PUIT C.", "RETOUR"};
 const FctPtr tab_MenuSeuilsFonct[ct_MenuSeuilsNbItems] = {None, SetSeuilOnOff, SetSeuilOnOff, SetSeuilOnOff, SetSeuilOnOff, SetSeuilOnOff, SaveYesNo};
 const char tab_MenuHist[ct_MenuHistNbItems][NB_CAR_LIGNE] = {"HISTORIQUE", "EXTERIEUR", "INTERIEUR", "PUIT CAN.", "CHEMINEE", "RETOUR"};
@@ -61,9 +60,9 @@ enum CodeurActions
 } MenuAction;
 
 enum Reglages {
-  ETE,
-  MI_SAISON,
-  HIVERS
+  ETE = 0,
+  MI_SAISON = 1,
+  HIVERS = 2
 } Reglage;
 
 

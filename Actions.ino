@@ -46,9 +46,6 @@ void SetSeuilOnOff(void)
     MenuChanged = false;
     MenuAction = NONE;
   }
-  // on change les pointeurs de suivant / precedent vers SetSeuilUp et SetSeuilDown
-
-
 }
 void ShowHistoExt(void)
 {
@@ -92,3 +89,47 @@ void SaveToFile(void)
   GotoMainMenu();
 }
 
+
+
+void SetModePlus(void)
+{
+  switch (Reglage)
+  {
+    case ETE:
+      Reglage = MI_SAISON;
+      break;
+    case MI_SAISON:
+      Reglage = HIVERS;
+      break;
+    case HIVERS :
+    default:
+      Reglage = ETE;
+  }
+  AddModeToLine(EcranEnCours.SelectedItem);
+  tft.setTextColor(ILI9340_RED);
+  tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_BLACK);
+  tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
+  tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
+}
+void SetModeMoins(void)
+{
+  switch (Reglage)
+  {
+    case ETE:
+      Reglage = HIVERS;
+      break;
+    case MI_SAISON:
+      Reglage = ETE;
+      break;
+    case HIVERS :
+      Reglage = MI_SAISON;
+      break;
+    default:
+      Reglage = ETE;
+  }
+  AddModeToLine(EcranEnCours.SelectedItem);
+  tft.setTextColor(ILI9340_RED);
+  tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_BLACK);
+  tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
+  tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
+}

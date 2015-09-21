@@ -10,6 +10,7 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(COD_DT), RotationDetectDT, CHANGE );
   attachInterrupt(digitalPinToInterrupt(COD_CLK), RotationDetectCLK, CHANGE );
   attachInterrupt(digitalPinToInterrupt(COD_SW), Selection, RISING );
+  
   Serial.begin(9600);
 
   tft.begin();
