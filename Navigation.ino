@@ -126,7 +126,7 @@ char* AddSeuilToLine(int idx)
   char* str;
   char DisplayedTemp[8];
   float* Temp;
-  Temp = &Seuils[idx - 1];
+  Temp = &Seuils[Reglage][idx - 1];
   str = strcpy(tab_MenuTemp[idx], tab_MenuSeuils[idx]);
   str = strncat(str + strlen(str), BlankLine, NB_CAR_LIGNE - NB_CAR_T - strlen(str));
   sprintf(DisplayedTemp, " : %2.1f", *Temp);

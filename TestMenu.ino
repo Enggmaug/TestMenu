@@ -1,6 +1,7 @@
 #include "SPI.h"
 #include "Adafruit_GFX.h"
 #include "Adafruit_ILI9340.h"
+#include <SD.h>
 
 #define NB_CAR_LIGNE   24
 #define NB_CAR_T       9
@@ -10,6 +11,7 @@
 #define COD_CLK        6
 #define COD_DT         7
 #define COD_SW         8
+#define SDCARD_CS      15
 
 typedef void(*FctPtr)(void);
 const int ct_NbItemMax = 7;
@@ -26,13 +28,14 @@ const FctPtr tab_MenuSeuilsFonct[ct_MenuSeuilsNbItems] = {None, SetSeuilOnOff, S
 const char tab_MenuHist[ct_MenuHistNbItems][NB_CAR_LIGNE] = {"HISTORIQUE", "EXTERIEUR", "INTERIEUR", "PUIT CAN.", "CHEMINEE", "RETOUR"};
 const FctPtr tab_MenuHistFonct[ct_MenuHistNbItems] = {None, ShowHistoExt, ShowHistoInt, ShowHistoPuit, ShowHistoChem, GotoMainMenu};
 const char tab_Sauvegarder[ct_SauvegarderNbItems][NB_CAR_LIGNE] = {"SAUVEGARDER", "OUI", "NON", "ANNULER"};
-const FctPtr tab_SauvegarderFonct[ct_MenuHistNbItems] = {None, SaveToFile, GotoMainMenu, GotoSeuils};
+const FctPtr tab_SauvegarderFonct[ct_MenuHistNbItems] = {None, SaveToFile, RecallSeuils, GotoSeuils};
 const char* BlankLine = "                       ";
 
-float Seuils[5] = {15.0, 24.0, 22.0, 40.0, 16.0};
+float Seuils[3][5] = {{15.0, 24.0, 22.0, 40.0, 16.0},{15.0, 24.0, 22.0, 40.0, 16.0},{15.0, 24.0, 22.0, 40.0, 16.0}};
 float Temperatures[5] = {20.3, 20.3, 21.6, 21.8, 12.7};
 
 char tab_MenuTemp[ct_NbItemMax][NB_CAR_LIGNE];
+bool SdCardPresent;
 
 Adafruit_ILI9340 tft = Adafruit_ILI9340(TFT_CS, TFT_DC, TFT_RST);
 

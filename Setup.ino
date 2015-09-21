@@ -12,7 +12,7 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(COD_SW), Selection, RISING );
   
   Serial.begin(9600);
-
+  SdCardPresent = SD.begin(SDCARD_CS);
   tft.begin();
 
   tft.setRotation(3);
@@ -21,4 +21,11 @@ void setup() {
   GotoMainMenu();
   MenuChanged = true;
   Reglage = MI_SAISON;
+
+
+
+  if (SdCardPresent)
+  {
+  ReadSeuilsFromFile();
+  }
 }
