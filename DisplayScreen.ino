@@ -9,8 +9,8 @@ void DisplayMenuScreen(void)
 
   // AFFICHAGE DE LA PREMIERE LIGNE
   tft.setTextColor(ILI9340_BLACK);
-  tft.fillRect(0, 0, tft.width(), (tft.height() / ct_NbItemMax) - 1, ILI9340_WHITE);
-  tft.drawFastHLine(0, (tft.height() / ct_NbItemMax), tft.width(), ILI9340_BLACK);
+  tft.fillRect(0, 0, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_WHITE);
+  tft.drawFastHLine(0, (tft.height() / ct_NbItemMax)-1, tft.width(), ILI9340_BLACK);
   tft.setCursor(tft.width() / 2 - (strlen(EcranEnCours.pt_tab_menu) / 2) * (tft.width() / 17), 5);       // On se positionne au centre, sur la base de 17 caracteres/ligne
   tft.setTextSize(3);
   tft.println(EcranEnCours.pt_tab_menu);
