@@ -1,45 +1,56 @@
-
-
+/*---------------------------------------------------------------------------------------------*/
+/*                           Navigation entre items d'un même menu                             */
+/*---------------------------------------------------------------------------------------------*/
 void Suivant(void)
 {
-  tft.setTextColor(ILI9340_WHITE);
-  tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_BLACK);
-  tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
-  tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
-  EcranEnCours.SelectedItem += 1;
-  if (EcranEnCours.SelectedItem >= EcranEnCours.NbItems)
-  {
-    EcranEnCours.SelectedItem = 1;
-  }
-  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
-  tft.setTextColor(ILI9340_BLACK);
-  tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_WHITE);
-  tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
-  tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
+ChangeItem(1);
 }
 
 void Precedent(void)
 {
+ChangeItem(-1);
+}
+
+void ChangeItem(int Direction)
+{
+  if (Direction > 0) Direction = 1;
+  else Direction = -1;
+  
+// Redessin de l'item précedemnet sélectionné, avec police blanche sur fond noir
   tft.setTextColor(ILI9340_WHITE);
   tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_BLACK);
   tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
   tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
-  EcranEnCours.SelectedItem -= 1;
-  if (EcranEnCours.SelectedItem < 1)
+  
+  EcranEnCours.SelectedItem += Direction;
+  if (EcranEnCours.SelectedItem >= EcranEnCours.NbItems)
+  {
+    EcranEnCours.SelectedItem = 1;
+  }
+  else if (EcranEnCours.SelectedItem < 1)
   {
     EcranEnCours.SelectedItem = EcranEnCours.NbItems - 1;
   }
-  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+  
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem]; //Reaffectation du pointeur de fonction correspondant à l'item
+  
+  // Redessin de l'item  sélectionné, avec police noire sur fond blanc
   tft.setTextColor(ILI9340_BLACK);
   tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_WHITE);
   tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
   tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
 }
 
+/*---------------------------------------------------------------------------------------------*/
+/*                                         No Action                                           */
+/*---------------------------------------------------------------------------------------------*/
 void None(void)
 {
 }
 
+/*---------------------------------------------------------------------------------------------*/
+/*                         Changement de Mode ETE - MI_SAISON - HIVERS                         */
+/*---------------------------------------------------------------------------------------------*/
 void SetMode(void)
 {
   static bool ChangingMode = false;
@@ -68,11 +79,11 @@ void SetMode(void)
     MenuChanged = false;
     MenuAction = NONE;
   }
-  // on change les pointeurs de suivant / precedent vers SetSeuilUp et SetSeuilDown
-
-
 }
 
+/*---------------------------------------------------------------------------------------------*/
+/*                             Navigation vers les seuils                                      */
+/*---------------------------------------------------------------------------------------------*/
 void GotoSeuils(void)
 {
   int idx;
@@ -91,6 +102,10 @@ void GotoSeuils(void)
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
 }
+
+/*---------------------------------------------------------------------------------------------*/
+/*                              Navigation vers l'ecran d'historiques                          */
+/*---------------------------------------------------------------------------------------------*/
 void GotoHisto(void)
 {
   MenuChanged = true;
@@ -103,6 +118,9 @@ void GotoHisto(void)
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
 }
 
+/*---------------------------------------------------------------------------------------------*/
+/*                             navigation vers écan principal                                  */
+/*---------------------------------------------------------------------------------------------*/
 void GotoMainMenu(void)
 {
   int idx;
@@ -121,6 +139,9 @@ void GotoMainMenu(void)
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
 }
 
+/*---------------------------------------------------------------------------------------------*/
+/*                  Modification des Items du menu seuil, pour ajouter la valeur               */
+/*---------------------------------------------------------------------------------------------*/
 char* AddSeuilToLine(int idx)
 {
   char* str;
@@ -135,6 +156,10 @@ char* AddSeuilToLine(int idx)
   return (str);
 }
 
+
+/*---------------------------------------------------------------------------------------------*/
+/*                  Modification des Items du menu mode, pour ajouter la valeur                */
+/*---------------------------------------------------------------------------------------------*/
 char* AddModeToLine(int idx)
 {
   char* str;
@@ -162,10 +187,13 @@ char* AddModeToLine(int idx)
       Serial.println(str);
       return (str);
   }
-
-
   return (str);
 }
+
+
+/*---------------------------------------------------------------------------------------------*/
+/*                    Navigation vers l'ecran de Sauvegarde des Seuils                         */
+/*---------------------------------------------------------------------------------------------*/
 
 void SaveYesNo(void)
 {

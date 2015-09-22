@@ -1,53 +1,43 @@
-void ManageRotation(void)
-{
-    if (MenuAction == GAUCHE)
-  {
-    MenuAction = NONE;
-    EcranEnCours.Gauche();
-  }
-  else if (MenuAction == DROITE)
-  {
-    MenuAction = NONE;
-    EcranEnCours.Droite();
-  }
-  else if (MenuAction == SELECT)
-  {
-    MenuAction = NONE;
-    EcranEnCours.Select();
-  }
-}
+/*---------------------------------------------------------------------------------------------*/
+/*                         AFFICHAGE DU MENU SELECTIONNE - Entrée sur ecran                    */
+/*---------------------------------------------------------------------------------------------*/
 
 void DisplayMenuScreen(void)
 {
   int idx;
-    noInterrupts()
+  noInterrupts();           // Desactivation des interruptions pendant le redessin de l'ecran
 
-    tft.setTextColor(ILI9340_BLACK);
-    tft.fillRect(0, 0, tft.width(), (tft.height() / ct_NbItemMax)-1, ILI9340_WHITE);
-    tft.setCursor(tft.width() / 2 - (strlen(EcranEnCours.pt_tab_menu) / 2) * (tft.width() / 17), 5);
-    tft.setTextSize(3);
-    tft.println(EcranEnCours.pt_tab_menu);
-    tft.setTextSize(2);
-    for (idx = 1; idx < EcranEnCours.NbItems; idx++)
+  // AFFICHAGE DE LA PREMIERE LIGNE
+  tft.setTextColor(ILI9340_BLACK);
+  tft.fillRect(0, 0, tft.width(), (tft.height() / ct_NbItemMax) - 1, ILI9340_WHITE);
+  tft.drawFastHLine(0, (tft.height() / ct_NbItemMax), tft.width(), ILI9340_BLACK);
+  tft.setCursor(tft.width() / 2 - (strlen(EcranEnCours.pt_tab_menu) / 2) * (tft.width() / 17), 5);       // On se positionne au centre, sur la base de 17 caracteres/ligne
+  tft.setTextSize(3);
+  tft.println(EcranEnCours.pt_tab_menu);
+
+  // AFFICHAGE DES LIGNES SUIVANTES
+  tft.setTextSize(2);
+  for (idx = 1; idx < EcranEnCours.NbItems; idx++)              // Pour chaque Item du menu
+  {
+    if (idx == EcranEnCours.SelectedItem)                       // Item Selectionné
     {
-      if (idx == EcranEnCours.SelectedItem)
-      {
-        tft.setTextColor(ILI9340_BLACK);
-        tft.fillRect(0, (tft.height() / ct_NbItemMax) * idx, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_WHITE);
-      }
-      else
-      {
-        tft.setTextColor(ILI9340_WHITE);
-        tft.fillRect(0, (tft.height() / ct_NbItemMax) * idx, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_BLACK);
-      }
-
-      tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * idx);
-      tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * idx));
-
+      tft.setTextColor(ILI9340_BLACK);                          // Police noire sur fond blanc
+      tft.fillRect(0, (tft.height() / ct_NbItemMax) * idx, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_WHITE);
     }
-    for (idx = EcranEnCours.NbItems; idx < ct_NbItemMax; idx++)
+    else                                                       // Item Déselectionné
     {
+      tft.setTextColor(ILI9340_WHITE);                         // Police blanche sur fond noir
       tft.fillRect(0, (tft.height() / ct_NbItemMax) * idx, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_BLACK);
     }
-    interrupts()
+
+    tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * idx);
+    tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * idx));
+  }
+
+  for (idx = EcranEnCours.NbItems; idx < ct_NbItemMax; idx++)   // Suppression des autres Items
+  {
+    tft.fillRect(0, (tft.height() / ct_NbItemMax) * idx, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_BLACK);
+  }
+  interrupts();
+  MenuChanged = false;
 }
