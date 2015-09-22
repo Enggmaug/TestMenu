@@ -68,6 +68,7 @@ typedef struct
 {
   int NbItem;
   char *pt_tab_menu;
+  bool *pt_tab_EnabledItems;
   FctPtr *pt_MenuFonct;
   int SelectedItem;
   char NbItems;

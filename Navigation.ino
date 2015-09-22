@@ -3,37 +3,40 @@
 /*---------------------------------------------------------------------------------------------*/
 void Suivant(void)
 {
-ChangeItem(1);
+  ChangeItem(1);
 }
 
 void Precedent(void)
 {
-ChangeItem(-1);
+  ChangeItem(-1);
 }
 
 void ChangeItem(int Direction)
 {
   if (Direction > 0) Direction = 1;
   else Direction = -1;
-  
-// Redessin de l'item précedemnet sélectionné, avec police blanche sur fond noir
+
+  // Redessin de l'item précedemnet sélectionné, avec police blanche sur fond noir
   tft.setTextColor(ILI9340_WHITE);
   tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_BLACK);
   tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
   tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
-  
-  EcranEnCours.SelectedItem += Direction;
-  if (EcranEnCours.SelectedItem >= EcranEnCours.NbItems)
+
+  do // Tant qu'on tombe sur un item desactivé, on passe au prochain
   {
-    EcranEnCours.SelectedItem = 1;
-  }
-  else if (EcranEnCours.SelectedItem < 1)
-  {
-    EcranEnCours.SelectedItem = EcranEnCours.NbItems - 1;
-  }
+    EcranEnCours.SelectedItem += Direction;
+    if (EcranEnCours.SelectedItem >= EcranEnCours.NbItems)
+    {
+      EcranEnCours.SelectedItem = 1;
+    }
+    else if (EcranEnCours.SelectedItem < 1)
+    {
+      EcranEnCours.SelectedItem = EcranEnCours.NbItems - 1;
+    }
+  }while (EcranEnCours.pt_tab_EnabledItems[EcranEnCours.SelectedItem] == false);
   
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem]; //Reaffectation du pointeur de fonction correspondant à l'item
-  
+
   // Redessin de l'item  sélectionné, avec police noire sur fond blanc
   tft.setTextColor(ILI9340_BLACK);
   tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_WHITE);
@@ -95,6 +98,7 @@ void GotoSeuils(void)
   }
   strcpy(tab_MenuTemp[ct_MenuSeuilsNbItems - 1], tab_MenuSeuils[ct_MenuSeuilsNbItems - 1]);
   EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuSeuilsEnable[0];
   EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuSeuilsFonct;
   EcranEnCours.NbItems = ct_MenuSeuilsNbItems;
   EcranEnCours.SelectedItem = 1;
@@ -110,6 +114,7 @@ void GotoHisto(void)
 {
   MenuChanged = true;
   EcranEnCours.pt_tab_menu = (char *)&tab_MenuHist[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuHistEnable[0];
   EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuHistFonct;
   EcranEnCours.NbItems = ct_MenuHistNbItems;
   EcranEnCours.SelectedItem = 1;
@@ -119,7 +124,7 @@ void GotoHisto(void)
 }
 
 /*---------------------------------------------------------------------------------------------*/
-/*                             navigation vers écan principal                                  */
+/*                             Navigation vers écan principal                                  */
 /*---------------------------------------------------------------------------------------------*/
 void GotoMainMenu(void)
 {
@@ -131,6 +136,7 @@ void GotoMainMenu(void)
   }
   AddModeToLine(1);
   EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuMainEnable[0];
   EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuMainFonct;
   EcranEnCours.NbItems = ct_MenuMainNbItems;
   EcranEnCours.SelectedItem = 1;
@@ -139,6 +145,22 @@ void GotoMainMenu(void)
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
 }
 
+/*---------------------------------------------------------------------------------------------*/
+/*                    Navigation vers l'ecran de Sauvegarde des Seuils                         */
+/*---------------------------------------------------------------------------------------------*/
+
+void SaveYesNo(void)
+{
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_Sauvegarder[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_SauvegarderEnable[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SauvegarderFonct;
+  EcranEnCours.NbItems = ct_SauvegarderNbItems;
+  EcranEnCours.SelectedItem = 1;
+  EcranEnCours.Droite = Suivant;
+  EcranEnCours.Gauche = Precedent;
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+}
 /*---------------------------------------------------------------------------------------------*/
 /*                  Modification des Items du menu seuil, pour ajouter la valeur               */
 /*---------------------------------------------------------------------------------------------*/
@@ -191,18 +213,3 @@ char* AddModeToLine(int idx)
 }
 
 
-/*---------------------------------------------------------------------------------------------*/
-/*                    Navigation vers l'ecran de Sauvegarde des Seuils                         */
-/*---------------------------------------------------------------------------------------------*/
-
-void SaveYesNo(void)
-{
-  MenuChanged = true;
-  EcranEnCours.pt_tab_menu = (char *)&tab_Sauvegarder[0][0];
-  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SauvegarderFonct;
-  EcranEnCours.NbItems = ct_SauvegarderNbItems;
-  EcranEnCours.SelectedItem = 1;
-  EcranEnCours.Droite = Suivant;
-  EcranEnCours.Gauche = Precedent;
-  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
-}

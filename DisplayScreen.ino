@@ -19,7 +19,16 @@ void DisplayMenuScreen(void)
   tft.setTextSize(2);
   for (idx = 1; idx < EcranEnCours.NbItems; idx++)              // Pour chaque Item du menu
   {
-    if (idx == EcranEnCours.SelectedItem)                       // Item Selectionné
+    if(EcranEnCours.pt_tab_EnabledItems[idx]==false)            // Si Item Desactivé
+    {
+      if (idx == EcranEnCours.SelectedItem)                     //Et si item selectionné, on change d'item selectionné
+      {
+         EcranEnCours.SelectedItem++;
+      }
+      tft.setTextColor(0x8408);                         // Police grise sur fond noir
+      tft.fillRect(0, (tft.height() / ct_NbItemMax) * idx, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_BLACK);
+    }
+    else if (idx == EcranEnCours.SelectedItem)                       // Item Selectionné
     {
       tft.setTextColor(ILI9340_BLACK);                          // Police noire sur fond blanc
       tft.fillRect(0, (tft.height() / ct_NbItemMax) * idx, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_WHITE);
