@@ -31,4 +31,6 @@ void setup(void)
   {
     DisableSD();
   }
+
+  DisableRTC();
 }
