@@ -60,8 +60,8 @@ const FctPtr tab_MenuHeureFonct[ct_MenuHeureNbItems]              =  {None      
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
 const char   tab_Sauvegarder[ct_SauvegarderNbItems][NB_CAR_LIGNE] =  {"SAUVEGARDER"     , "OUI"          , "NON"           , "ANNULER"      }; //              |                    |                 |
 const FctPtr tab_SaveSeuilsFonct[ct_SauvegarderNbItems]           =  {None              , SaveSeuils2File, RecallSeuils    , GotoSeuils     }; //              |                    |                 |
-const FctPtr tab_SaveDateFonct[ct_SauvegarderNbItems]             =  {None              , SaveDate       , GotoSetDateHeure, GotoSetDate    }; //              |                    |                 |
-const FctPtr tab_SaveHoursFonct[ct_SauvegarderNbItems]            =  {None              , SaveTime       , GotoSetDateHeure, GotoSetHeure   }; //              |                    |                 |
+const FctPtr tab_SaveDateFonct[ct_SauvegarderNbItems]             =  {None              , SaveDate       , RecallDate      , GotoSetDate    }; //              |                    |                 |
+const FctPtr tab_SaveHoursFonct[ct_SauvegarderNbItems]            =  {None              , SaveTime       , RecallTime     , GotoSetHeure   }; //              |                    |                 |
 /*-*/ bool   tab_SauvegarderEnable[ct_SauvegarderNbItems]         =  {true              , true           , true            , true           }; //              |                    |                 |
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
 

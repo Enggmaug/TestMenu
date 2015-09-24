@@ -198,7 +198,15 @@ void SaveTime(void)
   // acces à la librarie du MAX3234
 }
 
+void RecallDate(void)
+{
+  // acces à la librarie du MAX3234
+}
 
+void RecallTime(void)
+{
+  // acces à la librarie du MAX3234
+}
 /*---------------------------------------------------------------------------------------------*/
 /*                                        INTERRUPTIONS                                        */
 /*---------------------------------------------------------------------------------------------*/
@@ -245,6 +253,11 @@ void Selection(void)
   interrupts();
 }
 
+
+void OneMinutePassed(void)
+{
+    // acces à la librarie du MAX3234
+}
 /*---------------------------------------------------------------------------------------------*/
 /*                         Actionnement des commandes suite aux interruptions                  */
 /*---------------------------------------------------------------------------------------------*/
