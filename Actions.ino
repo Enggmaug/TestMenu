@@ -173,7 +173,7 @@ void SetMode(int Direction)
 /*---------------------------------------------------------------------------------------------*/
 /*            Sauvegarde, ou pas des seuils, puis navigation vers ecran principal              */
 /*---------------------------------------------------------------------------------------------*/
-void SaveToFile(void)
+void SaveSeuils2File(void)
 {
   WriteSeuilsToFile();
   GotoMainMenu();
@@ -260,7 +260,7 @@ void ManageRotation(void)
 void DisableSD(void)
 {
   int idx;
-  bool   tab_MenuMainEnableTemp[ct_MenuMainNbItems]               =  {true, true , true , false, true , true      };
+  bool   tab_MenuMainEnableTemp[ct_MenuMainNbItems]               =  {true, true , true , false, true , true, true};
   bool   tab_MenuSeuilsEnableTemp[ct_MenuSeuilsNbItems]           =  {true, true , true , true , true , true, true};
   bool   tab_MenuHistEnableTemp[ct_MenuHistNbItems]               =  {true, false, false, false, false, true      };
   bool   tab_SauvegarderEnableTemp[ct_MenuHistNbItems]            =  {true, false, true , true                    };
@@ -284,3 +284,12 @@ void DisableSD(void)
   MenuChanged = true;
 }
 
+void SaveDate(void)
+{
+  
+}
+
+void SaveTime(void)
+{
+  
+}

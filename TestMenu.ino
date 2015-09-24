@@ -21,36 +21,52 @@
 //Definitions des Ecrans Menu
 typedef void(*FctPtr)(void);
 const int ct_NbItemMax = 7;
-const int ct_MenuMainNbItems = 6;
+const int ct_MenuMainNbItems = 7;
 const int ct_MenuModeNbItems = 3;
 const int ct_MenuSeuilsNbItems = 7;
+const int ct_MenuDHNbItems = 4;
+const int ct_MenuDatebItems = 5;
+const int ct_MenuHeureNbItems = 4;
 const int ct_MenuHistNbItems = 6;
 const int ct_SauvegarderNbItems = 4;
-//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+-----------------+-----------+
-//                   ITEMS sur Ecran :                               |TITRE,            |Item 1          |Item 2           |Item 3          |Item 4            |Item 6           |Item 7     |
-//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+-----------------+-----------+
-const char   tab_MenuMain[ct_MenuMainNbItems][NB_CAR_LIGNE]       =  {"MENU"            , "MODE"         , "SEUILS"        , "HISTORIQUE"   , "MAINTENANCE"    , "RETOUR"                    };
-const FctPtr tab_MenuMainFonct[ct_MenuMainNbItems]                =  {None              , SetMode        , GotoSeuils      , GotoHisto      , ToggleMaintenance, BacktoFunctional            };
-/*-*/ bool   tab_MenuMainEnable[ct_MenuMainNbItems]               =  {true              , true           , true            , true           , true             , true                        };
-//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+-----------------+-----------+
-const char   tab_MenuMode[ct_MenuModeNbItems][NB_CAR_LIGNE]       =  {"ETE"             , "MI-SAISON"    , "HIVERS"                                                                         };
-//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+-----------------+-----------+
-const char   tab_MenuSeuils[ct_MenuSeuilsNbItems][NB_CAR_LIGNE]   =  {"REGLAGE SEUILS"  , "T. EXT. BASSE", "T. EXT. HAUTE" , "T. INTERIEURE", "T. CHEMINEE"    , "T. PUIT C."    , "RETOUR"  };
-const FctPtr tab_MenuSeuilsFonct[ct_MenuSeuilsNbItems]            =  {None              , SetSeuilOnOff  , SetSeuilOnOff   , SetSeuilOnOff  , SetSeuilOnOff    , SetSeuilOnOff   , SaveYesNo };
-/*-*/ bool   tab_MenuSeuilsEnable[ct_MenuSeuilsNbItems]           =  {true              , true           , true            , true           , true             , true            , true      };
-//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+-----------------+-----------+
-const char   tab_MenuHist[ct_MenuHistNbItems][NB_CAR_LIGNE]       =  {"HISTORIQUE"      , "EXTERIEUR"    , "INTERIEUR"     , "PUIT CAN."    , "CHEMINEE"       , "RETOUR"                   };
-const FctPtr tab_MenuHistFonct[ct_MenuHistNbItems]                =  {None              , ShowHistoExt   , ShowHistoInt    , ShowHistoPuit  , ShowHistoChem    , GotoMainMenu                };
-/*-*/ bool   tab_MenuHistEnable[ct_MenuHistNbItems]               =  {true              , true           , true            , true           , true             , true                        };
-//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+-----------------+-----------+
-const char   tab_Sauvegarder[ct_SauvegarderNbItems][NB_CAR_LIGNE] =  {"SAUVEGARDER"     , "OUI"          , "NON"           , "ANNULER"                                                       };
-const FctPtr tab_SauvegarderFonct[ct_MenuHistNbItems]             =  {None              , SaveToFile     , RecallSeuils    , GotoSeuils                                                      };
-/*-*/ bool   tab_SauvegarderEnable[ct_MenuHistNbItems]            =  {true              , true           , true            , true                                                            };
-//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+-----------------+-----------+
+//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
+//                   ITEMS sur Ecran :                               |TITRE,            |Item 1          |Item 2           |Item 3          |Item 4            |Item 6              |Item 7           |
+//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
+const char   tab_MenuMain[ct_MenuMainNbItems][NB_CAR_LIGNE]       =  {"MENU"            , "MODE"         , "SEUILS"        , "HISTORIQUE"   , "MAINTENANCE"    , "REGLER DATE/HEURE", "RETOUR"        };
+const FctPtr tab_MenuMainFonct[ct_MenuMainNbItems]                =  {None              , SetMode        , GotoSeuils      , GotoHisto      , ToggleMaintenance, GotoSetDateHeure   , BacktoFunctional};
+/*-*/ bool   tab_MenuMainEnable[ct_MenuMainNbItems]               =  {true              , true           , true            , true           , true             , true               , true            };
+//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
+const char   tab_MenuMode[ct_MenuModeNbItems][NB_CAR_LIGNE]       =  {"ETE"             , "MI-SAISON"    , "HIVERS"        }; //            |                  |                    |                 |
+//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
+const char   tab_MenuSeuils[ct_MenuSeuilsNbItems][NB_CAR_LIGNE]   =  {"REGLAGE SEUILS"  , "T. EXT. BASSE", "T. EXT. HAUTE" , "T. INTERIEURE", "T. CHEMINEE"    , "T. PUIT C."       , "RETOUR"        };
+const FctPtr tab_MenuSeuilsFonct[ct_MenuSeuilsNbItems]            =  {None              , SetSeuilOnOff  , SetSeuilOnOff   , SetSeuilOnOff  , SetSeuilOnOff    , SetSeuilOnOff      , SaveYesNo       };
+/*-*/ bool   tab_MenuSeuilsEnable[ct_MenuSeuilsNbItems]           =  {true              , true           , true            , true           , true             , true               , true            };
+//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
+const char   tab_MenuHist[ct_MenuHistNbItems][NB_CAR_LIGNE]       =  {"HISTORIQUE"      , "EXTERIEUR"    ,                   "INTERIEUR"     , "PUIT CAN."    , "CHEMINEE"          , "RETOUR"        };
+const FctPtr tab_MenuHistFonct[ct_MenuHistNbItems]                =  {None              , ShowHistoExt   ,                   ShowHistoInt    , ShowHistoPuit  , ShowHistoChem       , GotoMainMenu    };
+/*-*/ bool   tab_MenuHistEnable[ct_MenuHistNbItems]               =  {true              , true           ,                   true            , true           , true                , true            };
+//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
+const char   tab_MenuDateHeure[ct_MenuDHNbItems][NB_CAR_LIGNE]    =  {"DATE / HEURE"    , "REGLER DATE"  , "REGLER HEURE"  , "RETOUR"       }; //              |                    |                 |
+const FctPtr tab_MenuDateHeureFonct[ct_MenuDHNbItems]             =  {None              , GotoSetDate    , GotoSetHeure    , GotoMainMenu   }; //              |                    |                 |
+/*-*/ bool   tab_MenuDateHeureEnable[ct_MenuDHNbItems]            =  {true              , true           , true            , true           }; //              |                    |                 |
+//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
+const char   tab_MenuDate[ct_MenuDatebItems][NB_CAR_LIGNE]        =  {"REGLER DATE"     , "ANNEE"        , "MOIS"          , "JOUR"         , "RETOUR"         }; //                |                 |
+const FctPtr tab_MenuDateFonct[ct_MenuDatebItems]                 =  {None              , SetYear        , SetMonth        , SetDay         , SaveYesNo        }; //                |                 |
+/*-*/ bool   tab_MenuDateEnable[ct_MenuDatebItems]                =  {true              , true           , true            , true           , true             }; //                |                 |
+//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
+const char   tab_MenuHeure[ct_MenuHeureNbItems][NB_CAR_LIGNE]     =  {"REGLER HEURE"    , "HEURES"       , "MINUTES"       , "RETOUR"       }; //              |                    |                 |
+const FctPtr tab_MenuHeureFonct[ct_MenuHeureNbItems]              =  {None              , SetHours       , SetMinutes      , SaveYesNo      }; //              |                    |                 |
+/*-*/ bool   tab_MenuHeureEnable[ct_MenuHeureNbItems]             =  {true              , true           , true            , true           }; //              |                    |                 |
+//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
+const char   tab_Sauvegarder[ct_SauvegarderNbItems][NB_CAR_LIGNE] =  {"SAUVEGARDER"     , "OUI"          , "NON"           , "ANNULER"      }; //              |                    |                 |
+const FctPtr tab_SaveSeuilsFonct[ct_SauvegarderNbItems]           =  {None              , SaveSeuils2File, RecallSeuils    , GotoSeuils     }; //              |                    |                 |
+const FctPtr tab_SaveDateFonct[ct_SauvegarderNbItems]             =  {None              , SaveDate       , GotoSetDateHeure, GotoSetDate    }; //              |                    |                 |
+const FctPtr tab_SaveHoursFonct[ct_SauvegarderNbItems]            =  {None              , SaveTime       , GotoSetDateHeure, GotoSetHeure   }; //              |                    |                 |
+/*-*/ bool   tab_SauvegarderEnable[ct_SauvegarderNbItems]         =  {true              , true           , true            , true           }; //              |                    |                 |
+//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
 
 const char* BlankLine = "                       ";
 char tab_MenuTemp[ct_NbItemMax][NB_CAR_LIGNE];
-
 
 //Seuils et Température par défaut
 float Seuils[3][5] = {DEFAULT_SEUILS, DEFAULT_SEUILS, DEFAULT_SEUILS};

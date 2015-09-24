@@ -25,7 +25,7 @@ void DisplayMenuScreen(void)
       {
          EcranEnCours.SelectedItem++;
       }
-      tft.setTextColor(0x8408);                         // Police grise sur fond noir
+      tft.setTextColor(0x2102);                         // Police grise sur fond noir
       tft.fillRect(0, (tft.height() / ct_NbItemMax) * idx, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_BLACK);
     }
     else if (idx == EcranEnCours.SelectedItem)                       // Item Selectionné

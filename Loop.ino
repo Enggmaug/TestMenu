@@ -5,6 +5,8 @@
 void loop(void)
 {
   if (RotDetect) ManageRotation();            // Si Action sur le bouton
-  if (MenuChanged) DisplayMenuScreen();       // Si Action on change de Menu
+  if (MenuChanged) DisplayMenuScreen();       // Si on change de Menu
   MenuChanged = false;
+
+  //Lecture des températures
 }

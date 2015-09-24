@@ -33,8 +33,8 @@ void ChangeItem(int Direction)
     {
       EcranEnCours.SelectedItem = EcranEnCours.NbItems - 1;
     }
-  }while (EcranEnCours.pt_tab_EnabledItems[EcranEnCours.SelectedItem] == false);
-  
+  } while (EcranEnCours.pt_tab_EnabledItems[EcranEnCours.SelectedItem] == false);
+
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem]; //Reaffectation du pointeur de fonction correspondant à l'item
 
   // Redessin de l'item  sélectionné, avec police noire sur fond blanc
@@ -154,13 +154,61 @@ void SaveYesNo(void)
   MenuChanged = true;
   EcranEnCours.pt_tab_menu = (char *)&tab_Sauvegarder[0][0];
   EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_SauvegarderEnable[0];
-  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SauvegarderFonct;
+  if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuSeuils[0][0]) == 0)
+  {
+    EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SaveSeuilsFonct;
+  }
+  else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuDate[0][0]) == 0)
+  {
+    EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SaveDateFonct;
+  }
+  else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuHeure[0][0]) == 0)
+  {
+    EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SaveHoursFonct;
+  }
   EcranEnCours.NbItems = ct_SauvegarderNbItems;
   EcranEnCours.SelectedItem = 1;
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
 }
+
+/*---------------------------------------------------------------------------------------------*/
+/*                     Navigation vers l'ecran de réglage de la date                           */
+/*---------------------------------------------------------------------------------------------*/
+void GotoSetDateHeure(void)
+{
+
+}
+void SetYear(void)
+{
+
+}
+void SetMonth(void)
+{
+
+}
+void SetDay(void)
+{
+
+}
+void SetHours(void)
+{
+
+}
+void SetMinutes(void)
+{
+
+}
+void GotoSetDate(void)
+{
+
+}
+void GotoSetHeure(void)
+{
+
+}
+
 /*---------------------------------------------------------------------------------------------*/
 /*                  Modification des Items du menu seuil, pour ajouter la valeur               */
 /*---------------------------------------------------------------------------------------------*/
