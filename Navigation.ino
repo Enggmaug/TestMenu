@@ -152,8 +152,7 @@ void GotoMainMenu(void)
 void SaveYesNo(void)
 {
   MenuChanged = true;
-  EcranEnCours.pt_tab_menu = (char *)&tab_Sauvegarder[0][0];
-  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_SauvegarderEnable[0];
+
   if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuSeuils[0][0]) == 0)
   {
     EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SaveSeuilsFonct;
@@ -166,6 +165,8 @@ void SaveYesNo(void)
   {
     EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SaveHoursFonct;
   }
+  EcranEnCours.pt_tab_menu = (char *)&tab_Sauvegarder[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_SauvegarderEnable[0];
   EcranEnCours.NbItems = ct_SauvegarderNbItems;
   EcranEnCours.SelectedItem = 1;
   EcranEnCours.Droite = Suivant;
@@ -234,7 +235,6 @@ char* AddModeToLine(int idx)
 {
   char* str;
   str = strcpy(tab_MenuTemp[idx], tab_MenuMain[idx]);
-  Serial.println("ici");
   switch (Reglage)
   {
       Serial.println(str);

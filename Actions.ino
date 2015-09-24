@@ -184,6 +184,21 @@ void RecallSeuils(void)
   ReadSeuilsFromFile();
   GotoMainMenu();
 }
+
+/*---------------------------------------------------------------------------------------------*/
+/*                              Sauvegarde de la date ou de l'heure                            */
+/*---------------------------------------------------------------------------------------------*/
+void SaveDate(void)
+{
+  // acces à la librarie du MAX3234
+}
+
+void SaveTime(void)
+{
+  // acces à la librarie du MAX3234
+}
+
+
 /*---------------------------------------------------------------------------------------------*/
 /*                                        INTERRUPTIONS                                        */
 /*---------------------------------------------------------------------------------------------*/
@@ -284,12 +299,3 @@ void DisableSD(void)
   MenuChanged = true;
 }
 
-void SaveDate(void)
-{
-  
-}
-
-void SaveTime(void)
-{
-  
-}
