@@ -83,7 +83,27 @@ void SetMode(void)
     MenuAction = NONE;
   }
 }
-
+/*---------------------------------------------------------------------------------------------*/
+/*                             Navigation vers écan principal                                  */
+/*---------------------------------------------------------------------------------------------*/
+void GotoMainMenu(void)
+{
+  int idx;
+  MenuChanged = true;
+  for (idx = 0; idx < ct_MenuMainNbItems; idx ++)
+  {
+    strcpy(tab_MenuTemp[idx], tab_MenuMain[idx]);
+  }
+  AddModeToLine(1);
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuMainEnable[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuMainFonct;
+  EcranEnCours.NbItems = ct_MenuMainNbItems;
+  EcranEnCours.SelectedItem = 1;
+  EcranEnCours.Droite = Suivant;
+  EcranEnCours.Gauche = Precedent;
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+}
 /*---------------------------------------------------------------------------------------------*/
 /*                             Navigation vers les seuils                                      */
 /*---------------------------------------------------------------------------------------------*/
@@ -124,28 +144,6 @@ void GotoHisto(void)
 }
 
 /*---------------------------------------------------------------------------------------------*/
-/*                             Navigation vers écan principal                                  */
-/*---------------------------------------------------------------------------------------------*/
-void GotoMainMenu(void)
-{
-  int idx;
-  MenuChanged = true;
-  for (idx = 0; idx < ct_MenuMainNbItems; idx ++)
-  {
-    strcpy(tab_MenuTemp[idx], tab_MenuMain[idx]);
-  }
-  AddModeToLine(1);
-  EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
-  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuMainEnable[0];
-  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuMainFonct;
-  EcranEnCours.NbItems = ct_MenuMainNbItems;
-  EcranEnCours.SelectedItem = 1;
-  EcranEnCours.Droite = Suivant;
-  EcranEnCours.Gauche = Precedent;
-  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
-}
-
-/*---------------------------------------------------------------------------------------------*/
 /*                    Navigation vers l'ecran de Sauvegarde des Seuils                         */
 /*---------------------------------------------------------------------------------------------*/
 
@@ -179,7 +177,39 @@ void SaveYesNo(void)
 /*---------------------------------------------------------------------------------------------*/
 void GotoSetDateHeure(void)
 {
-
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuDateHeure[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuDateHeureEnable[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuDateHeureFonct;
+  EcranEnCours.NbItems = ct_MenuDHNbItems;
+  EcranEnCours.SelectedItem = 1;
+  EcranEnCours.Droite = Suivant;
+  EcranEnCours.Gauche = Precedent;
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+}
+void GotoSetDate(void)
+{
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuDate[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuDateEnable[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuDateFonct;
+  EcranEnCours.NbItems = ct_MenuDatebItems;
+  EcranEnCours.SelectedItem = 1;
+  EcranEnCours.Droite = Suivant;
+  EcranEnCours.Gauche = Precedent;
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+}
+void GotoSetHeure(void)
+{
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuHeure[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuHeureEnable[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuHeureFonct;
+  EcranEnCours.NbItems = ct_MenuHeureNbItems;
+  EcranEnCours.SelectedItem = 1;
+  EcranEnCours.Droite = Suivant;
+  EcranEnCours.Gauche = Precedent;
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
 }
 void SetYear(void)
 {
@@ -201,14 +231,7 @@ void SetMinutes(void)
 {
 
 }
-void GotoSetDate(void)
-{
 
-}
-void GotoSetHeure(void)
-{
-
-}
 
 /*---------------------------------------------------------------------------------------------*/
 /*                  Modification des Items du menu seuil, pour ajouter la valeur               */
