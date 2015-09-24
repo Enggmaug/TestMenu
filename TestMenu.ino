@@ -114,4 +114,15 @@ enum Reglages {
   HIVERS = 2
 } Reglage;
 
+//Definition de la date/heure courante
+typedef struct DateAndTime
+{
+  int annee;
+  int mois;
+  int jour;
+  int heures;
+  int minutes;
+} DateEtHeure;
+
+DateEtHeure DateHeureCourante; 
 

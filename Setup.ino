@@ -33,4 +33,5 @@ void setup(void)
   }
 
   DisableRTC(); // A modifier lorsque le module RTC sera implémenté avec acces à la librarie du MAX3234
+  //DateHeureCourante = ReadTime();
 }

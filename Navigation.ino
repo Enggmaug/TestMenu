@@ -213,7 +213,7 @@ void GotoSetHeure(void)
 }
 void SetYear(void)
 {
-
+// Faire comme dans ChangingMode
 }
 void SetMonth(void)
 {
