@@ -4,9 +4,15 @@
 
 void loop(void)
 {
+  static int counter;
   if (RotDetect) ManageRotation();            // Si Action sur le bouton
   if (MenuChanged) DisplayMenuScreen();       // Si on change de Menu
   MenuChanged = false;
 
   //Lecture des températures
+  if(counter++ >= 10000000)
+  {
+    counter = 0;
+    GetTemperatures();
+  }
 }

@@ -337,3 +337,28 @@ void DisableRTC(void)
   MenuChanged = true;
 }
 
+/*---------------------------------------------------------------------------------------------*/
+/*                                Reccuperation des Températures                               */
+/*---------------------------------------------------------------------------------------------*/
+void GetTemperatures(void)
+{
+  int idx;
+  const int PinNumber[NB_TEMP] = {T_EXT, T_EXT, T_INT, T_CHEMINEE, T_PUIT};
+
+  for (idx = 1; idx < NB_TEMP ; idx ++)
+  {
+    Temperatures[idx] = ReadTemperature(PinNumber[idx]);
+  }
+  Temperatures[0] = Temperatures[1];  // Les Deux premieres températures sont la même, car on a 2 seuils pour l'exterieur
+}
+
+float ReadTemperature(int AnalogPinNumber) // A ECRIRE
+{
+  float result = 15.5;
+
+  if (AnalogPinNumber > 0)
+  return(result);
+  else 
+  return (0.0);
+}
+
