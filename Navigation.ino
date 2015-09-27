@@ -17,8 +17,8 @@ void ChangeItem(int Direction)
   else Direction = -1;
 
   // Redessin de l'item précedemnet sélectionné, avec police blanche sur fond noir
-  tft.setTextColor(ILI9340_WHITE);
-  tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_BLACK);
+  tft.setTextColor(BLANC);
+  tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
   tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
   tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
 
@@ -38,8 +38,8 @@ void ChangeItem(int Direction)
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem]; //Reaffectation du pointeur de fonction correspondant à l'item
 
   // Redessin de l'item  sélectionné, avec police noire sur fond blanc
-  tft.setTextColor(ILI9340_BLACK);
-  tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_WHITE);
+  tft.setTextColor(NOIR);
+  tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), BLANC);
   tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
   tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
 }
@@ -62,8 +62,8 @@ void SetMode(void)
 
   if (ChangingMode == true)
   {
-    tft.setTextColor(ILI9340_RED);
-    tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_BLACK);
+    tft.setTextColor(ROUGE);
+    tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
     EcranEnCours.Droite = SetModePlus;
     EcranEnCours.Gauche = SetModeMoins;
     tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
@@ -73,8 +73,8 @@ void SetMode(void)
   }
   else
   {
-    tft.setTextColor(ILI9340_BLACK);
-    tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_WHITE);
+    tft.setTextColor(NOIR);
+    tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), BLANC);
     EcranEnCours.Droite = Suivant;
     EcranEnCours.Gauche = Precedent;
     tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);

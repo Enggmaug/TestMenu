@@ -42,8 +42,8 @@ void SetSeuilOnOff(void)
   }
   else
   {
-    tft.setTextColor(ILI9340_BLACK);
-    tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_WHITE);
+    tft.setTextColor(NOIR);
+    tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), BLANC);
     EcranEnCours.Droite = Suivant;
     EcranEnCours.Gauche = Precedent;
     tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
@@ -70,8 +70,8 @@ void SetSeuilPlusMoins(int Direction)
   MenuChanged = false;
   MenuAction = NONE;
   AddSeuilToLine(EcranEnCours.SelectedItem);
-  tft.setTextColor(ILI9340_RED);
-  tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_BLACK);
+  tft.setTextColor(ROUGE);
+  tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
   tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
   tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
 }
@@ -164,8 +164,8 @@ void SetMode(int Direction)
       Reglage = ETE;
   }
   AddModeToLine(EcranEnCours.SelectedItem);
-  tft.setTextColor(ILI9340_RED);
-  tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), ILI9340_BLACK);
+  tft.setTextColor(ROUGE);
+  tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
   tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
   tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
 }

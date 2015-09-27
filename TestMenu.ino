@@ -1,6 +1,6 @@
 #include "SPI.h"
 #include "Adafruit_GFX.h"
-#include "Adafruit_ILI9340.h"
+#include "ILI9341_t3.h"
 #include <SD.h>
 
 
@@ -22,6 +22,12 @@
 #define T_INT          19
 #define T_CHEMINEE     20
 #define T_PUIT         21
+
+//Couleurs
+#define BLANC 0xFFFF
+#define NOIR 0x0000
+#define GRIS 0x2102
+#define ROUGE 0xF800
 
 //Definitions des Ecrans Menu
 typedef void(*FctPtr)(void);
@@ -83,7 +89,7 @@ bool TemperatureDepasseSeuil[NB_TEMP]= {false, false, false, false, false};
 bool SdCardPresent;
 
 // TFT Screen
-Adafruit_ILI9340 tft = Adafruit_ILI9340(TFT_CS, TFT_DC, TFT_RST);
+ILI9341_t3 tft = ILI9341_t3(TFT_CS, TFT_DC, TFT_RST);
 
 //Gestion de navigation - écrans menu
 typedef struct
