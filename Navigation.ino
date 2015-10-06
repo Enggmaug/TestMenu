@@ -283,14 +283,72 @@ void GotoSetHeure(void)
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
 }
-void SetYear(void)
+void SetDateOnOff(void)
 {
-  // Faire comme dans ChangingMode
-}
-void SetMonth(void)
-{
+  static bool ChangingDate = false;
 
+  ChangingDate = not(ChangingDate);
+
+  if (ChangingDate == true)
+  {
+    SetDatePlusMoins (0);
+    EcranEnCours.Droite = SetDatePlus;
+    EcranEnCours.Gauche = SetDateMoins;
+  }
+  else
+  {
+    tft.setTextColor(NOIR);
+    tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), BLANC);
+    EcranEnCours.Droite = Suivant;
+    EcranEnCours.Gauche = Precedent;
+    tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
+    tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
+    MenuChanged = false;
+    MenuAction = NONE;
+  }
 }
+void SetDatePlus(void)
+{
+  SetDatePlusMoins(1);
+}
+void SetDateMoins(void)
+{
+  SetDatePlusMoins(-1);
+}
+void SetDatePlusMoins(int Direction)
+{
+  char str_blank[NB_CAR_LIGNE] = {0};
+
+  if (Direction > 0) Direction = 1;
+  else if (Direction < 0) Direction = -1;
+
+  switch (EcranEnCours.SelectedItem)
+  {
+    case 1:
+      DateHeureCourante.year += (Direction);
+      break;
+    case 2:
+      DateHeureCourante.mon += (Direction);
+      break;
+    case 3:
+      DateHeureCourante.mday += (Direction);
+      break;
+    default:
+      break;
+  }
+  MenuChanged = false;
+  MenuAction = NONE;
+  int dateItem[ct_MenuDatebItems] = {0, DateHeureCourante.year, DateHeureCourante.mon, DateHeureCourante.mday};
+
+  strncpy(str_blank, BlankLine, NB_CAR_LIGNE - strlen(tab_MenuDate[EcranEnCours.SelectedItem]) - 6);
+  str_blank[NB_CAR_LIGNE - strlen(tab_MenuHeure[EcranEnCours.SelectedItem]) - 5] = 0;
+  sprintf(tab_MenuTemp[EcranEnCours.SelectedItem], "%s%s%02d", tab_MenuDate[EcranEnCours.SelectedItem], str_blank, dateItem[EcranEnCours.SelectedItem]);
+  tft.setTextColor(ROUGE);
+  tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
+  tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
+  tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
+}
+
 void SetDay(void)
 {
 

@@ -191,12 +191,14 @@ void RecallSeuils(void)
 void SaveDate(void)
 {
   WriteTime();
+  ReadTime();
   GotoSetDateHeure();
 }
 
 void SaveTime(void)
 {
   WriteTime();
+  ReadTime();
   GotoSetDateHeure();
 }
 

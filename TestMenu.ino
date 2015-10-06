@@ -66,7 +66,7 @@ const FctPtr tab_MenuDateHeureFonct[ct_MenuDHNbItems]             =  {None      
 /*-*/ bool   tab_MenuDateHeureEnable[ct_MenuDHNbItems]            =  {true              , true           , false           ,true            , false            ,true                }; //             |
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
 const char   tab_MenuDate[ct_MenuDatebItems][NB_CAR_LIGNE]        =  {"REGLER DATE"     , "ANNEE"        , "MOIS"          , "JOUR"         , "RETOUR"         }; //                |                 |
-const FctPtr tab_MenuDateFonct[ct_MenuDatebItems]                 =  {None              , SetYear        , SetMonth        , SetDay         , SaveYesNo        }; //                |                 |
+const FctPtr tab_MenuDateFonct[ct_MenuDatebItems]                 =  {None              , SetDateOnOff   , SetDateOnOff    , SetDateOnOff   , SaveYesNo        }; //                |                 |
 /*-*/ bool   tab_MenuDateEnable[ct_MenuDatebItems]                =  {true              , true           , true            , true           , true             }; //                |                 |
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
 const char   tab_MenuHeure[ct_MenuHeureNbItems][NB_CAR_LIGNE]     =  {"REGLER HEURE"    , "HEURES"       , "MINUTES"       , "RETOUR"       }; //              |                    |                 |
