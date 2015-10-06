@@ -190,12 +190,14 @@ void RecallSeuils(void)
 /*---------------------------------------------------------------------------------------------*/
 void SaveDate(void)
 {
-  // acces à la librarie du MAX3234
+  WriteTime();
+  GotoSetDateHeure();
 }
 
 void SaveTime(void)
 {
-  // acces à la librarie du MAX3234
+  WriteTime();
+  GotoSetDateHeure();
 }
 
 void RecallDate(void)
@@ -207,7 +209,7 @@ void RecallDate(void)
 
 void RecallTime(void)
 {
-   Serial.println("Recall");
+  Serial.println("Recall");
   ReadTime();
   GotoSetDateHeure();
 }
@@ -260,7 +262,7 @@ void Selection(void)
 
 void OneMinutePassed(void)
 {
-    // acces à la librarie du MAX3234
+  // acces à la librarie du MAX3234
 }
 /*---------------------------------------------------------------------------------------------*/
 /*                         Actionnement des commandes suite aux interruptions                  */
@@ -306,7 +308,7 @@ void DisableSD(void)
   }
   for (idx = 0; idx < ct_SauvegarderNbItems; idx ++)
   {
-    tab_SauvegarderEnable[idx] = tab_SauvegarderEnableTemp[idx];
+    tab_SauvegarderSDEnable[idx] = tab_SauvegarderEnableTemp[idx];
   }
   MenuChanged = true;
 }
@@ -321,6 +323,7 @@ void DisableRTC(void)
   bool   tab_MenuDateHeureEnableTemp[ct_MenuSeuilsNbItems] =  {true, false, false, true                     };
   bool   tab_MenuDateEnableTemp[ct_MenuHistNbItems]        =  {true, false, false, false, true              };
   bool   tab_MenuHeureEnableTemp[ct_MenuHistNbItems]       =  {true, false, false, true                     };
+  bool   tab_SauvegarderEnableTemp[ct_MenuHistNbItems]            =  {true, false, true , true                    };
 
   for (idx = 0; idx < ct_MenuMainNbItems; idx ++)
   {
@@ -337,6 +340,10 @@ void DisableRTC(void)
   for (idx = 0; idx < ct_MenuHeureNbItems; idx ++)
   {
     tab_MenuHeureEnable[idx] = tab_MenuHeureEnableTemp[idx];
+  }
+  for (idx = 0; idx < ct_SauvegarderNbItems; idx ++)
+  {
+    tab_SauvegarderRTCEnable[idx] = tab_SauvegarderEnableTemp[idx];
   }
   MenuChanged = true;
 }
@@ -361,9 +368,9 @@ float ReadTemperature(int AnalogPinNumber) // A ECRIRE
   float result = 15.5;
 
   if (AnalogPinNumber > 0)
-  return(result);
-  else 
-  return (0.0);
+    return (result);
+  else
+    return (0.0);
 }
 
 /*---------------------------------------------------------------------------------------------*/
@@ -373,23 +380,27 @@ void ReadTime(void)
 {
   DS3234_get(RTCLK_CS, &DateHeureCourante);
 }
+void WriteTime(void)
+{
+  DS3234_set(RTCLK_CS, DateHeureCourante);
+}
 
 void SetAlarm10Mins(void)
 {
-  
+
 }
 
 void SetAlarm10Secondes(void)
 {
-  
+
 }
 
 void ClearAlarms(void)
 {
-  
+
 }
 
 void SetTime(void)
 {
- 
+
 }

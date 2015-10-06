@@ -88,22 +88,22 @@ void SetMode(void)
 /*---------------------------------------------------------------------------------------------*/
 void GotoStartMenu(void)
 {
- int idx;
- const bool tab_enabled[ct_NbItemMax]={true}; 
- const FctPtr tab_voidFonctions[ct_NbItemMax]={None};
- 
+  int idx;
+  const bool tab_enabled[ct_NbItemMax] = {true};
+  const FctPtr tab_voidFonctions[ct_NbItemMax] = {None};
+
   MenuChanged = true;
   for (idx = 0; idx < ct_NbItemMax; idx ++)
   {
     strcpy(tab_MenuTemp[idx], "");
   }
   strcpy(&tab_MenuTemp[0][0], "INITIALISATION");
-  sprintf(&tab_MenuTemp[3][0],"%02d/%02d/%04d %02d:%02d",DateHeureCourante.mday,DateHeureCourante.mon,DateHeureCourante.year,DateHeureCourante.hour,DateHeureCourante.min);
-  
+  sprintf(&tab_MenuTemp[3][0], "%02d/%02d/%04d %02d:%02d", DateHeureCourante.mday, DateHeureCourante.mon, DateHeureCourante.year, DateHeureCourante.hour, DateHeureCourante.min);
+
   EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
   EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_enabled[0];
   EcranEnCours.pt_MenuFonct = (FctPtr *)tab_voidFonctions;
-  EcranEnCours.NbItems=ct_NbItemMax;
+  EcranEnCours.NbItems = ct_NbItemMax;
   EcranEnCours.SelectedItem = 0;
   EcranEnCours.Droite = None;
   EcranEnCours.Gauche = None;
@@ -180,17 +180,19 @@ void SaveYesNo(void)
   if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuSeuils[0][0]) == 0)
   {
     EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SaveSeuilsFonct;
+    EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_SauvegarderSDEnable[0];
   }
   else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuDate[0][0]) == 0)
   {
     EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SaveDateFonct;
+    EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_SauvegarderRTCEnable[0];
   }
   else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuHeure[0][0]) == 0)
   {
     EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SaveHoursFonct;
+    EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_SauvegarderRTCEnable[0];
   }
   EcranEnCours.pt_tab_menu = (char *)&tab_Sauvegarder[0][0];
-  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_SauvegarderEnable[0];
   EcranEnCours.NbItems = ct_SauvegarderNbItems;
   EcranEnCours.SelectedItem = 1;
   EcranEnCours.Droite = Suivant;
@@ -207,21 +209,21 @@ void GotoSetDateHeure(void)
   MenuChanged = true;
   for (idx = 0; idx <= ct_MenuDHNbItems - 1; idx ++)
   {
-    
-    if (strcmp(tab_MenuDateHeure[idx],"DATE ICI")==0)
+
+    if (strcmp(tab_MenuDateHeure[idx], "DATE ICI") == 0)
     {
-      sprintf(tab_MenuTemp[idx],"     %02d/%02d/%04d",DateHeureCourante.mday,DateHeureCourante.mon,DateHeureCourante.year);
+      sprintf(tab_MenuTemp[idx], "     %02d/%02d/%04d", DateHeureCourante.mday, DateHeureCourante.mon, DateHeureCourante.year);
     }
-    else if (strcmp(tab_MenuDateHeure[idx],"HEURE ICI")==0)
+    else if (strcmp(tab_MenuDateHeure[idx], "HEURE ICI") == 0)
     {
-      
-      sprintf(tab_MenuTemp[idx],"     %02d:%02d",DateHeureCourante.hour,DateHeureCourante.min);
+
+      sprintf(tab_MenuTemp[idx], "     %02d:%02d", DateHeureCourante.hour, DateHeureCourante.min);
     }
     else
     {
       strcpy(tab_MenuTemp[idx], tab_MenuDateHeure[idx]);
     }
-  }  
+  }
   EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
   EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuDateHeureEnable[0];
   EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuDateHeureFonct;
@@ -234,19 +236,19 @@ void GotoSetDateHeure(void)
 void GotoSetDate(void)
 {
   int idx;
-  char str_blank[NB_CAR_LIGNE]={0};
-  int dateItem[ct_MenuDatebItems]={0,DateHeureCourante.year,DateHeureCourante.mon,DateHeureCourante.mday};
-  
+  char str_blank[NB_CAR_LIGNE] = {0};
+  int dateItem[ct_MenuDatebItems] = {0, DateHeureCourante.year, DateHeureCourante.mon, DateHeureCourante.mday};
+
   MenuChanged = true;
   strcpy(tab_MenuTemp[0], tab_MenuDate[0]);
-    for (idx = 1; idx < ct_MenuDatebItems - 1; idx ++)
+  for (idx = 1; idx < ct_MenuDatebItems - 1; idx ++)
   {
-      strncpy(str_blank,BlankLine,NB_CAR_LIGNE-strlen(tab_MenuDate[idx])-6);
-      str_blank[NB_CAR_LIGNE-strlen(tab_MenuHeure[idx])-5]=0;
-      sprintf(tab_MenuTemp[idx],"%s%s%02d",tab_MenuDate[idx],str_blank,dateItem[idx]);
-  }  
+    strncpy(str_blank, BlankLine, NB_CAR_LIGNE - strlen(tab_MenuDate[idx]) - 6);
+    str_blank[NB_CAR_LIGNE - strlen(tab_MenuHeure[idx]) - 5] = 0;
+    sprintf(tab_MenuTemp[idx], "%s%s%02d", tab_MenuDate[idx], str_blank, dateItem[idx]);
+  }
   strcpy(tab_MenuTemp[ct_MenuDatebItems - 1], tab_MenuDate[ct_MenuDatebItems - 1]);
-  
+
   EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
   EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuDateEnable[0];
   EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuDateFonct;
@@ -259,18 +261,18 @@ void GotoSetDate(void)
 void GotoSetHeure(void)
 {
   int idx;
-  char str_blank[NB_CAR_LIGNE]={0};
-  int heureItem[ct_MenuHeureNbItems]={0,DateHeureCourante.hour,DateHeureCourante.min};
-  
+  char str_blank[NB_CAR_LIGNE] = {0};
+  int heureItem[ct_MenuHeureNbItems] = {0, DateHeureCourante.hour, DateHeureCourante.min};
+
   strcpy(tab_MenuTemp[0], tab_MenuHeure[0]);
-    for (idx = 1; idx < ct_MenuHeureNbItems - 1; idx ++)
+  for (idx = 1; idx < ct_MenuHeureNbItems - 1; idx ++)
   {
-      strncpy(str_blank,BlankLine,NB_CAR_LIGNE-strlen(tab_MenuHeure[idx])-6);
-      str_blank[NB_CAR_LIGNE-strlen(tab_MenuHeure[idx])-5]=0;
-      sprintf(tab_MenuTemp[idx],"%s%s%02d",tab_MenuHeure[idx],str_blank,heureItem[idx]);
-  }  
+    strncpy(str_blank, BlankLine, NB_CAR_LIGNE - strlen(tab_MenuHeure[idx]) - 6);
+    str_blank[NB_CAR_LIGNE - strlen(tab_MenuHeure[idx]) - 5] = 0;
+    sprintf(tab_MenuTemp[idx], "%s%s%02d", tab_MenuHeure[idx], str_blank, heureItem[idx]);
+  }
   strcpy(tab_MenuTemp[ct_MenuHeureNbItems - 1], tab_MenuHeure[ct_MenuHeureNbItems - 1]);
-  
+
   EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
   MenuChanged = true;
   EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuHeureEnable[0];
@@ -283,7 +285,7 @@ void GotoSetHeure(void)
 }
 void SetYear(void)
 {
-// Faire comme dans ChangingMode
+  // Faire comme dans ChangingMode
 }
 void SetMonth(void)
 {
