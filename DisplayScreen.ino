@@ -23,7 +23,7 @@ void DisplayMenuScreen(void)
     {
       if (idx == EcranEnCours.SelectedItem)                     //Et si item selectionné, on change d'item selectionné
       {
-         EcranEnCours.SelectedItem++;
+         Suivant();
       }
       tft.setTextColor(GRIS);                         // Police grise sur fond noir
       tft.fillRect(0, (tft.height() / ct_NbItemMax) * idx, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
