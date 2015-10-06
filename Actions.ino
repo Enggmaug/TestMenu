@@ -368,7 +368,6 @@ float ReadTemperature(int AnalogPinNumber) // A ECRIRE
 void ReadTime(void)
 {
   DS3234_get(RTCLK_CS, &DateHeureCourante);
-  
 }
 
 void SetAlarm10Mins(void)

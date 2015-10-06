@@ -203,8 +203,26 @@ void SaveYesNo(void)
 /*---------------------------------------------------------------------------------------------*/
 void GotoSetDateHeure(void)
 {
+  int idx;
   MenuChanged = true;
-  EcranEnCours.pt_tab_menu = (char *)&tab_MenuDateHeure[0][0];
+  for (idx = 0; idx <= ct_MenuDHNbItems - 1; idx ++)
+  {
+    
+    if (strcmp(tab_MenuDateHeure[idx],"DATE ICI")==0)
+    {
+      sprintf(tab_MenuTemp[idx],"     %02d/%02d/%04d",DateHeureCourante.mday,DateHeureCourante.mon,DateHeureCourante.year);
+    }
+    else if (strcmp(tab_MenuDateHeure[idx],"HEURE ICI")==0)
+    {
+      
+      sprintf(tab_MenuTemp[idx],"     %02d:%02d",DateHeureCourante.hour,DateHeureCourante.min);
+    }
+    else
+    {
+      strcpy(tab_MenuTemp[idx], tab_MenuDateHeure[idx]);
+    }
+  }  
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
   EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuDateHeureEnable[0];
   EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuDateHeureFonct;
   EcranEnCours.NbItems = ct_MenuDHNbItems;
@@ -215,8 +233,21 @@ void GotoSetDateHeure(void)
 }
 void GotoSetDate(void)
 {
+  int idx;
+  char str_blank[NB_CAR_LIGNE];
+  char str_date[NB_CAR_LIGNE];
+  int dateItem[ct_MenuDatebItems]={0,DateHeureCourante.year,DateHeureCourante.mon,DateHeureCourante.mday};
+  
   MenuChanged = true;
-  EcranEnCours.pt_tab_menu = (char *)&tab_MenuDate[0][0];
+  strcpy(tab_MenuTemp[0], tab_MenuDate[0]);
+    for (idx = 1; idx < ct_MenuDatebItems - 1; idx ++)
+  {
+      strncpy(str_blank,BlankLine,NB_CAR_LIGNE-strlen(tab_MenuDate[idx])-6);
+      sprintf(tab_MenuTemp[idx],"%s%s%02d",tab_MenuDate[idx],str_blank,dateItem[idx]);
+  }  
+  strcpy(tab_MenuTemp[ct_MenuDatebItems - 1], tab_MenuDate[ct_MenuDatebItems - 1]);
+  
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
   EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuDateEnable[0];
   EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuDateFonct;
   EcranEnCours.NbItems = ct_MenuDatebItems;
@@ -257,7 +288,6 @@ void SetMinutes(void)
 {
 
 }
-
 
 /*---------------------------------------------------------------------------------------------*/
 /*                  Modification des Items du menu seuil, pour ajouter la valeur               */

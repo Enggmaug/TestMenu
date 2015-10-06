@@ -39,7 +39,7 @@ const int ct_NbItemMax = 7;
 const int ct_MenuMainNbItems = 7;
 const int ct_MenuModeNbItems = 3;
 const int ct_MenuSeuilsNbItems = 7;
-const int ct_MenuDHNbItems = 4;
+const int ct_MenuDHNbItems = 6;
 const int ct_MenuDatebItems = 5;
 const int ct_MenuHeureNbItems = 4;
 const int ct_MenuHistNbItems = 6;
@@ -61,9 +61,9 @@ const char   tab_MenuHist[ct_MenuHistNbItems][NB_CAR_LIGNE]       =  {"HISTORIQU
 const FctPtr tab_MenuHistFonct[ct_MenuHistNbItems]                =  {None              , ShowHistoExt   ,                   ShowHistoInt   , ShowHistoPuit    , ShowHistoChem      , GotoMainMenu    };
 /*-*/ bool   tab_MenuHistEnable[ct_MenuHistNbItems]               =  {true              , true           ,                   true           , true             , true               , true            };
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
-const char   tab_MenuDateHeure[ct_MenuDHNbItems][NB_CAR_LIGNE]    =  {"DATE / HEURE"    , "REGLER DATE"  , "REGLER HEURE"  , "RETOUR"       }; //              |                    |                 |
-const FctPtr tab_MenuDateHeureFonct[ct_MenuDHNbItems]             =  {None              , GotoSetDate    , GotoSetHeure    , GotoMainMenu   }; //              |                    |                 |
-/*-*/ bool   tab_MenuDateHeureEnable[ct_MenuDHNbItems]            =  {true              , true           , true            , true           }; //              |                    |                 |
+const char   tab_MenuDateHeure[ct_MenuDHNbItems][NB_CAR_LIGNE]    =  {"DATE / HEURE"    , "REGLER DATE"  , "DATE ICI"      ,"REGLER HEURE"  , "HEURE ICI"      ,"RETOUR"            }; //             |
+const FctPtr tab_MenuDateHeureFonct[ct_MenuDHNbItems]             =  {None              , GotoSetDate    , None            ,GotoSetHeure    , None             ,GotoMainMenu        }; //             |
+/*-*/ bool   tab_MenuDateHeureEnable[ct_MenuDHNbItems]            =  {true              , true           , false           ,true            , false            ,true                }; //             |
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
 const char   tab_MenuDate[ct_MenuDatebItems][NB_CAR_LIGNE]        =  {"REGLER DATE"     , "ANNEE"        , "MOIS"          , "JOUR"         , "RETOUR"         }; //                |                 |
 const FctPtr tab_MenuDateFonct[ct_MenuDatebItems]                 =  {None              , SetYear        , SetMonth        , SetDay         , SaveYesNo        }; //                |                 |
