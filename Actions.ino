@@ -200,12 +200,16 @@ void SaveTime(void)
 
 void RecallDate(void)
 {
-  // acces à la librarie du MAX3234
+  Serial.println("Recall");
+  ReadTime();
+  GotoSetDateHeure();
 }
 
 void RecallTime(void)
 {
-  // acces à la librarie du MAX3234
+   Serial.println("Recall");
+  ReadTime();
+  GotoSetDateHeure();
 }
 /*---------------------------------------------------------------------------------------------*/
 /*                                        INTERRUPTIONS                                        */

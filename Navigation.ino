@@ -234,8 +234,7 @@ void GotoSetDateHeure(void)
 void GotoSetDate(void)
 {
   int idx;
-  char str_blank[NB_CAR_LIGNE];
-  char str_date[NB_CAR_LIGNE];
+  char str_blank[NB_CAR_LIGNE]={0};
   int dateItem[ct_MenuDatebItems]={0,DateHeureCourante.year,DateHeureCourante.mon,DateHeureCourante.mday};
   
   MenuChanged = true;
@@ -243,6 +242,7 @@ void GotoSetDate(void)
     for (idx = 1; idx < ct_MenuDatebItems - 1; idx ++)
   {
       strncpy(str_blank,BlankLine,NB_CAR_LIGNE-strlen(tab_MenuDate[idx])-6);
+      str_blank[NB_CAR_LIGNE-strlen(tab_MenuHeure[idx])-5]=0;
       sprintf(tab_MenuTemp[idx],"%s%s%02d",tab_MenuDate[idx],str_blank,dateItem[idx]);
   }  
   strcpy(tab_MenuTemp[ct_MenuDatebItems - 1], tab_MenuDate[ct_MenuDatebItems - 1]);
@@ -258,8 +258,21 @@ void GotoSetDate(void)
 }
 void GotoSetHeure(void)
 {
+  int idx;
+  char str_blank[NB_CAR_LIGNE]={0};
+  int heureItem[ct_MenuHeureNbItems]={0,DateHeureCourante.hour,DateHeureCourante.min};
+  
+  strcpy(tab_MenuTemp[0], tab_MenuHeure[0]);
+    for (idx = 1; idx < ct_MenuHeureNbItems - 1; idx ++)
+  {
+      strncpy(str_blank,BlankLine,NB_CAR_LIGNE-strlen(tab_MenuHeure[idx])-6);
+      str_blank[NB_CAR_LIGNE-strlen(tab_MenuHeure[idx])-5]=0;
+      sprintf(tab_MenuTemp[idx],"%s%s%02d",tab_MenuHeure[idx],str_blank,heureItem[idx]);
+  }  
+  strcpy(tab_MenuTemp[ct_MenuHeureNbItems - 1], tab_MenuHeure[ct_MenuHeureNbItems - 1]);
+  
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
   MenuChanged = true;
-  EcranEnCours.pt_tab_menu = (char *)&tab_MenuHeure[0][0];
   EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuHeureEnable[0];
   EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuHeureFonct;
   EcranEnCours.NbItems = ct_MenuHeureNbItems;
