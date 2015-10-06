@@ -41,5 +41,6 @@ void setup(void)
  DisplayMenuScreen();
  delay(5000);     // à remplacer par fin de phase d'init
  GotoMainMenu();  // à remplacer par écran principal
+ RotDetect=false;
 }
 
