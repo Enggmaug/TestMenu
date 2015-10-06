@@ -362,3 +362,31 @@ float ReadTemperature(int AnalogPinNumber) // A ECRIRE
   return (0.0);
 }
 
+/*---------------------------------------------------------------------------------------------*/
+/*                                        Gestion RTC                                          */
+/*---------------------------------------------------------------------------------------------*/
+void ReadTime(void)
+{
+  DS3234_get(RTCLK_CS, &DateHeureCourante);
+  
+}
+
+void SetAlarm10Mins(void)
+{
+  
+}
+
+void SetAlarm10Secondes(void)
+{
+  
+}
+
+void ClearAlarms(void)
+{
+  
+}
+
+void SetTime(void)
+{
+ 
+}

@@ -84,7 +84,33 @@ void SetMode(void)
   }
 }
 /*---------------------------------------------------------------------------------------------*/
-/*                             Navigation vers écan principal                                  */
+/*                             Navigation vers écran démarrage                                 */
+/*---------------------------------------------------------------------------------------------*/
+void GotoStartMenu(void)
+{
+ int idx;
+ const bool tab_enabled[ct_NbItemMax]={true}; 
+ const FctPtr tab_voidFonctions[ct_NbItemMax]={None};
+ 
+  MenuChanged = true;
+  for (idx = 0; idx < ct_NbItemMax; idx ++)
+  {
+    strcpy(tab_MenuTemp[idx], "");
+  }
+  strcpy(&tab_MenuTemp[0][0], "INITIALISATION");
+  sprintf(&tab_MenuTemp[3][0],"%02d/%02d/%04d %02d:%02d",DateHeureCourante.mday,DateHeureCourante.mon,DateHeureCourante.year,DateHeureCourante.hour,DateHeureCourante.min);
+  
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_enabled[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_voidFonctions;
+  EcranEnCours.NbItems=ct_NbItemMax;
+  EcranEnCours.SelectedItem = 0;
+  EcranEnCours.Droite = None;
+  EcranEnCours.Gauche = None;
+  EcranEnCours.Select = None;
+}
+/*---------------------------------------------------------------------------------------------*/
+/*                             Navigation vers écran menu principal                                 */
 /*---------------------------------------------------------------------------------------------*/
 void GotoMainMenu(void)
 {

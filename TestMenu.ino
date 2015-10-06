@@ -2,7 +2,7 @@
 #include "Adafruit_GFX.h"
 #include "ILI9341_t3.h"
 #include <SD.h>
-
+#include "ds3234.h"
 
 // DEFINE
 #define NB_CAR_LIGNE   24
@@ -22,6 +22,10 @@
 #define T_INT          19
 #define T_CHEMINEE     20
 #define T_PUIT         21
+#define RTCLK_CS       21
+
+//test
+#define BUFF_MAX 256
 
 //Couleurs
 #define BLANC 0xFFFF
@@ -127,14 +131,5 @@ enum Reglages {
 } Reglage;
 
 //Definition de la date/heure courante
-typedef struct DateAndTime
-{
-  int annee;
-  int mois;
-  int jour;
-  int heures;
-  int minutes;
-} DateEtHeure;
-
-DateEtHeure DateHeureCourante; 
+struct ts DateHeureCourante; 
 
