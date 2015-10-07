@@ -18,11 +18,12 @@
 #define COD_DT         7
 #define COD_SW         8
 #define SDCARD_CS      15
-#define T_EXT          18
-#define T_INT          19
-#define T_CHEMINEE     20
-#define T_PUIT         21
+#define T_EXT          23
+#define T_INT          22
+#define T_CHEMINEE     21
+#define T_PUIT         20
 #define RTCLK_CS       21
+#define RTCLK_INT      18
 
 //test
 #define BUFF_MAX 256
@@ -134,3 +135,5 @@ enum Reglages {
 //Definition de la date/heure courante
 struct ts DateHeureCourante;
 const struct ts BlankDateHeure = {0,0,0,0,0,0,0,0,0,0};
+
+bool RTClockAlarm = false;

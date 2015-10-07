@@ -11,9 +11,10 @@ void setup(void)
   delay(1000);
 
   /*Mise en place des interruptions pour les mouvements du codeur*/
-  attachInterrupt(digitalPinToInterrupt(COD_DT), RotationDetectDT, CHANGE );
-  attachInterrupt(digitalPinToInterrupt(COD_CLK), RotationDetectCLK, CHANGE );
-  attachInterrupt(digitalPinToInterrupt(COD_SW), Selection, RISING );
+  attachInterrupt(digitalPinToInterrupt(COD_DT),    RotationDetectDT,  CHANGE  );
+  attachInterrupt(digitalPinToInterrupt(COD_CLK),   RotationDetectCLK, CHANGE  );
+  attachInterrupt(digitalPinToInterrupt(COD_SW),    Selection,         RISING  );
+  attachInterrupt(digitalPinToInterrupt(RTCLK_INT), RTClockInterrupt,  FALLING );
 
   /*Start des services*/
   Serial.begin(9600);
@@ -42,5 +43,7 @@ void setup(void)
   delay(1000);     // à remplacer par fin de phase d'init
   GotoMainMenu();  // à remplacer par écran principal
   RotDetect = false;
+
+  SetAlarmMinutes();
 }
 

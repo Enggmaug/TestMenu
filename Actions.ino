@@ -259,11 +259,11 @@ void Selection(void)
   interrupts();
 }
 
-
-void OneMinutePassed(void)
+void RTClockInterrupt(void)
 {
-  // acces à la librarie du MAX3234
+  RTClockAlarm = true;
 }
+
 /*---------------------------------------------------------------------------------------------*/
 /*                         Actionnement des commandes suite aux interruptions                  */
 /*---------------------------------------------------------------------------------------------*/
@@ -366,6 +366,7 @@ void GetTemperatures(void)
 float ReadTemperature(int AnalogPinNumber) // A ECRIRE
 {
   float result = 15.5;
+  Serial.println("Get Temp");
 
   if (AnalogPinNumber > 0)
     return (result);
@@ -388,19 +389,11 @@ void WriteTime(void)
   ReadTime();
 }
 
-void SetAlarm10Mins(void)
+void SetAlarmMinutes(void)
 {
-
-}
-
-void SetAlarm10Secondes(void)
-{
-
-}
-
-void ClearAlarms(void)
-{
-
+  // flags are: A1M1 (seconds), A1M2 (minutes), A1M3 (hour), A1M4 (day) 0 to enable, 1 to disable, DY/DT (dayofweek == 1/dayofmonth == 0)
+  const uint8_t flags[5] = {0, 0, 1, 1, 1};
+  DS3234_set_a1(RTCLK_CS, 0, 0, 0, 0, &flags[0]);
 }
 
 /*---------------------------------------------------------------------------------------------*/
@@ -553,5 +546,11 @@ void SetHeurePlusMoins(int Direction)
   tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
   tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
   tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
+}
+
+void SaveHistoriques(void)
+{
+  
+  Serial.println("Save Historique");
 }
 
