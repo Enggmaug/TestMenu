@@ -37,10 +37,10 @@ void setup(void)
   //DisableRTC(); // a implémenter si pas de RTC trouvé
   ReadTime();
 
- GotoStartMenu();
- DisplayMenuScreen();
- delay(1000);     // à remplacer par fin de phase d'init
- GotoMainMenu();  // à remplacer par écran principal
- RotDetect=false;
+  GotoStartMenu();
+  DisplayMenuScreen();
+  delay(1000);     // à remplacer par fin de phase d'init
+  GotoMainMenu();  // à remplacer par écran principal
+  RotDetect = false;
 }
 

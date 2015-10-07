@@ -61,16 +61,16 @@ const char   tab_MenuHist[ct_MenuHistNbItems][NB_CAR_LIGNE]       =  {"HISTORIQU
 const FctPtr tab_MenuHistFonct[ct_MenuHistNbItems]                =  {None              , ShowHistoExt   ,                   ShowHistoInt   , ShowHistoPuit    , ShowHistoChem      , GotoMainMenu    };
 /*-*/ bool   tab_MenuHistEnable[ct_MenuHistNbItems]               =  {true              , true           ,                   true           , true             , true               , true            };
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
-const char   tab_MenuDateHeure[ct_MenuDHNbItems][NB_CAR_LIGNE]    =  {"DATE / HEURE"    , "REGLER DATE"  , "DATE ICI"      ,"REGLER HEURE"  , "HEURE ICI"      ,"RETOUR"            }; //             |
-const FctPtr tab_MenuDateHeureFonct[ct_MenuDHNbItems]             =  {None              , GotoSetDate    , None            ,GotoSetHeure    , None             ,GotoMainMenu        }; //             |
-/*-*/ bool   tab_MenuDateHeureEnable[ct_MenuDHNbItems]            =  {true              , true           , false           ,true            , false            ,true                }; //             |
+const char   tab_MenuDateHeure[ct_MenuDHNbItems][NB_CAR_LIGNE]    =  {"DATE / HEURE"    , "REGLER DATE"  , "DATE ICI"      , "REGLER HEURE"  , "HEURE ICI"      , "RETOUR"            }; //             |
+const FctPtr tab_MenuDateHeureFonct[ct_MenuDHNbItems]             =  {None              , GotoSetDate    , None            , GotoSetHeure    , None             , GotoMainMenu        }; //             |
+/*-*/ bool   tab_MenuDateHeureEnable[ct_MenuDHNbItems]            =  {true              , true           , false           , true            , false            , true                }; //             |
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
 const char   tab_MenuDate[ct_MenuDatebItems][NB_CAR_LIGNE]        =  {"REGLER DATE"     , "ANNEE"        , "MOIS"          , "JOUR"         , "RETOUR"         }; //                |                 |
 const FctPtr tab_MenuDateFonct[ct_MenuDatebItems]                 =  {None              , SetDateOnOff   , SetDateOnOff    , SetDateOnOff   , SaveYesNo        }; //                |                 |
 /*-*/ bool   tab_MenuDateEnable[ct_MenuDatebItems]                =  {true              , true           , true            , true           , true             }; //                |                 |
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
 const char   tab_MenuHeure[ct_MenuHeureNbItems][NB_CAR_LIGNE]     =  {"REGLER HEURE"    , "HEURES"       , "MINUTES"       , "RETOUR"       }; //              |                    |                 |
-const FctPtr tab_MenuHeureFonct[ct_MenuHeureNbItems]              =  {None              , SetHours       , SetMinutes      , SaveYesNo      }; //              |                    |                 |
+const FctPtr tab_MenuHeureFonct[ct_MenuHeureNbItems]              =  {None              , SetHeuresOnOff , SetHeuresOnOff  , SaveYesNo      }; //              |                    |                 |
 /*-*/ bool   tab_MenuHeureEnable[ct_MenuHeureNbItems]             =  {true              , true           , true            , true           }; //              |                    |                 |
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
 const char   tab_Sauvegarder[ct_SauvegarderNbItems][NB_CAR_LIGNE] =  {"SAUVEGARDER"     , "OUI"          , "NON"           , "ANNULER"      }; //              |                    |                 |
@@ -87,7 +87,7 @@ char tab_MenuTemp[ct_NbItemMax][NB_CAR_LIGNE];
 //Seuils et Température par défaut
 float Seuils[3][NB_TEMP] = {DEFAULT_SEUILS, DEFAULT_SEUILS, DEFAULT_SEUILS};
 float Temperatures[NB_TEMP] = {20.3, 20.3, 21.6, 21.8, 12.7};
-bool TemperatureDepasseSeuil[NB_TEMP]= {false, false, false, false, false};
+bool TemperatureDepasseSeuil[NB_TEMP] = {false, false, false, false, false};
 
 
 // Si carte SD présente
@@ -132,5 +132,5 @@ enum Reglages {
 } Reglage;
 
 //Definition de la date/heure courante
-struct ts DateHeureCourante; 
-
+struct ts DateHeureCourante;
+const struct ts BlankDateHeure = {0,0,0,0,0,0,0,0,0,0};

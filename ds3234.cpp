@@ -47,7 +47,7 @@ void DS3234_set(const uint8_t pin, struct ts t)
     century = 0;
     t.year_s = t.year - 1900;
   }
-  SPI.beginTransaction(SPISettings(pin,MSBFIRST,SPI_MODE1));
+  SPI.beginTransaction(SPISettings(pin, MSBFIRST, SPI_MODE1));
   uint8_t TimeDate[7] = { t.sec, t.min, t.hour, t.wday, t.mday, t.mon, t.year_s };
   for (i = 0; i <= 6; i++) {
     digitalWrite(pin, LOW);
@@ -68,7 +68,7 @@ void DS3234_get(const uint8_t pin, struct ts *t)
   uint8_t i, n;
   uint16_t year_full;
 
-  SPI.beginTransaction(SPISettings(pin,MSBFIRST,SPI_MODE1));
+  SPI.beginTransaction(SPISettings(pin, MSBFIRST, SPI_MODE1));
   for (i = 0; i <= 6; i++) {
     digitalWrite(pin, LOW);
     SPI.transfer(i + 0x00);
@@ -103,7 +103,7 @@ void DS3234_get(const uint8_t pin, struct ts *t)
 
 void DS3234_set_addr(const uint8_t pin, const uint8_t addr, const uint8_t val)
 {
-  SPI.beginTransaction(SPISettings(pin,MSBFIRST,SPI_MODE1));
+  SPI.beginTransaction(SPISettings(pin, MSBFIRST, SPI_MODE1));
   digitalWrite(pin, LOW);
   SPI.transfer(addr);
   SPI.transfer(val);
@@ -114,7 +114,7 @@ void DS3234_set_addr(const uint8_t pin, const uint8_t addr, const uint8_t val)
 uint8_t DS3234_get_addr(const uint8_t pin, const uint8_t addr)
 {
   uint8_t rv;
-  SPI.beginTransaction(SPISettings(pin,MSBFIRST,SPI_MODE1));
+  SPI.beginTransaction(SPISettings(pin, MSBFIRST, SPI_MODE1));
   digitalWrite(pin, LOW);
   SPI.transfer(addr);
   rv = SPI.transfer(0x00);
@@ -212,7 +212,7 @@ void DS3234_set_a1(const uint8_t pin, const uint8_t s, const uint8_t mi, const u
   uint8_t t[4] = { s, mi, h, d };
   uint8_t i;
 
-  SPI.beginTransaction(SPISettings(pin,MSBFIRST,SPI_MODE1));
+  SPI.beginTransaction(SPISettings(pin, MSBFIRST, SPI_MODE1));
   for (i = 0; i <= 3; i++) {
     digitalWrite(pin, LOW);
     SPI.transfer(i + 0x87);
@@ -232,7 +232,7 @@ void DS3234_get_a1(const uint8_t pin, char *buf, const uint8_t len)
   uint8_t f[5];               // flags
   uint8_t i;
 
-  SPI.beginTransaction(SPISettings(pin,MSBFIRST,SPI_MODE1));
+  SPI.beginTransaction(SPISettings(pin, MSBFIRST, SPI_MODE1));
   for (i = 0; i <= 3; i++) {
     digitalWrite(pin, LOW);
     SPI.transfer(i + 0x07);
@@ -274,7 +274,7 @@ void DS3234_set_a2(const uint8_t pin, const uint8_t mi, const uint8_t h, const u
   uint8_t t[3] = { mi, h, d };
   uint8_t i;
 
-  SPI.beginTransaction(SPISettings(pin,MSBFIRST,SPI_MODE1));
+  SPI.beginTransaction(SPISettings(pin, MSBFIRST, SPI_MODE1));
   for (i = 0; i <= 2; i++) {
     digitalWrite(pin, LOW);
     SPI.transfer(i + 0x8B);
@@ -294,7 +294,7 @@ void DS3234_get_a2(const uint8_t pin, char *buf, const uint8_t len)
   uint8_t f[4];               // flags
   uint8_t i;
 
-  SPI.beginTransaction(SPISettings(pin,MSBFIRST,SPI_MODE1));
+  SPI.beginTransaction(SPISettings(pin, MSBFIRST, SPI_MODE1));
   for (i = 0; i <= 2; i++) {
     digitalWrite(pin, LOW);
     SPI.transfer(i + 0x0B);
