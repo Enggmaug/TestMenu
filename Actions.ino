@@ -474,7 +474,7 @@ void SetDatePlusMoins(int Direction)
   int dateItem[ct_MenuDatebItems] = {0, DateHeureCourante.year, DateHeureCourante.mon, DateHeureCourante.mday};
 
   strncpy(str_blank, BlankLine, NB_CAR_LIGNE - strlen(tab_MenuDate[EcranEnCours.SelectedItem]) - 6);
-  str_blank[NB_CAR_LIGNE - strlen(tab_MenuHeure[EcranEnCours.SelectedItem]) - 5] = 0;
+  str_blank[NB_CAR_LIGNE - strlen(tab_MenuDate[EcranEnCours.SelectedItem]) - 5] = 0;
   sprintf(tab_MenuTemp[EcranEnCours.SelectedItem], "%s%s%02d", tab_MenuDate[EcranEnCours.SelectedItem], str_blank, dateItem[EcranEnCours.SelectedItem]);
   tft.setTextColor(ROUGE);
   tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
