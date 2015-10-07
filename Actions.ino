@@ -486,6 +486,72 @@ void SetDatePlusMoins(int Direction)
 /*---------------------------------------------------------------------------------------------*/
 void SetHeuresOnOff(void)
 {
+  static bool ChangingHeure = false;
 
+  ChangingHeure = not(ChangingHeure);
+
+  if (ChangingHeure == true)
+  {
+    SetHeurePlusMoins (0);
+    EcranEnCours.Droite = SetHeurePlus;
+    EcranEnCours.Gauche = SetHeureMoins;
+  }
+  else
+  {
+    tft.setTextColor(NOIR);
+    tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), BLANC);
+    EcranEnCours.Droite = Suivant;
+    EcranEnCours.Gauche = Precedent;
+    tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
+    tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
+    MenuChanged = false;
+    MenuAction = NONE;
+  }
+}
+void SetHeurePlus(void)
+{
+  SetHeurePlusMoins(1);
+}
+void SetHeureMoins(void)
+{
+  SetHeurePlusMoins(-1);
+}
+void SetHeurePlusMoins(int Direction)
+{
+  char str_blank[NB_CAR_LIGNE] = {0};
+
+  if (Direction > 0) Direction = 1;
+  else if (Direction < 0) Direction = -1;
+
+  switch (EcranEnCours.SelectedItem)
+  {
+    case 1:
+      DateHeureCourante.hour += (Direction);
+      if (DateHeureCourante.hour < 0)
+        DateHeureCourante.hour = 23;
+      else if (DateHeureCourante.hour > 23)
+        DateHeureCourante.hour = 0;
+      break;
+    case 2:
+      DateHeureCourante.min += (Direction);
+      if (DateHeureCourante.min < 0)
+        DateHeureCourante.min = 59;
+      else if (DateHeureCourante.min > 59)
+        DateHeureCourante.min = 0;
+      break;
+    default:
+      break;
+  }
+  MenuChanged = false;
+  MenuAction = NONE;
+  int heureItem[ct_MenuHeureNbItems] = {0, DateHeureCourante.hour, DateHeureCourante.min};
+
+  strncpy(str_blank, BlankLine, NB_CAR_LIGNE - strlen(tab_MenuHeure[EcranEnCours.SelectedItem]) - 6);
+  str_blank[NB_CAR_LIGNE - strlen(tab_MenuHeure[EcranEnCours.SelectedItem]) - 5] = 0;
+  sprintf(tab_MenuTemp[EcranEnCours.SelectedItem], "%s%s%02d", tab_MenuHeure[EcranEnCours.SelectedItem], str_blank, heureItem[EcranEnCours.SelectedItem]);
+  tft.setTextColor(ROUGE);
+  tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
+  tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
+  tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
 }
 
