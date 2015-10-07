@@ -365,11 +365,8 @@ void GetTemperatures(void)
 
 float ReadTemperature(int AnalogPinNumber) // A ECRIRE
 {
-  float result = 15.5;
-  Serial.println("Get Temp");
-
   if (AnalogPinNumber > 0)
-    return (result);
+    return (analogRead(AnalogPinNumber));
   else
     return (0.0);
 }
@@ -392,8 +389,12 @@ void WriteTime(void)
 void SetAlarmMinutes(void)
 {
   // flags are: A1M1 (seconds), A1M2 (minutes), A1M3 (hour), A1M4 (day) 0 to enable, 1 to disable, DY/DT (dayofweek == 1/dayofmonth == 0)
-  const uint8_t flags[5] = {0, 0, 1, 1, 1};
+  const uint8_t flags[5] = {0, 1, 1, 1, 1};
   DS3234_set_a1(RTCLK_CS, 0, 0, 0, 0, &flags[0]);
+
+      // activate Alarm1
+    DS3234_set_creg(RTCLK_CS, DS3234_INTCN | DS3234_A1IE);
+  
 }
 
 /*---------------------------------------------------------------------------------------------*/
@@ -520,14 +521,14 @@ void SetHeurePlusMoins(int Direction)
   {
     case 1:
       DateHeureCourante.hour += (Direction);
-      if (DateHeureCourante.hour < 0)
+      if (DateHeureCourante.hour == 255)
         DateHeureCourante.hour = 23;
       else if (DateHeureCourante.hour > 23)
         DateHeureCourante.hour = 0;
       break;
     case 2:
       DateHeureCourante.min += (Direction);
-      if (DateHeureCourante.min < 0)
+      if (DateHeureCourante.min == 255)
         DateHeureCourante.min = 59;
       else if (DateHeureCourante.min > 59)
         DateHeureCourante.min = 0;

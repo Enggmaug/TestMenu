@@ -6,6 +6,8 @@ void setup(void)
   pinMode(COD_CLK, INPUT);
   pinMode(COD_DT, INPUT);
   pinMode(COD_SW, INPUT);
+  pinMode(RTCLK_INT, INPUT);
+  
   MenuChanged = true;
   RotDetect = false;
   delay(1000);
