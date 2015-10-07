@@ -30,7 +30,7 @@
 //Couleurs
 #define BLANC 0xFFFF
 #define NOIR 0x0000
-#define GRIS 0x2102
+#define GRIS 0x3183
 #define ROUGE 0xF800
 
 //Definitions des Ecrans Menu
