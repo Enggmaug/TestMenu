@@ -296,26 +296,32 @@ void GotoSetHeure(void)
 char* AddValToLine(int idx)
 {
   char* str;
-  char DisplayedVal[8];
-  float* Val;
+  char DisplayedVal[16]="";
+  
   if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuSeuils[0][0]) == 0)
   {
-    Val = &Seuils[Reglage][idx - 1];
     str = strcpy(tab_MenuTemp[idx], &tab_MenuSeuils[idx][0]);
+    str = strncat(str + strlen(str), BlankLine, NB_CAR_LIGNE - NB_CAR_T - strlen(str));
+    sprintf(DisplayedVal, " : %2.1f", Seuils[Reglage][idx - 1]);
   }
   else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_Hysteresis[0][0]) == 0)
   {
-    Val = &Hysteresis[Reglage][idx - 1];
     str = strcpy(tab_MenuTemp[idx], &tab_Hysteresis[idx][0]);
+    str = strncat(str + strlen(str), BlankLine, NB_CAR_LIGNE - NB_CAR_T - strlen(str));
+    sprintf(DisplayedVal, " : %2.1f", Hysteresis[Reglage][idx - 1]);
+  }
+  else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuMinMax[0][0]) == 0)
+  {
+    str = strcpy(tab_MenuTemp[idx], &tab_MenuMinMax[idx][0]);
+    str = strncat(str + strlen(str), BlankLine, NB_CAR_LIGNE - 13 - strlen(str));
+    sprintf(DisplayedVal, " : %2.1f/%2.1f", MinMax[0][idx - 1],MinMax[1][idx - 1]);
+
   }
   else
   {
-    Val = &Seuils[Reglage][idx - 1];
     str = strcpy(tab_MenuTemp[idx], "ERROR");
   }
-  
-  str = strncat(str + strlen(str), BlankLine, NB_CAR_LIGNE - NB_CAR_T - strlen(str));
-  sprintf(DisplayedVal, " : %2.1f", *Val);
+
   str = strcat(str, DisplayedVal);
 
   return (str);
@@ -370,8 +376,17 @@ void GotoResetScreen(void)
 
 void GotoMinMax(void)
 {
-  MenuChanged = true;
+  
+  int idx;
   EcranEnCours.pt_tab_menu = (char *)&tab_MenuMinMax[0][0];
+  MenuChanged = true;
+  strcpy(tab_MenuTemp[0], tab_MenuMinMax[0]);
+  for (idx = 1; idx < ct_MenuMinMaxNbItems - 1; idx ++)
+  {
+    AddValToLine(idx);
+  }
+  strcpy(tab_MenuTemp[ct_MenuMinMaxNbItems - 1], tab_MenuMinMax[ct_MenuMinMaxNbItems - 1]);
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
   EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuMinMaxEnable[0];
   EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuMinMaxFonct;
   EcranEnCours.NbItems = ct_MenuMinMaxNbItems;

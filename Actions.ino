@@ -246,25 +246,25 @@ void SetMode(int Direction)
 void SaveSeuils2File(void)
 {
   WriteSeuilsToFile();
-  GotoMainMenu();
+  GotoDeclenche();
 }
 
 void RecallSeuils(void)
 {
   ReadSeuilsFromFile();
-  GotoMainMenu();
+  GotoDeclenche();
 }
 
 void SaveHyster2File(void)
 {
   WriteHysterToFile();
-  GotoMainMenu();
+  GotoDeclenche();
 }
 
 void RecallHyster(void)
 {
   ReadHysterFromFile();
-  GotoMainMenu();
+  GotoDeclenche();
 }
 /*---------------------------------------------------------------------------------------------*/
 /*                              Sauvegarde de la date ou de l'heure                            */

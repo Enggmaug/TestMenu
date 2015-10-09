@@ -116,6 +116,7 @@ char tab_MenuTemp[ct_NbItemMax][NB_CAR_LIGNE];
 //Seuils et Température par défaut
 float Seuils[3][NB_TEMP] = {DEFAULT_SEUILS, DEFAULT_SEUILS, DEFAULT_SEUILS};
 float Hysteresis[3][NB_TEMP] = {DEFAULT_HYSTERESIS, DEFAULT_HYSTERESIS, DEFAULT_HYSTERESIS};
+float MinMax[2][NB_TEMP] = {DEFAULT_SEUILS, DEFAULT_SEUILS};
 float Temperatures[NB_TEMP];
 bool TemperatureDepasseSeuil[NB_TEMP];
 
