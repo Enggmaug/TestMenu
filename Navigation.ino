@@ -136,6 +136,7 @@ void GotoMainMenu(void)
 void GotoSeuils(void)
 {
   int idx;
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuSeuils[0][0];
   MenuChanged = true;
   strcpy(tab_MenuTemp[0], tab_MenuSeuils[0]);
   for (idx = 1; idx < ct_MenuSeuilsNbItems - 1; idx ++)
@@ -191,6 +192,11 @@ void SaveYesNo(void)
   {
     EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SaveHoursFonct;
     EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_SauvegarderRTCEnable[0];
+  }
+  else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_Hysteresis[0][0]) == 0)
+  {
+    EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SaveHysteresisFonct;
+    EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_SauvegarderSDEnable[0];
   }
   EcranEnCours.pt_tab_menu = (char *)&tab_Sauvegarder[0][0];
   EcranEnCours.NbItems = ct_SauvegarderNbItems;
@@ -293,12 +299,21 @@ char* AddValToLine(int idx)
   char DisplayedVal[8];
   float* Val;
   if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuSeuils[0][0]) == 0)
+  {
     Val = &Seuils[Reglage][idx - 1];
+    str = strcpy(tab_MenuTemp[idx], &tab_MenuSeuils[idx][0]);
+  }
   else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_Hysteresis[0][0]) == 0)
+  {
     Val = &Hysteresis[Reglage][idx - 1];
+    str = strcpy(tab_MenuTemp[idx], &tab_Hysteresis[idx][0]);
+  }
   else
+  {
     Val = &Seuils[Reglage][idx - 1];
-  str = strcpy(tab_MenuTemp[idx], &EcranEnCours.pt_tab_menu[idx]);
+    str = strcpy(tab_MenuTemp[idx], "ERROR");
+  }
+  
   str = strncat(str + strlen(str), BlankLine, NB_CAR_LIGNE - NB_CAR_T - strlen(str));
   sprintf(DisplayedVal, " : %2.1f", *Val);
   str = strcat(str, DisplayedVal);
@@ -394,8 +409,17 @@ void GotoDeclenche(void)
 
 void GotoHysteresis(void)
 {
+  int idx;
+
   MenuChanged = true;
   EcranEnCours.pt_tab_menu = (char *)&tab_Hysteresis[0][0];
+  strcpy(tab_MenuTemp[0], tab_Hysteresis[0]);
+  for (idx = 1; idx < ct_HysteresisNbItems - 1; idx ++)
+  {
+    AddValToLine(idx);
+  }
+  strcpy(tab_MenuTemp[ct_HysteresisNbItems - 1], tab_Hysteresis[ct_HysteresisNbItems - 1]);
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
   EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_HysteresisEnable[0];
   EcranEnCours.pt_MenuFonct = (FctPtr *)tab_HysteresisFonct;
   EcranEnCours.NbItems = ct_HysteresisNbItems;

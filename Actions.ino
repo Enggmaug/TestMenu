@@ -149,6 +149,44 @@ void WriteSeuilsToFile(void) // Ecriture des Seuils dans le fichier Seuils.par
   dataFile.close();
 }
 
+void ReadHysterFromFile(void)
+{
+  unsigned int idx;
+  char *pt_read;
+
+  if (SD.exists("Hyst.par")) // Si le fichier Seuils.par existe, on le lit
+  {
+    File dataFile = SD.open("Hyst.par", FILE_READ);
+    if (dataFile)
+    {
+      pt_read = (char*) &Hysteresis[0];
+      for (idx = 0; idx < sizeof(Hysteresis); idx ++)
+      {
+        pt_read[idx] = dataFile.read();
+      }
+    }
+    dataFile.close();
+  }
+  else                        // Si le fichier Seuils.par n'existe pas, on le créé à partir des seuils courants
+  {
+    WriteHysterToFile();
+  }
+}
+
+void WriteHysterToFile(void) // Ecriture des Seuils dans le fichier Seuils.par
+{
+  unsigned int idx;
+  char *pt_read;
+  File dataFile = SD.open("Hyst.par", FILE_WRITE);
+  dataFile.seek(0);
+  pt_read = (char*) &Hysteresis[0][0];
+  for (idx = 0; idx < sizeof(Hysteresis); idx ++)
+  {
+    dataFile.write(pt_read[idx]);
+  }
+  dataFile.close();
+}
+
 /*---------------------------------------------------------------------------------------------*/
 /*                                AFFICHAGE DES HISTORIQUES                                    */
 /*---------------------------------------------------------------------------------------------*/
@@ -217,6 +255,17 @@ void RecallSeuils(void)
   GotoMainMenu();
 }
 
+void SaveHyster2File(void)
+{
+  WriteHysterToFile();
+  GotoMainMenu();
+}
+
+void RecallHyster(void)
+{
+  ReadHysterFromFile();
+  GotoMainMenu();
+}
 /*---------------------------------------------------------------------------------------------*/
 /*                              Sauvegarde de la date ou de l'heure                            */
 /*---------------------------------------------------------------------------------------------*/
