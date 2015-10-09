@@ -78,7 +78,7 @@ void SetSeuilPlusMoins(int Direction)
   Seuils[Reglage][EcranEnCours.SelectedItem - 1] += (Direction * 0.5);
   MenuChanged = false;
   MenuAction = NONE;
-  AddSeuilToLine(EcranEnCours.SelectedItem);
+  AddValToLine(EcranEnCours.SelectedItem);
   tft.setTextColor(ROUGE);
   tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
   tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
@@ -98,10 +98,10 @@ void SetHysteresisPlusMoins(int Direction)
   if (Direction > 0) Direction = 1;
   else if (Direction < 0) Direction = -1;
 
-  Seuils[Reglage][EcranEnCours.SelectedItem - 1] += (Direction * 0.5);
+  Hysteresis[Reglage][EcranEnCours.SelectedItem - 1] += (Direction * 0.1);
   MenuChanged = false;
   MenuAction = NONE;
-  AddSeuilToLine(EcranEnCours.SelectedItem);
+  AddValToLine(EcranEnCours.SelectedItem);
   tft.setTextColor(ROUGE);
   tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
   tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);

@@ -8,6 +8,7 @@
 #define NB_CAR_LIGNE   24
 #define NB_CAR_T       9
 #define DEFAULT_SEUILS {15.0, 24.0, 22.0, 40.0, 16.0}
+#define DEFAULT_HYSTERESIS {0.0, 0.0, 0.0, 0.0, 0.0}
 #define NB_TEMP 5
 
 //DEFINE des Numeros de Pins à remplacer par les bonnes valeurs
@@ -107,8 +108,9 @@ char tab_MenuTemp[ct_NbItemMax][NB_CAR_LIGNE];
 
 //Seuils et Température par défaut
 float Seuils[3][NB_TEMP] = {DEFAULT_SEUILS, DEFAULT_SEUILS, DEFAULT_SEUILS};
-float Temperatures[NB_TEMP] = {20.3, 20.3, 21.6, 21.8, 12.7};
-bool TemperatureDepasseSeuil[NB_TEMP] = {false, false, false, false, false};
+float Hysteresis[3][NB_TEMP] = {DEFAULT_HYSTERESIS, DEFAULT_HYSTERESIS, DEFAULT_HYSTERESIS};
+float Temperatures[NB_TEMP];
+bool TemperatureDepasseSeuil[NB_TEMP];
 
 
 // Si carte SD présente

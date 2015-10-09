@@ -114,7 +114,7 @@ void GotoSeuils(void)
   strcpy(tab_MenuTemp[0], tab_MenuSeuils[0]);
   for (idx = 1; idx < ct_MenuSeuilsNbItems - 1; idx ++)
   {
-    AddSeuilToLine(idx);
+    AddValToLine(idx);
   }
   strcpy(tab_MenuTemp[ct_MenuSeuilsNbItems - 1], tab_MenuSeuils[ct_MenuSeuilsNbItems - 1]);
   EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
@@ -236,16 +236,21 @@ void SetMinutes(void)
 /*---------------------------------------------------------------------------------------------*/
 /*                  Modification des Items du menu seuil, pour ajouter la valeur               */
 /*---------------------------------------------------------------------------------------------*/
-char* AddSeuilToLine(int idx)
+char* AddValToLine(int idx)
 {
   char* str;
-  char DisplayedTemp[8];
-  float* Temp;
-  Temp = &Seuils[Reglage][idx - 1];
-  str = strcpy(tab_MenuTemp[idx], tab_MenuSeuils[idx]);
+  char DisplayedVal[8];
+  float* Val;
+  if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuSeuils[0][0]) == 0)
+    Val = &Seuils[Reglage][idx - 1];
+  else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_Hysteresis[0][0]) == 0)
+    Val = &Hysteresis[Reglage][idx - 1];
+  else
+    Val = &Seuils[Reglage][idx - 1];
+  str = strcpy(tab_MenuTemp[idx], &EcranEnCours.pt_tab_menu[idx]);
   str = strncat(str + strlen(str), BlankLine, NB_CAR_LIGNE - NB_CAR_T - strlen(str));
-  sprintf(DisplayedTemp, " : %2.1f", *Temp);
-  str = strcat(str, DisplayedTemp);
+  sprintf(DisplayedVal, " : %2.1f", *Val);
+  str = strcat(str, DisplayedVal);
 
   return (str);
 }
