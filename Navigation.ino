@@ -283,4 +283,15 @@ char* AddModeToLine(int idx)
   return (str);
 }
 
-
+void GotoResetScreen(void)
+{
+  
+}
+void GotoMinMax(void)
+{
+  
+}
+void GotoCourbes(void)
+{
+  
+}

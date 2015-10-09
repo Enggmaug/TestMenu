@@ -288,18 +288,8 @@ void ManageRotation(void)
 void DisableSD(void)
 {
   int idx;
-  bool   tab_MenuMainEnableTemp[ct_MenuMainNbItems]               =  {true, true , true , false, true , true, true};
-  bool   tab_MenuHistEnableTemp[ct_MenuHistNbItems]               =  {true, false, false, false, false, true      };
   bool   tab_SauvegarderEnableTemp[ct_MenuHistNbItems]            =  {true, false, true , true                    };
 
-  for (idx = 0; idx < ct_MenuMainNbItems; idx ++)
-  {
-    tab_MenuMainEnable[idx] = tab_MenuMainEnableTemp[idx];
-  }
-  for (idx = 0; idx < ct_MenuHistNbItems; idx ++)
-  {
-    tab_MenuHistEnable[idx] = tab_MenuHistEnableTemp[idx];
-  }
   for (idx = 0; idx < ct_SauvegarderNbItems; idx ++)
   {
     tab_SauvegarderEnable[idx] = tab_SauvegarderEnableTemp[idx];
@@ -360,5 +350,10 @@ float ReadTemperature(int AnalogPinNumber) // A ECRIRE
   return(result);
   else 
   return (0.0);
+}
+
+void Reset(void)
+{
+  
 }
 
