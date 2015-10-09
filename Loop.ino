@@ -14,5 +14,6 @@ void loop(void)
   {
     counter = 0;
     GetTemperatures();
+    CheckTemperatures();
   }
 }

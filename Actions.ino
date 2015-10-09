@@ -389,3 +389,26 @@ void Reset(void)
 
 }
 
+
+void CheckTemperatures (void)
+{
+  int idx;
+  for (idx = 0; idx < NB_TEMP; idx++)
+  {
+    if (TemperatureDepasseSeuil[idx] == true)
+    {
+      if (Temperatures[idx] < ( Seuils[Reglage][idx] - Hysteresis[Reglage][idx]))
+      {
+        TemperatureDepasseSeuil[idx] = false;
+      }
+    }
+    else
+    {
+      if (Temperatures[idx] > ( Seuils[Reglage][idx] + Hysteresis[Reglage][idx]))
+      {
+        TemperatureDepasseSeuil[idx] = true;
+      }
+    }
+  }
+}
+
