@@ -34,7 +34,9 @@ typedef void(*FctPtr)(void);
 const int ct_NbItemMax = 7;
 const int ct_MenuMainNbItems = 7;
 const int ct_MenuModeNbItems = 3;
+const int ct_MenuDeclNbItems = 4;
 const int ct_MenuSeuilsNbItems = 7;
+const int ct_HysteresisNbItems = 7;
 const int ct_MenuDHNbItems = 4;
 const int ct_MenuDatebItems = 5;
 const int ct_MenuHeureNbItems = 4;
@@ -47,8 +49,8 @@ const int ct_ResetNbItems = 3;
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
 //                   ITEMS sur Ecran :                               |TITRE,            |Item 1          |Item 2           |Item 3          |Item 4            |Item 6              |Item 7           |
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
-const char   tab_MenuMain[ct_MenuMainNbItems][NB_CAR_LIGNE]       =  {"MENU"            , "MODE"         , "SEUILS"        , "HISTORIQUE"   , "MAINTENANCE"    , "REGLER DATE/HEURE", "RETOUR"        };
-const FctPtr tab_MenuMainFonct[ct_MenuMainNbItems]                =  {None              , SetMode        , GotoSeuils      , GotoHisto      , ToggleMaintenance, GotoSetDateHeure   , BacktoFunctional};
+const char   tab_MenuMain[ct_MenuMainNbItems][NB_CAR_LIGNE]       =  {"MENU"            , "MODE"         , "DECLENCHEMENT" , "HISTORIQUE"   , "MAINTENANCE"    , "REGLER DATE/HEURE", "RETOUR"        };
+const FctPtr tab_MenuMainFonct[ct_MenuMainNbItems]                =  {None              , SetMode        , GotoDeclenche   , GotoHisto      , ToggleMaintenance, GotoSetDateHeure   , BacktoFunctional};
 /*-*/ bool   tab_MenuMainEnable[ct_MenuMainNbItems]               =  {true              , true           , true            , true           , true             , true               , true            };
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
 const char   tab_MenuMode[ct_MenuModeNbItems][NB_CAR_LIGNE]       =  {"ETE"             , "MI-SAISON"    , "HIVERS"        }; //            |                  |                    |                 |
@@ -57,9 +59,17 @@ const char   tab_MenuHist[ct_MenuHistNbItems][NB_CAR_LIGNE]       =  {"HISTORIQU
 const FctPtr tab_MenuHistFonct[ct_MenuHistNbItems]                =  {None              , GotoCourbes    , GotoMinMax      , GotoResetScreen, GotoResetScreen  , GotoResetScreen    , GotoMainMenu    };
 /*-*/ bool   tab_MenuHistEnable[ct_MenuHistNbItems]               =  {true              , true           , true            , true           , true             , true               , true            };
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
+const char   tab_MenuDeclenche[ct_MenuDeclNbItems][NB_CAR_LIGNE]  =  {"DECLENCHEMENTS"  , "SEUILS"       , "SENSIBILITE"   , "RETOUR"       }; //              |                    |                 |
+const FctPtr tab_MenuDeclencheFonct[ct_MenuDeclNbItems]           =  {None              , GotoSeuils     , GotoHysteresis  , GotoMainMenu   }; //              |                    |                 |
+/*-*/ bool   tab_MenuDeclencheEnable[ct_MenuDeclNbItems]          =  {true              , true           , true            , true           }; //              |                    |                 |
+//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
 const char   tab_MenuSeuils[ct_MenuSeuilsNbItems][NB_CAR_LIGNE]   =  {"REGLAGE SEUILS"  , "T. EXT. BASSE", "T. EXT. HAUTE" , "T. INTERIEURE", "T. CHEMINEE"    , "T. PUIT C."       , "RETOUR"        };
-const FctPtr tab_MenuSeuilsFonct[ct_MenuSeuilsNbItems]            =  {None              , SetSeuilOnOff  , SetSeuilOnOff   , SetSeuilOnOff  , SetSeuilOnOff    , SetSeuilOnOff      , SaveYesNo       };
+const FctPtr tab_MenuSeuilsFonct[ct_MenuSeuilsNbItems]            =  {None              , SetOnOff       , SetOnOff        , SetOnOff       , SetOnOff         , SetOnOff           , SaveYesNo       };
 /*-*/ bool   tab_MenuSeuilsEnable[ct_MenuSeuilsNbItems]           =  {true              , true           , true            , true           , true             , true               , true            };
+//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
+const char   tab_Hysteresis[ct_HysteresisNbItems][NB_CAR_LIGNE]   =  {"SENSIBILITE"     , "T. EXT. BASSE", "T. EXT. HAUTE" , "T. INTERIEURE", "T. CHEMINEE"    , "T. PUIT C."       , "RETOUR"        };
+const FctPtr tab_HysteresisFonct[ct_HysteresisNbItems]            =  {None              , SetOnOff       , SetOnOff        , SetOnOff       , SetOnOff         , SetOnOff           , SaveYesNo       };
+/*-*/ bool   tab_HysteresisEnable[ct_HysteresisNbItems]           =  {true              , true           , true            , true           , true             , true               , true            };
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
 const char   tab_MenuCourbes[ct_MenuHistNbItems][NB_CAR_LIGNE]    =  {"COURBES"         , "EXTERIEUR"    ,                   "INTERIEUR"    , "PUIT CAN."      , "CHEMINEE"         , "RETOUR"        };
 const FctPtr tab_MenuCourbesFonct[ct_MenuCourbesNbItems]          =  {None              , ShowHistoExt   ,                   ShowHistoInt   , ShowHistoPuit    , ShowHistoChem      , GotoHisto       };
@@ -98,7 +108,7 @@ char tab_MenuTemp[ct_NbItemMax][NB_CAR_LIGNE];
 //Seuils et Température par défaut
 float Seuils[3][NB_TEMP] = {DEFAULT_SEUILS, DEFAULT_SEUILS, DEFAULT_SEUILS};
 float Temperatures[NB_TEMP] = {20.3, 20.3, 21.6, 21.8, 12.7};
-bool TemperatureDepasseSeuil[NB_TEMP]= {false, false, false, false, false};
+bool TemperatureDepasseSeuil[NB_TEMP] = {false, false, false, false, false};
 
 
 // Si carte SD présente
@@ -152,5 +162,5 @@ typedef struct DateAndTime
   int minutes;
 } DateEtHeure;
 
-DateEtHeure DateHeureCourante; 
+DateEtHeure DateHeureCourante;
 

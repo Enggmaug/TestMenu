@@ -213,7 +213,7 @@ void GotoSetHeure(void)
 }
 void SetYear(void)
 {
-// Faire comme dans ChangingMode
+  // Faire comme dans ChangingMode
 }
 void SetMonth(void)
 {
@@ -283,15 +283,68 @@ char* AddModeToLine(int idx)
   return (str);
 }
 
+
 void GotoResetScreen(void)
 {
-  
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_Reset[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_ResetEnable[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_ResetFonct;
+  EcranEnCours.NbItems = ct_ResetNbItems;
+  EcranEnCours.SelectedItem = 1;
+  EcranEnCours.Droite = Suivant;
+  EcranEnCours.Gauche = Precedent;
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
 }
+
 void GotoMinMax(void)
 {
-  
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuMinMax[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuMinMaxEnable[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuMinMaxFonct;
+  EcranEnCours.NbItems = ct_MenuMinMaxNbItems;
+  EcranEnCours.SelectedItem = 5;
+  EcranEnCours.Droite = None;
+  EcranEnCours.Gauche = None;
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
 }
+
 void GotoCourbes(void)
 {
-  
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuCourbes[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuCourbesEnable[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuCourbesFonct;
+  EcranEnCours.NbItems = ct_MenuCourbesNbItems;
+  EcranEnCours.SelectedItem = 1;
+  EcranEnCours.Droite = Suivant;
+  EcranEnCours.Gauche = Precedent;
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+}
+
+void GotoDeclenche(void)
+{
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuDeclenche[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuDeclencheEnable[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuDeclencheFonct;
+  EcranEnCours.NbItems = ct_MenuDeclNbItems;
+  EcranEnCours.SelectedItem = 1;
+  EcranEnCours.Droite = Suivant;
+  EcranEnCours.Gauche = Precedent;
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+}
+
+void GotoHysteresis(void)
+{
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_Hysteresis[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_HysteresisEnable[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_HysteresisFonct;
+  EcranEnCours.NbItems = ct_HysteresisNbItems;
+  EcranEnCours.SelectedItem = 1;
+  EcranEnCours.Droite = Suivant;
+  EcranEnCours.Gauche = Precedent;
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
 }

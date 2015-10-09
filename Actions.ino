@@ -28,17 +28,26 @@ void SetHivers(void)
 /*---------------------------------------------------------------------------------------------*/
 /*                          GESTION DE MODIFICATION DES SEUILS                                 */
 /*---------------------------------------------------------------------------------------------*/
-void SetSeuilOnOff(void)
+void SetOnOff(void)
 {
-  static bool ChangingSeuil = false;
+  static bool Changing = false;
 
-  ChangingSeuil = not(ChangingSeuil);
+  Changing = not(Changing);
 
-  if (ChangingSeuil == true)
+  if (Changing == true)
   {
-    SetSeuilPlusMoins (0);
-    EcranEnCours.Droite = SetSeuilPlus;
-    EcranEnCours.Gauche = SetSeuilMoins;
+    if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuSeuils[0][0]) == 0)
+    {
+      SetSeuilPlusMoins (0);
+      EcranEnCours.Droite = SetSeuilPlus;
+      EcranEnCours.Gauche = SetSeuilMoins;
+    }
+    if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_Hysteresis[0][0]) == 0)
+    {
+      SetHysteresisPlusMoins (0);
+      EcranEnCours.Droite = SetHysteresisPlus;
+      EcranEnCours.Gauche = SetHysteresisMoins;
+    }
   }
   else
   {
@@ -62,6 +71,29 @@ void SetSeuilMoins(void)
   SetSeuilPlusMoins(-1);
 }
 void SetSeuilPlusMoins(int Direction)
+{
+  if (Direction > 0) Direction = 1;
+  else if (Direction < 0) Direction = -1;
+
+  Seuils[Reglage][EcranEnCours.SelectedItem - 1] += (Direction * 0.5);
+  MenuChanged = false;
+  MenuAction = NONE;
+  AddSeuilToLine(EcranEnCours.SelectedItem);
+  tft.setTextColor(ROUGE);
+  tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
+  tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
+  tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
+}
+
+void SetHysteresisPlus(void)
+{
+  SetHysteresisPlusMoins(1);
+}
+void SetHysteresisMoins(void)
+{
+  SetHysteresisPlusMoins(-1);
+}
+void SetHysteresisPlusMoins(int Direction)
 {
   if (Direction > 0) Direction = 1;
   else if (Direction < 0) Direction = -1;
@@ -256,7 +288,7 @@ void Selection(void)
 
 void OneMinutePassed(void)
 {
-    // acces à la librarie du MAX3234
+  // acces à la librarie du MAX3234
 }
 /*---------------------------------------------------------------------------------------------*/
 /*                         Actionnement des commandes suite aux interruptions                  */
@@ -347,13 +379,13 @@ float ReadTemperature(int AnalogPinNumber) // A ECRIRE
   float result = 15.5;
 
   if (AnalogPinNumber > 0)
-  return(result);
-  else 
-  return (0.0);
+    return (result);
+  else
+    return (0.0);
 }
 
 void Reset(void)
 {
-  
+
 }
 

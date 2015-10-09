@@ -10,7 +10,7 @@ void loop(void)
   MenuChanged = false;
 
   //Lecture des températures
-  if(counter++ >= 10000000) // => A changer par flag sur OneMinutePassed (interruption RTClock)
+  if (counter++ >= 10000000) // => A changer par flag sur OneMinutePassed (interruption RTClock)
   {
     counter = 0;
     GetTemperatures();
