@@ -167,3 +167,4 @@ struct ts DateHeureCourante;
 const struct ts BlankDateHeure = {0,0,0,0,0,0,0,0,0,0};
 
 bool RTClockAlarm = false;
+bool InhibRTCAlarms = false;

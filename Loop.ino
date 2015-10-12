@@ -10,13 +10,14 @@ void loop(void)
   MenuChanged = false;
 
   //Lecture des températures
-  if (RTClockAlarm == true)
+  if ((RTClockAlarm == true)and(InhibRTCAlarms == false))
   {
     RTClockAlarm = false;    
     DS3234_clear_a1f(RTCLK_CS);
     counter++;
     GetTemperatures();
     CheckTemperatures();
+    ReadTime();
     
     if ((counter % 10)==0)
     {

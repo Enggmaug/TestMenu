@@ -238,6 +238,7 @@ void GotoSetDateHeure(void)
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+  InhibRTCAlarms=false;
 }
 void GotoSetDate(void)
 {
@@ -263,6 +264,7 @@ void GotoSetDate(void)
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+  InhibRTCAlarms=true;
 }
 void GotoSetHeure(void)
 {
@@ -288,6 +290,7 @@ void GotoSetHeure(void)
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+  InhibRTCAlarms=true;
 }
 
 /*---------------------------------------------------------------------------------------------*/
