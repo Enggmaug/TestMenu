@@ -447,3 +447,17 @@ void GotoHysteresis(void)
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
 }
 
+
+void GotoDisplayTemperature(void)
+{
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_DisplayT[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_DisplayTEnable[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_DisplayTFonct;
+  EcranEnCours.NbItems = ct_DisplayTNbItems;
+  EcranEnCours.SelectedItem = 0;
+  EcranEnCours.Droite = None;
+  EcranEnCours.Gauche = None;
+  EcranEnCours.Select = GotoMainMenu;
+}
+
