@@ -1,89 +1,10 @@
 /*---------------------------------------------------------------------------------------------*/
-/*                           Navigation entre items d'un même menu                             */
 /*---------------------------------------------------------------------------------------------*/
-void Suivant(void)
-{
-  ChangeItem(1);
-}
-
-void Precedent(void)
-{
-  ChangeItem(-1);
-}
-
-void ChangeItem(int Direction)
-{
-  if (Direction > 0) Direction = 1;
-  else Direction = -1;
-
-  // Redessin de l'item précedemnet sélectionné, avec police blanche sur fond noir
-  tft.setTextColor(BLANC);
-  tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
-  tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
-  tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
-
-  do // Tant qu'on tombe sur un item desactivé, on passe au prochain
-  {
-    EcranEnCours.SelectedItem += Direction;
-    if (EcranEnCours.SelectedItem >= EcranEnCours.NbItems)
-    {
-      EcranEnCours.SelectedItem = 1;
-    }
-    else if (EcranEnCours.SelectedItem < 1)
-    {
-      EcranEnCours.SelectedItem = EcranEnCours.NbItems - 1;
-    }
-  } while (EcranEnCours.pt_tab_EnabledItems[EcranEnCours.SelectedItem] == false);
-
-  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem]; //Reaffectation du pointeur de fonction correspondant à l'item
-
-  // Redessin de l'item  sélectionné, avec police noire sur fond blanc
-  tft.setTextColor(NOIR);
-  tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), BLANC);
-  tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
-  tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
-}
-
+/*                                NAVIGATION ENTRE MENUS                                       */
 /*---------------------------------------------------------------------------------------------*/
-/*                                         No Action                                           */
 /*---------------------------------------------------------------------------------------------*/
-void None(void)
-{
-}
 
-/*---------------------------------------------------------------------------------------------*/
-/*                         Changement de Mode ETE - MI_SAISON - HIVERS                         */
-/*---------------------------------------------------------------------------------------------*/
-void SetMode(void)
-{
-  static bool ChangingMode = false;
-
-  ChangingMode = not(ChangingMode);
-
-  if (ChangingMode == true)
-  {
-    tft.setTextColor(ROUGE);
-    tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
-    EcranEnCours.Droite = SetModePlus;
-    EcranEnCours.Gauche = SetModeMoins;
-    tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
-    tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
-    MenuChanged = false;
-    MenuAction = NONE;
-  }
-  else
-  {
-    tft.setTextColor(NOIR);
-    tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), BLANC);
-    EcranEnCours.Droite = Suivant;
-    EcranEnCours.Gauche = Precedent;
-    tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
-    tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
-    MenuChanged = false;
-    MenuAction = NONE;
-  }
-}
-/*---------------------------------------------------------------------------------------------*/
+/*-NIVEAU 0------------------------------------------------------------------------------------*/
 /*                             Navigation vers écran démarrage                                 */
 /*---------------------------------------------------------------------------------------------*/
 void GotoStartMenu(void)
@@ -110,8 +31,42 @@ void GotoStartMenu(void)
   EcranEnCours.Select = None;
   EcranEnCours.TypeEcran = MENU;
 }
+/*-NIVEAU 1------------------------------------------------------------------------------------*/
+/*                     Navigation vers l'ecran d'affichage des Températures                    */
 /*---------------------------------------------------------------------------------------------*/
-/*                             Navigation vers écran menu principal                                 */
+void GotoDisplayTemp(void)
+{
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_DisplayT[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_DisplayTEnable[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_DisplayTFonct;
+  EcranEnCours.NbItems = ct_DisplayTNbItems;
+  EcranEnCours.SelectedItem = 0;
+  EcranEnCours.Droite = GotoDisplayOutputs;
+  EcranEnCours.Gauche = GotoDisplayOutputs;
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[0];
+  EcranEnCours.TypeEcran = TEMPERATURES;
+}
+
+/*-NIVEAU 1------------------------------------------------------------------------------------*/
+/*                     Navigation vers l'ecran d'affichage des sorties                         */
+/*---------------------------------------------------------------------------------------------*/
+void GotoDisplayOutputs(void)
+{
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_DispOutputs[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_DispOutputsEnable[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_DispOutputsFonct;
+  EcranEnCours.NbItems = ct_DispOutputsNbItems;
+  EcranEnCours.SelectedItem = 0;
+  EcranEnCours.Droite = GotoDisplayTemp;
+  EcranEnCours.Gauche = GotoDisplayTemp;
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[0];
+  EcranEnCours.TypeEcran = MENU;
+}
+
+/*-NIVEAU 1------------------------------------------------------------------------------------*/
+/*                             Navigation vers écran menu principal                            */
 /*---------------------------------------------------------------------------------------------*/
 void GotoMainMenu(void)
 {
@@ -132,7 +87,50 @@ void GotoMainMenu(void)
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
   EcranEnCours.TypeEcran = MENU;
 }
+
+/*-NIVEAU 2------------------------------------------------------------------------------------*/
+/*     Navigation vers l'ecran de réglage des déclenchements (Seuils et Hysteresis)            */
 /*---------------------------------------------------------------------------------------------*/
+void GotoDeclenche(void)
+{
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuDeclenche[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuDeclencheEnable[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuDeclencheFonct;
+  EcranEnCours.NbItems = ct_MenuDeclNbItems;
+  EcranEnCours.SelectedItem = 1;
+  EcranEnCours.Droite = Suivant;
+  EcranEnCours.Gauche = Precedent;
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+  EcranEnCours.TypeEcran = MENU;
+}
+/*-NIVEAU 3------------------------------------------------------------------------------------*/
+/*                     Navigation vers l'ecran de réglage des Hystéresis                       */
+/*---------------------------------------------------------------------------------------------*/
+void GotoHysteresis(void)
+{
+  int idx;
+
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_Hysteresis[0][0];
+  strcpy(tab_MenuTemp[0], tab_Hysteresis[0]);
+  for (idx = 1; idx < ct_HysteresisNbItems - 1; idx ++)
+  {
+    AddValToLine(idx);
+  }
+  strcpy(tab_MenuTemp[ct_HysteresisNbItems - 1], tab_Hysteresis[ct_HysteresisNbItems - 1]);
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_HysteresisEnable[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_HysteresisFonct;
+  EcranEnCours.NbItems = ct_HysteresisNbItems;
+  EcranEnCours.SelectedItem = 1;
+  EcranEnCours.Droite = Suivant;
+  EcranEnCours.Gauche = Precedent;
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+  EcranEnCours.TypeEcran = MENU;
+}
+
+/*-NIVEAU 3------------------------------------------------------------------------------------*/
 /*                             Navigation vers les seuils                                      */
 /*---------------------------------------------------------------------------------------------*/
 void GotoSeuils(void)
@@ -157,7 +155,7 @@ void GotoSeuils(void)
   EcranEnCours.TypeEcran = MENU;
 }
 
-/*---------------------------------------------------------------------------------------------*/
+/*-NIVEAU 2------------------------------------------------------------------------------------*/
 /*                              Navigation vers l'ecran d'historiques                          */
 /*---------------------------------------------------------------------------------------------*/
 void GotoHisto(void)
@@ -174,36 +172,16 @@ void GotoHisto(void)
   EcranEnCours.TypeEcran = MENU;
 }
 
+/*-NIVEAU 3------------------------------------------------------------------------------------*/
+/*                      Navigation vers l'ecran d'affichage de courbe                          */
 /*---------------------------------------------------------------------------------------------*/
-/*                    Navigation vers l'ecran de Sauvegarde des Seuils                         */
-/*---------------------------------------------------------------------------------------------*/
-
-void SaveYesNo(void)
+void GotoCourbes(void)
 {
   MenuChanged = true;
-
-  if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuSeuils[0][0]) == 0)
-  {
-    EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SaveSeuilsFonct;
-    EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_SauvegarderSDEnable[0];
-  }
-  else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuDate[0][0]) == 0)
-  {
-    EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SaveDateFonct;
-    EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_SauvegarderRTCEnable[0];
-  }
-  else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuHeure[0][0]) == 0)
-  {
-    EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SaveHoursFonct;
-    EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_SauvegarderRTCEnable[0];
-  }
-  else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_Hysteresis[0][0]) == 0)
-  {
-    EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SaveHysteresisFonct;
-    EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_SauvegarderSDEnable[0];
-  }
-  EcranEnCours.pt_tab_menu = (char *)&tab_Sauvegarder[0][0];
-  EcranEnCours.NbItems = ct_SauvegarderNbItems;
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuCourbes[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuCourbesEnable[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuCourbesFonct;
+  EcranEnCours.NbItems = ct_MenuCourbesNbItems;
   EcranEnCours.SelectedItem = 1;
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
@@ -211,8 +189,57 @@ void SaveYesNo(void)
   EcranEnCours.TypeEcran = MENU;
 }
 
+/*-NIVEAU 3------------------------------------------------------------------------------------*/
+/*                              Navigation vers l'ecran des MIN/MAX                            */
 /*---------------------------------------------------------------------------------------------*/
-/*                     Navigation vers l'ecran de réglage de la date                           */
+void GotoMinMax(void)
+{
+
+  int idx;
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuMinMax[0][0];
+  MenuChanged = true;
+  strcpy(tab_MenuTemp[0], tab_MenuMinMax[0]);
+  for (idx = 1; idx < ct_MenuMinMaxNbItems - 1; idx ++)
+  {
+    AddValToLine(idx);
+  }
+  strcpy(tab_MenuTemp[ct_MenuMinMaxNbItems - 1], tab_MenuMinMax[ct_MenuMinMaxNbItems - 1]);
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuMinMaxEnable[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuMinMaxFonct;
+  EcranEnCours.NbItems = ct_MenuMinMaxNbItems;
+  EcranEnCours.SelectedItem = 5;
+  EcranEnCours.Droite = None;
+  EcranEnCours.Gauche = None;
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+  EcranEnCours.TypeEcran = MENU;
+}
+/*-NIVEAU 3------------------------------------------------------------------------------------*/
+/*                     Navigation vers l'ecran de RESET des historiques                        */
+/*---------------------------------------------------------------------------------------------*/
+void GotoResetScreen(void)
+{
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_Reset[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_ResetEnable[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_ResetFonct;
+  EcranEnCours.NbItems = ct_ResetNbItems;
+  EcranEnCours.SelectedItem = 1;
+  EcranEnCours.Droite = Suivant;
+  EcranEnCours.Gauche = Precedent;
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+  EcranEnCours.TypeEcran = MENU;
+}
+/*-NIVEAU 2------------------------------------------------------------------------------------*/
+/*                         Navigation vers l'ecran de Maintenance                              */
+/*---------------------------------------------------------------------------------------------*/
+void GotoMaintenance(void)
+{
+  
+}
+
+/*-NIVEAU 2------------------------------------------------------------------------------------*/
+/*                     Navigation vers l'ecran de réglage Date/Heure                           */
 /*---------------------------------------------------------------------------------------------*/
 void GotoSetDateHeure(void)
 {
@@ -246,6 +273,10 @@ void GotoSetDateHeure(void)
   InhibRTCAlarms = false;
   EcranEnCours.TypeEcran = MENU;
 }
+
+/*-NIVEAU 3------------------------------------------------------------------------------------*/
+/*                     Navigation vers l'ecran de réglage de la date                           */
+/*---------------------------------------------------------------------------------------------*/
 void GotoSetDate(void)
 {
   int idx;
@@ -273,6 +304,10 @@ void GotoSetDate(void)
   InhibRTCAlarms = true;
   EcranEnCours.TypeEcran = MENU;
 }
+
+/*-NIVEAU 3------------------------------------------------------------------------------------*/
+/*                     Navigation vers l'ecran de réglage de l'heure                           */
+/*---------------------------------------------------------------------------------------------*/
 void GotoSetHeure(void)
 {
   int idx;
@@ -299,6 +334,130 @@ void GotoSetHeure(void)
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
   InhibRTCAlarms = true;
   EcranEnCours.TypeEcran = MENU;
+}
+
+/*-NIVEAU 4------------------------------------------------------------------------------------*/
+/*                    Navigation vers l'ecran de Sauvegarde Paramètres                         */
+/*---------------------------------------------------------------------------------------------*/
+
+void SaveYesNo(void)
+{
+  MenuChanged = true;
+
+  if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuSeuils[0][0]) == 0)
+  { // SAUVEGARDE DES SEUILS
+    EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SaveSeuilsFonct;
+    EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_SauvegarderSDEnable[0];
+  }
+  else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_Hysteresis[0][0]) == 0)
+  { // SAUVEGARDE DES HYSTERESIS
+    EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SaveHysteresisFonct;
+    EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_SauvegarderSDEnable[0];
+  }
+  else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuDate[0][0]) == 0)
+  { // SAUVEGARDE DE LA DATE
+    EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SaveDateFonct;
+    EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_SauvegarderRTCEnable[0];
+  }
+  else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuHeure[0][0]) == 0)
+  { // SAUVEGARDE DE L'HEURE
+    EcranEnCours.pt_MenuFonct = (FctPtr *)tab_SaveHoursFonct;
+    EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_SauvegarderRTCEnable[0];
+  }
+
+  EcranEnCours.pt_tab_menu = (char *)&tab_Sauvegarder[0][0];
+  EcranEnCours.NbItems = ct_SauvegarderNbItems;
+  EcranEnCours.SelectedItem = 1;
+  EcranEnCours.Droite = Suivant;
+  EcranEnCours.Gauche = Precedent;
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+  EcranEnCours.TypeEcran = MENU;
+}
+
+
+
+/*---------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------*/
+/*                                NAVIGATION SUR UN ECRAN                                      */
+/*---------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------*/
+void Suivant(void)
+{
+  ChangeItem(1);
+}
+
+void Precedent(void)
+{
+  ChangeItem(-1);
+}
+/*---------------------------------------------------------------------------------------------*/
+/*                             GENERIQUE : Changement d'item                                   */
+/*---------------------------------------------------------------------------------------------*/
+void ChangeItem(int Direction)
+{
+  if (Direction > 0) Direction = 1;
+  else Direction = -1;
+
+  // Redessin de l'item précedemnet sélectionné, avec police blanche sur fond noir
+  tft.setTextColor(BLANC);
+  tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
+  tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
+  tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
+
+  do // Tant qu'on tombe sur un item desactivé, on passe au prochain
+  {
+    EcranEnCours.SelectedItem += Direction;
+    if (EcranEnCours.SelectedItem >= EcranEnCours.NbItems)
+    {
+      EcranEnCours.SelectedItem = 1;
+    }
+    else if (EcranEnCours.SelectedItem < 1)
+    {
+      EcranEnCours.SelectedItem = EcranEnCours.NbItems - 1;
+    }
+  } while (EcranEnCours.pt_tab_EnabledItems[EcranEnCours.SelectedItem] == false);
+
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem]; //Reaffectation du pointeur de fonction correspondant à l'item
+
+  // Redessin de l'item  sélectionné, avec police noire sur fond blanc
+  tft.setTextColor(NOIR);
+  tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), BLANC);
+  tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
+  tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
+}
+
+
+/*---------------------------------------------------------------------------------------------*/
+/*                         Changement de Mode ETE - MI_SAISON - HIVERS                         */
+/*---------------------------------------------------------------------------------------------*/
+void SetMode(void)
+{
+  static bool ChangingMode = false;
+
+  ChangingMode = not(ChangingMode);
+
+  if (ChangingMode == true)
+  {
+    tft.setTextColor(ROUGE);
+    tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
+    EcranEnCours.Droite = SetModePlus;
+    EcranEnCours.Gauche = SetModeMoins;
+    tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
+    tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
+    MenuChanged = false;
+    MenuAction = NONE;
+  }
+  else
+  {
+    tft.setTextColor(NOIR);
+    tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), BLANC);
+    EcranEnCours.Droite = Suivant;
+    EcranEnCours.Gauche = Precedent;
+    tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
+    tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
+    MenuChanged = false;
+    MenuAction = NONE;
+  }
 }
 
 /*---------------------------------------------------------------------------------------------*/
@@ -372,118 +531,3 @@ char* AddModeToLine(int idx)
 }
 
 
-void GotoResetScreen(void)
-{
-  MenuChanged = true;
-  EcranEnCours.pt_tab_menu = (char *)&tab_Reset[0][0];
-  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_ResetEnable[0];
-  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_ResetFonct;
-  EcranEnCours.NbItems = ct_ResetNbItems;
-  EcranEnCours.SelectedItem = 1;
-  EcranEnCours.Droite = Suivant;
-  EcranEnCours.Gauche = Precedent;
-  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
-  EcranEnCours.TypeEcran = MENU;
-}
-
-void GotoMinMax(void)
-{
-
-  int idx;
-  EcranEnCours.pt_tab_menu = (char *)&tab_MenuMinMax[0][0];
-  MenuChanged = true;
-  strcpy(tab_MenuTemp[0], tab_MenuMinMax[0]);
-  for (idx = 1; idx < ct_MenuMinMaxNbItems - 1; idx ++)
-  {
-    AddValToLine(idx);
-  }
-  strcpy(tab_MenuTemp[ct_MenuMinMaxNbItems - 1], tab_MenuMinMax[ct_MenuMinMaxNbItems - 1]);
-  EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
-  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuMinMaxEnable[0];
-  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuMinMaxFonct;
-  EcranEnCours.NbItems = ct_MenuMinMaxNbItems;
-  EcranEnCours.SelectedItem = 5;
-  EcranEnCours.Droite = None;
-  EcranEnCours.Gauche = None;
-  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
-  EcranEnCours.TypeEcran = MENU;
-}
-
-void GotoCourbes(void)
-{
-  MenuChanged = true;
-  EcranEnCours.pt_tab_menu = (char *)&tab_MenuCourbes[0][0];
-  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuCourbesEnable[0];
-  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuCourbesFonct;
-  EcranEnCours.NbItems = ct_MenuCourbesNbItems;
-  EcranEnCours.SelectedItem = 1;
-  EcranEnCours.Droite = Suivant;
-  EcranEnCours.Gauche = Precedent;
-  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
-  EcranEnCours.TypeEcran = MENU;
-}
-
-void GotoDeclenche(void)
-{
-  MenuChanged = true;
-  EcranEnCours.pt_tab_menu = (char *)&tab_MenuDeclenche[0][0];
-  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_MenuDeclencheEnable[0];
-  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_MenuDeclencheFonct;
-  EcranEnCours.NbItems = ct_MenuDeclNbItems;
-  EcranEnCours.SelectedItem = 1;
-  EcranEnCours.Droite = Suivant;
-  EcranEnCours.Gauche = Precedent;
-  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
-  EcranEnCours.TypeEcran = MENU;
-}
-
-void GotoHysteresis(void)
-{
-  int idx;
-
-  MenuChanged = true;
-  EcranEnCours.pt_tab_menu = (char *)&tab_Hysteresis[0][0];
-  strcpy(tab_MenuTemp[0], tab_Hysteresis[0]);
-  for (idx = 1; idx < ct_HysteresisNbItems - 1; idx ++)
-  {
-    AddValToLine(idx);
-  }
-  strcpy(tab_MenuTemp[ct_HysteresisNbItems - 1], tab_Hysteresis[ct_HysteresisNbItems - 1]);
-  EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
-  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_HysteresisEnable[0];
-  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_HysteresisFonct;
-  EcranEnCours.NbItems = ct_HysteresisNbItems;
-  EcranEnCours.SelectedItem = 1;
-  EcranEnCours.Droite = Suivant;
-  EcranEnCours.Gauche = Precedent;
-  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
-  EcranEnCours.TypeEcran = MENU;
-}
-
-void GotoDisplayTemperature(void)
-{
-  MenuChanged = true;
-  EcranEnCours.pt_tab_menu = (char *)&tab_DisplayT[0][0];
-  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_DisplayTEnable[0];
-  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_DisplayTFonct;
-  EcranEnCours.NbItems = ct_DisplayTNbItems;
-  EcranEnCours.SelectedItem = 0;
-  EcranEnCours.Droite = GotoDisplayOutputs;
-  EcranEnCours.Gauche = GotoDisplayOutputs;
-  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[0];
-  EcranEnCours.TypeEcran = TEMPERATURES;
-}
-
-void GotoDisplayOutputs(void)
-{
-  MenuChanged = true;
-  EcranEnCours.pt_tab_menu = (char *)&tab_DispOutputs[0][0];
-  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_DispOutputsEnable[0];
-  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_DispOutputsFonct;
-  EcranEnCours.NbItems = ct_DispOutputsNbItems;
-  EcranEnCours.SelectedItem = 0;
-  EcranEnCours.Droite = GotoDisplayTemperature;
-  EcranEnCours.Gauche = GotoDisplayTemperature;
-  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[0];
-  EcranEnCours.TypeEcran = MENU;
-}

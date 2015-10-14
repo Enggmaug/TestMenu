@@ -43,7 +43,7 @@ void setup(void)
   GotoStartMenu();
   DisplayMenuScreen();
   delay(1000);     // à remplacer par fin de phase d'init
-  GotoDisplayTemperature();
+  GotoDisplayTemp();
   RotDetect = false;
 
   SetAlarmMinutes();

@@ -50,6 +50,9 @@ void DisplayMenuScreen(void)
   interrupts();
 }
 
+/*---------------------------------------------------------------------------------------------*/
+/*                                  AFFICHAGE DES TEMPERATURES                                 */
+/*---------------------------------------------------------------------------------------------*/
 void DisplayTempScreen(void)
 {
   int idx;
@@ -72,3 +75,51 @@ void DisplayTempScreen(void)
   interrupts();
 }
 
+/*---------------------------------------------------------------------------------------------*/
+/*             Interdiction des Items qui ne sont pas accessibles si pas de SD                 */
+/*---------------------------------------------------------------------------------------------*/
+void DisableSD(void)
+{
+  int idx;
+  bool   tab_SauvegarderEnableTemp[ct_MenuHistNbItems]            =  {true, false, true , true                    };
+  for (idx = 0; idx < ct_SauvegarderNbItems; idx ++)
+  {
+    tab_SauvegarderSDEnable[idx] = tab_SauvegarderEnableTemp[idx];
+  }
+  MenuChanged = true;
+}
+
+/*---------------------------------------------------------------------------------------------*/
+/*       Interdiction des Items qui ne sont pas accessibles si pas de Real Time Clock          */
+/*---------------------------------------------------------------------------------------------*/
+void DisableRTC(void)
+{
+  int idx;
+  bool   tab_MenuMainEnableTemp[ct_MenuMainNbItems]        =  {true, true , true , true , true , false, true};
+  bool   tab_MenuDateHeureEnableTemp[ct_MenuSeuilsNbItems] =  {true, false, false, true                     };
+  bool   tab_MenuDateEnableTemp[ct_MenuHistNbItems]        =  {true, false, false, false, true              };
+  bool   tab_MenuHeureEnableTemp[ct_MenuHistNbItems]       =  {true, false, false, true                     };
+  bool   tab_SauvegarderEnableTemp[ct_MenuHistNbItems]            =  {true, false, true , true                    };
+
+  for (idx = 0; idx < ct_MenuMainNbItems; idx ++)
+  {
+    tab_MenuMainEnable[idx] = tab_MenuMainEnableTemp[idx];
+  }
+  for (idx = 0; idx < ct_MenuDHNbItems; idx ++)
+  {
+    tab_MenuDateHeureEnable[idx] = tab_MenuDateHeureEnableTemp[idx];
+  }
+  for (idx = 0; idx < ct_MenuDatebItems; idx ++)
+  {
+    tab_MenuDateEnable[idx] = tab_MenuDateEnableTemp[idx];
+  }
+  for (idx = 0; idx < ct_MenuHeureNbItems; idx ++)
+  {
+    tab_MenuHeureEnable[idx] = tab_MenuHeureEnableTemp[idx];
+  }
+  for (idx = 0; idx < ct_SauvegarderNbItems; idx ++)
+  {
+    tab_SauvegarderRTCEnable[idx] = tab_SauvegarderEnableTemp[idx];
+  }
+  MenuChanged = true;
+}

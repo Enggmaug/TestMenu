@@ -5,7 +5,7 @@
 void loop(void)
 {
   static int counter = 0;
-  if (RotDetect) ManageRotation();            // Si Action sur le bouton
+  if (RotDetect) ManageRotation(); // Si Action sur le bouton
   if (MenuChanged) {
     switch (EcranEnCours.TypeEcran)
     {
