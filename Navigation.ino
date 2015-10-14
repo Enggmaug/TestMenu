@@ -108,6 +108,7 @@ void GotoStartMenu(void)
   EcranEnCours.Droite = None;
   EcranEnCours.Gauche = None;
   EcranEnCours.Select = None;
+  EcranEnCours.TypeEcran = MENU;
 }
 /*---------------------------------------------------------------------------------------------*/
 /*                             Navigation vers écran menu principal                                 */
@@ -129,6 +130,7 @@ void GotoMainMenu(void)
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+  EcranEnCours.TypeEcran = MENU;
 }
 /*---------------------------------------------------------------------------------------------*/
 /*                             Navigation vers les seuils                                      */
@@ -152,6 +154,7 @@ void GotoSeuils(void)
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+  EcranEnCours.TypeEcran = MENU;
 }
 
 /*---------------------------------------------------------------------------------------------*/
@@ -168,6 +171,7 @@ void GotoHisto(void)
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+  EcranEnCours.TypeEcran = MENU;
 }
 
 /*---------------------------------------------------------------------------------------------*/
@@ -204,6 +208,7 @@ void SaveYesNo(void)
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+  EcranEnCours.TypeEcran = MENU;
 }
 
 /*---------------------------------------------------------------------------------------------*/
@@ -238,7 +243,8 @@ void GotoSetDateHeure(void)
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
-  InhibRTCAlarms=false;
+  InhibRTCAlarms = false;
+  EcranEnCours.TypeEcran = MENU;
 }
 void GotoSetDate(void)
 {
@@ -264,7 +270,8 @@ void GotoSetDate(void)
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
-  InhibRTCAlarms=true;
+  InhibRTCAlarms = true;
+  EcranEnCours.TypeEcran = MENU;
 }
 void GotoSetHeure(void)
 {
@@ -290,7 +297,8 @@ void GotoSetHeure(void)
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
-  InhibRTCAlarms=true;
+  InhibRTCAlarms = true;
+  EcranEnCours.TypeEcran = MENU;
 }
 
 /*---------------------------------------------------------------------------------------------*/
@@ -299,8 +307,8 @@ void GotoSetHeure(void)
 char* AddValToLine(int idx)
 {
   char* str;
-  char DisplayedVal[16]="";
-  
+  char DisplayedVal[16] = "";
+
   if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuSeuils[0][0]) == 0)
   {
     str = strcpy(tab_MenuTemp[idx], &tab_MenuSeuils[idx][0]);
@@ -317,7 +325,7 @@ char* AddValToLine(int idx)
   {
     str = strcpy(tab_MenuTemp[idx], &tab_MenuMinMax[idx][0]);
     str = strncat(str + strlen(str), BlankLine, NB_CAR_LIGNE - 13 - strlen(str));
-    sprintf(DisplayedVal, " : %2.1f/%2.1f", MinMax[0][idx - 1],MinMax[1][idx - 1]);
+    sprintf(DisplayedVal, " : %2.1f/%2.1f", MinMax[0][idx - 1], MinMax[1][idx - 1]);
 
   }
   else
@@ -375,11 +383,12 @@ void GotoResetScreen(void)
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+  EcranEnCours.TypeEcran = MENU;
 }
 
 void GotoMinMax(void)
 {
-  
+
   int idx;
   EcranEnCours.pt_tab_menu = (char *)&tab_MenuMinMax[0][0];
   MenuChanged = true;
@@ -397,6 +406,7 @@ void GotoMinMax(void)
   EcranEnCours.Droite = None;
   EcranEnCours.Gauche = None;
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+  EcranEnCours.TypeEcran = MENU;
 }
 
 void GotoCourbes(void)
@@ -410,6 +420,7 @@ void GotoCourbes(void)
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+  EcranEnCours.TypeEcran = MENU;
 }
 
 void GotoDeclenche(void)
@@ -423,6 +434,7 @@ void GotoDeclenche(void)
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+  EcranEnCours.TypeEcran = MENU;
 }
 
 void GotoHysteresis(void)
@@ -445,8 +457,8 @@ void GotoHysteresis(void)
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
+  EcranEnCours.TypeEcran = MENU;
 }
-
 
 void GotoDisplayTemperature(void)
 {
@@ -456,8 +468,22 @@ void GotoDisplayTemperature(void)
   EcranEnCours.pt_MenuFonct = (FctPtr *)tab_DisplayTFonct;
   EcranEnCours.NbItems = ct_DisplayTNbItems;
   EcranEnCours.SelectedItem = 0;
-  EcranEnCours.Droite = None;
-  EcranEnCours.Gauche = None;
-  EcranEnCours.Select = GotoMainMenu;
+  EcranEnCours.Droite = GotoDisplayOutputs;
+  EcranEnCours.Gauche = GotoDisplayOutputs;
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[0];
+  EcranEnCours.TypeEcran = TEMPERATURES;
 }
 
+void GotoDisplayOutputs(void)
+{
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_DispOutputs[0][0];
+  EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_DispOutputsEnable[0];
+  EcranEnCours.pt_MenuFonct = (FctPtr *)tab_DispOutputsFonct;
+  EcranEnCours.NbItems = ct_DispOutputsNbItems;
+  EcranEnCours.SelectedItem = 0;
+  EcranEnCours.Droite = GotoDisplayTemperature;
+  EcranEnCours.Gauche = GotoDisplayTemperature;
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[0];
+  EcranEnCours.TypeEcran = MENU;
+}

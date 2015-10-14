@@ -52,6 +52,7 @@ const int ct_MenuMinMaxNbItems  = 6;
 const int ct_SauvegarderNbItems = 4;
 const int ct_ResetNbItems       = 3;
 const int ct_DisplayTNbItems    = 5;
+const int ct_DispOutputsNbItems = 7;
 
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
 //                   ITEMS sur Ecran :                               |TITRE,            |Item 1          |Item 2           |Item 3          |Item 4            |Item 6              |Item 7           |
@@ -112,8 +113,12 @@ const FctPtr tab_ResetFonct[ct_ResetNbItems]                      =  {None      
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
 const char   tab_DisplayT[ct_DisplayTNbItems][NB_CAR_LIGNE]       =  {"TEMPERATURES"    , "EXTERIEUR"    ,                   "INTERIEUR"    , "PUIT CAN."      , "CHEMINEE"         }; //             |
-const FctPtr tab_DisplayTFonct[ct_DisplayTNbItems]                =  {None              , None           ,                   None           , None             , None               }; //             |
+const FctPtr tab_DisplayTFonct[ct_DisplayTNbItems]                =  {GotoMainMenu      } ; //           |                 |                |                  |                    |                 |
 /*-*/ bool   tab_DisplayTEnable[ct_DisplayTNbItems]               =  {true              , true           ,                   true           , true             , true               }; //             |
+//-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
+const char   tab_DispOutputs[ct_DispOutputsNbItems][NB_CAR_LIGNE] =  {"SORTIES"         , "BYPASS1 :"    , "     "         , "BYPASS2 :"    , "     "          , "CHEMINEE :"       , "     "         };
+const FctPtr tab_DispOutputsFonct[ct_DispOutputsNbItems]          =  {GotoMainMenu      } ; //           |                 |                |                  |                    |                 |
+/*-*/ bool   tab_DispOutputsEnable[ct_DispOutputsNbItems]         =  {true              , true           , true            , true           , true             , true               , true            };
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
 
 const char* BlankLine = "                       ";
@@ -134,6 +139,14 @@ bool SdCardPresent;
 ILI9341_t3 tft = ILI9341_t3(TFT_CS, TFT_DC, TFT_RST);
 
 //Gestion de navigation - écrans menu
+typedef enum
+{
+  MENU,
+  TEMPERATURES,
+  SORTIES,
+  MAINTENANCE
+} ScreenType;
+
 typedef struct
 {
   int NbItem;
@@ -145,6 +158,7 @@ typedef struct
   void (*Droite)(void);
   void (*Gauche)(void);
   void (*Select)(void);
+  ScreenType TypeEcran;
 } ScreenDef;
 
 ScreenDef EcranEnCours;
@@ -170,7 +184,7 @@ enum Reglages {
 
 //Definition de la date/heure courante
 struct ts DateHeureCourante;
-const struct ts BlankDateHeure = {0,0,0,0,0,0,0,0,0,0};
+const struct ts BlankDateHeure = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 bool RTClockAlarm = false;
 bool InhibRTCAlarms = false;

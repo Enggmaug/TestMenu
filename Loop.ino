@@ -6,20 +6,33 @@ void loop(void)
 {
   static int counter = 0;
   if (RotDetect) ManageRotation();            // Si Action sur le bouton
-  if (MenuChanged) DisplayMenuScreen();       // Si on change de Menu
+  if (MenuChanged) {
+    switch (EcranEnCours.TypeEcran)
+    {
+      case MENU :
+        DisplayMenuScreen();       // Si on change de Menu
+        break;
+      case TEMPERATURES :
+        DisplayTempScreen();
+      case SORTIES :
+      case MAINTENANCE :
+      default :
+        break;
+    }
+  }
   MenuChanged = false;
 
   //Lecture des températures
-  if ((RTClockAlarm == true)and(InhibRTCAlarms == false))
+  if ((RTClockAlarm == true) and (InhibRTCAlarms == false))
   {
-    RTClockAlarm = false;    
+    RTClockAlarm = false;
     DS3234_clear_a1f(RTCLK_CS);
     counter++;
     GetTemperatures();
     CheckTemperatures();
     ReadTime();
-    
-    if ((counter % 10)==0)
+
+    if ((counter % 10) == 0)
     {
       SaveHistoriques();
     }
