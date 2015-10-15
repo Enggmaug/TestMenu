@@ -30,10 +30,12 @@
 #define BUFF_MAX 256
 
 //Couleurs
-#define BLANC 0xFFFF
-#define NOIR 0x0000
-#define GRIS 0x3183
-#define ROUGE 0xF800
+//                       R     V      B
+#define BLANC 0xFFFF //11111 111111 11111
+#define NOIR  0x0000 //00000 000000 00000
+#define GRIS  0x3186 //00110 001100 00110
+#define ROUGE 0xF800 //11111 000000 00000
+#define BLEU  0x001F //00000 000000 11111
 
 //Definitions des Ecrans Menu
 typedef void(*FctPtr)(void);

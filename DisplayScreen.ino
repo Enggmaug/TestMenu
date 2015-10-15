@@ -56,21 +56,44 @@ void DisplayMenuScreen(void)
 void DisplayTempScreen(void)
 {
   int idx;
+  int color;
+  int ConvertedTemp;
   noInterrupts();           // Desactivation des interruptions pendant le redessin de l'ecran
 
   // AFFICHAGE DE LA PREMIERE LIGNE
+  tft.fillScreen(NOIR);
   tft.setTextColor(NOIR);
   tft.fillRect(0, 0, tft.width(), (tft.height() / ct_NbItemMax), BLANC);
   tft.drawFastHLine(0, (tft.height() / ct_NbItemMax) - 1, tft.width(), NOIR);
   tft.setCursor(tft.width() / 2 - (strlen(EcranEnCours.pt_tab_menu) / 2) * (tft.width() / 17), 5);       // On se positionne au centre, sur la base de 17 caracteres/ligne
   tft.setTextSize(3);
   tft.println(EcranEnCours.pt_tab_menu);
+  tft.setTextSize(1);
+  tft.setCursor(0, 200);    // Test du nombre de caractères sur une ligne
+  tft.setTextColor(ROUGE);
+
   for (idx = 1; idx < EcranEnCours.NbItems; idx++)              // Pour chaque Item du menu
   {
     // Charge le BMP qui va bien au bon endroit
     // Place les curseurs de seuil
     // Trace le rectangle bleu ou rouge de température selon si le seuil est passé ou pas
-    // écrit le nom du thermometre en bas
+    if (TemperatureDepasseSeuil[idx] == false)
+    {
+        color = BLEU;
+    }
+    else if (TemperatureDepasseSeuil[idx] == false)
+    {
+        color = ROUGE;
+    }
+    ConvertedTemp = ConvertTemperature(Temperatures[idx], MinMax[idx][0] -1,MinMax[idx][1] +1,idx/*Hauteur max*/);
+    tft.drawCircle(idx *(tft.width() / 4) - tft.width() / 8,190,19,BLANC);
+    tft.drawCircle(idx *(tft.width() / 4) - tft.width() / 8,70,10,BLANC);
+    tft.drawRect(idx *(tft.width() / 4) - tft.width() / 8 - 11,70,22, 120,BLANC);
+    tft.fillRect(idx *(tft.width() / 4) - tft.width() / 8 - 10,70,20, 120,NOIR);
+    tft.fillCircle(idx *(tft.width() / 4) - tft.width() / 8,190,18,color);
+    tft.fillRect(idx *(tft.width() / 4) - tft.width() / 8 - 10,190-ConvertedTemp,20, ConvertedTemp,color);
+    tft.setCursor(idx *(tft.width() / 4) - tft.width() / 8 - (strlen((char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * idx)) / 2) * (tft.width() / 52), 220);       // On se positionne au centre, sur la base de 34 caracteres/ligne
+    tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * idx));
   }
   interrupts();
 }

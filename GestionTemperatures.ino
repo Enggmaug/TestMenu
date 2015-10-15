@@ -47,3 +47,10 @@ void CheckTemperatures (void)
   }
 }
 
+/*---------------------------------------------------------------------------------------------*/
+/*        Convertion d'une température de float vers int pour affichage dans thermomètre       */
+/*---------------------------------------------------------------------------------------------*/
+int ConvertTemperature(float InputTemp, float Min, float Max, int HauteurMax)
+{
+return HauteurMax*30;
+}
