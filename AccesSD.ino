@@ -87,7 +87,6 @@ void WriteHysterToFile(void) // Ecriture des Seuils dans le fichier Seuils.par
 
 void SaveHistoriques(void) // A Ecrire
 {
-
   Serial.println("Save Historique");
 }
 

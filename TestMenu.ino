@@ -36,6 +36,7 @@
 #define GRIS  0x3186 //00110 001100 00110
 #define ROUGE 0xF800 //11111 000000 00000
 #define BLEU  0x001F //00000 000000 11111
+#define VERT  0x07E0 //00000 111111 00000
 
 //Definitions des Ecrans Menu
 typedef void(*FctPtr)(void);
@@ -104,7 +105,7 @@ const char   tab_Reset[ct_ResetNbItems][NB_CAR_LIGNE]             =  {"RESET"   
 const FctPtr tab_ResetFonct[ct_ResetNbItems]                      =  {None              , Reset          , GotoHisto       }; //            |                  |                    |                 |
 /*-*/ bool   tab_ResetEnable[ct_ResetNbItems]                     =  {true              , true           , true            }; //            |                  |                    |                 |
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
-const char   tab_MenuMaint[ct_MaintenanceNbItems][NB_CAR_LIGNE]   =  {"MAINTENANCE"     , "ETAT :"       , "RELAIS"        , "     "        , "FINS DE COURSE" , "     "            ,"RETOUR"         };
+const char   tab_MenuMaint[ct_MaintenanceNbItems][NB_CAR_LIGNE]   =  {"MAINTENANCE"     , "ETAT :"       , "RELAIS"        , "     "        , "FINS DE COURSE" , "     "            , "RETOUR"         };
 const FctPtr tab_MenuMaintFonct[ct_MaintenanceNbItems]            =  {None              , SetState       , None            , None           , None             , None               , GotoMainMenu    };
 /*-*/ bool   tab_MenuMaintEnable[ct_MaintenanceNbItems]           =  {true              , true           , true            , false          , true             , false              , true            };
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+

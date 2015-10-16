@@ -18,6 +18,7 @@ float ReadTemperature(int AnalogPinNumber) // A ECRIRE
 {
   if (AnalogPinNumber > 0)
   {
+    return (0.0);
     //return (analogRead(AnalogPinNumber));
   }
   else
@@ -52,5 +53,13 @@ void CheckTemperatures (void)
 /*---------------------------------------------------------------------------------------------*/
 int ConvertTemperature(float InputTemp, float Min, float Max, int HauteurMax)
 {
-return HauteurMax*30;
+  float diff_MinMax;
+  float RegleDeTroyes;
+
+  diff_MinMax = Max - Min;
+
+  RegleDeTroyes = (diff_MinMax * InputTemp) / (float) HauteurMax;
+  return ((int) RegleDeTroyes);
+
+
 }

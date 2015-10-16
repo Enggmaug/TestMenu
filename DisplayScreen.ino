@@ -58,7 +58,11 @@ void DisplayTempScreen(void)
   int idx;
   int color;
   int ConvertedTemp;
+  float Min;
+  float Max;
   noInterrupts();           // Desactivation des interruptions pendant le redessin de l'ecran
+  const int PixelMax = 190;
+  const int PixelMin = 70;
 
   // AFFICHAGE DE LA PREMIERE LIGNE
   tft.fillScreen(NOIR);
@@ -74,26 +78,71 @@ void DisplayTempScreen(void)
 
   for (idx = 1; idx < EcranEnCours.NbItems; idx++)              // Pour chaque Item du menu
   {
-    // Charge le BMP qui va bien au bon endroit
-    // Place les curseurs de seuil
-    // Trace le rectangle bleu ou rouge de température selon si le seuil est passé ou pas
-    if (TemperatureDepasseSeuil[idx] == false)
+    if (idx == 1)
     {
+      if ((TemperatureDepasseSeuil[idx - 1] == false) and (TemperatureDepasseSeuil[idx] == false))
+      {
         color = BLEU;
-    }
-    else if (TemperatureDepasseSeuil[idx] == false)
-    {
+      }
+      else if ((TemperatureDepasseSeuil[idx - 1] == true) and (TemperatureDepasseSeuil[idx] == true))
+      {
         color = ROUGE;
+      }
+      else if ((TemperatureDepasseSeuil[idx - 1] == true) and (TemperatureDepasseSeuil[idx] == false))
+      {
+        color = VERT;
+      }
+      else
+      {
+        //error
+      }
     }
-    ConvertedTemp = ConvertTemperature(Temperatures[idx], MinMax[idx][0] -1,MinMax[idx][1] +1,idx/*Hauteur max*/);
-    tft.drawCircle(idx *(tft.width() / 4) - tft.width() / 8,190,19,BLANC);
-    tft.drawCircle(idx *(tft.width() / 4) - tft.width() / 8,70,10,BLANC);
-    tft.drawRect(idx *(tft.width() / 4) - tft.width() / 8 - 11,70,22, 120,BLANC);
-    tft.fillRect(idx *(tft.width() / 4) - tft.width() / 8 - 10,70,20, 120,NOIR);
-    tft.fillCircle(idx *(tft.width() / 4) - tft.width() / 8,190,18,color);
-    tft.fillRect(idx *(tft.width() / 4) - tft.width() / 8 - 10,190-ConvertedTemp,20, ConvertedTemp,color);
-    tft.setCursor(idx *(tft.width() / 4) - tft.width() / 8 - (strlen((char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * idx)) / 2) * (tft.width() / 52), 220);       // On se positionne au centre, sur la base de 34 caracteres/ligne
+    else {
+
+      if (TemperatureDepasseSeuil[idx] == false)
+      {
+        color = BLEU;
+      }
+      else if (TemperatureDepasseSeuil[idx] == true)
+      {
+        color = ROUGE;
+      }
+    }
+
+    Min = min(Seuils[Reglage][idx], MinMax[idx][0]) - 1.0;
+    Max = max (Seuils[Reglage][idx], MinMax[idx][1]) + 1.0;
+    //Clacul de la hauteur de mercure
+    ConvertedTemp = ConvertTemperature(Temperatures[idx], Min, Max, PixelMax - PixelMin);
+
+    //Dessin du thermomètre
+    tft.drawCircle(idx * (tft.width() / 4) - tft.width() / 8, PixelMax, 19, BLANC);
+    tft.drawCircle(idx * (tft.width() / 4) - tft.width() / 8, PixelMin, 10, BLANC);
+    tft.drawRect(idx * (tft.width() / 4) - tft.width() / 8 - 11, PixelMin, 22, PixelMax - PixelMin, BLANC);
+    tft.fillRect(idx * (tft.width() / 4) - tft.width() / 8 - 10, PixelMin, 20, PixelMax - PixelMin, NOIR);
+    //Dessin du mercure
+    tft.fillCircle(idx * (tft.width() / 4) - tft.width() / 8, PixelMax, 18, color);
+    tft.fillRect(idx * (tft.width() / 4) - tft.width() / 8 - 10, PixelMax - ConvertedTemp, 20, ConvertedTemp, color);
+    //Affichage de la valeur de température
+    tft.setCursor(idx * (tft.width() / 4) - 30, PixelMax - ConvertedTemp);
+    tft.println(Temperatures[idx]);
+
+    // Affichage des seuils
+    ConvertedTemp = ConvertTemperature(Seuils[Reglage][idx], Min, Max, PixelMax - PixelMin);
+    tft.drawLine(idx * (tft.width() / 4) - tft.width() / 8 - 20, PixelMax - ConvertedTemp, 40, PixelMax - ConvertedTemp, BLANC );
+    tft.setCursor(idx * (tft.width() / 4) + 30, PixelMax - ConvertedTemp);
+    tft.println(Seuils[Reglage][idx]);
+    if (idx == 1)
+    {
+      ConvertedTemp = ConvertTemperature(Seuils[Reglage][0], Min, Max, PixelMax - PixelMin);
+      tft.drawLine(idx * (tft.width() / 4) - tft.width() / 8 - 20, PixelMax - ConvertedTemp, 40, PixelMax - ConvertedTemp, BLANC );
+      tft.setCursor(idx * (tft.width() / 4) + 30, PixelMax - ConvertedTemp);
+      tft.println(Seuils[Reglage][idx]);
+    }
+
+    //Affichage du nom du thermomètre
+    tft.setCursor(idx * (tft.width() / 4) - tft.width() / 8 - (strlen((char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * idx)) / 2) * (tft.width() / 52), 220);      // On se positionne au centre, sur la base de 34 caracteres/ligne
     tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * idx));
+
   }
   interrupts();
 }
