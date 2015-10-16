@@ -18,7 +18,7 @@ float ReadTemperature(int AnalogPinNumber) // A ECRIRE
 {
   if (AnalogPinNumber > 0)
   {
-    return (0.0);
+    return (20.0);
     //return (analogRead(AnalogPinNumber));
   }
   else

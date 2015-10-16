@@ -108,9 +108,16 @@ void DisplayTempScreen(void)
         color = ROUGE;
       }
     }
-
-    Min = min(Seuils[Reglage][idx], MinMax[idx][0]) - 1.0;
-    Max = max (Seuils[Reglage][idx], MinMax[idx][1]) + 1.0;
+    if (idx == 1)
+    {
+      Min = min(Seuils[Reglage][0] - Hysteresis[Reglage][0], MinMax[1][0]) - 1.0;
+      Max = max (Seuils[Reglage][1] + Hysteresis[Reglage][1], MinMax[1][1]) + 1.0;
+    }
+    else
+    {
+      Min = min(Seuils[Reglage][idx] - Hysteresis[Reglage][idx], MinMax[idx][0]) - 1.0;
+      Max = max (Seuils[Reglage][idx] + Hysteresis[Reglage][idx], MinMax[idx][1]) + 1.0;
+    }
     //Clacul de la hauteur de mercure
     ConvertedTemp = ConvertTemperature(Temperatures[idx], Min, Max, PixelMax - PixelMin);
 
@@ -127,16 +134,37 @@ void DisplayTempScreen(void)
     tft.println(Temperatures[idx]);
 
     // Affichage des seuils
-    ConvertedTemp = ConvertTemperature(Seuils[Reglage][idx], Min, Max, PixelMax - PixelMin);
-    tft.drawLine(idx * (tft.width() / 4) - tft.width() / 8 - 20, PixelMax - ConvertedTemp, 40, PixelMax - ConvertedTemp, BLANC );
-    tft.setCursor(idx * (tft.width() / 4) + 30, PixelMax - ConvertedTemp);
-    tft.println(Seuils[Reglage][idx]);
-    if (idx == 1)
+    if (TemperatureDepasseSeuil[idx] == true)
     {
-      ConvertedTemp = ConvertTemperature(Seuils[Reglage][0], Min, Max, PixelMax - PixelMin);
+      ConvertedTemp = ConvertTemperature(Seuils[Reglage][idx] - Hysteresis[Reglage][idx], Min, Max, PixelMax - PixelMin);
       tft.drawLine(idx * (tft.width() / 4) - tft.width() / 8 - 20, PixelMax - ConvertedTemp, 40, PixelMax - ConvertedTemp, BLANC );
       tft.setCursor(idx * (tft.width() / 4) + 30, PixelMax - ConvertedTemp);
-      tft.println(Seuils[Reglage][idx]);
+      tft.println(Seuils[Reglage][idx] - Hysteresis[Reglage][0]);
+    }
+    else
+    {
+      ConvertedTemp = ConvertTemperature(Seuils[Reglage][idx] + Hysteresis[Reglage][idx], Min, Max, PixelMax - PixelMin);
+      tft.drawLine(idx * (tft.width() / 4) - tft.width() / 8 - 20, PixelMax - ConvertedTemp, 40, PixelMax - ConvertedTemp, BLANC );
+      tft.setCursor(idx * (tft.width() / 4) + 30, PixelMax - ConvertedTemp);
+      tft.println(Seuils[Reglage][idx] + Hysteresis[Reglage][0]);
+    }
+
+    if (idx == 1) // Affichage du seuil Bas pour l'exterieur
+    {
+      if (TemperatureDepasseSeuil[0] == true)
+      {
+        ConvertedTemp = ConvertTemperature(Seuils[Reglage][0] - Hysteresis[Reglage][0], Min, Max, PixelMax - PixelMin);
+        tft.drawLine(idx * (tft.width() / 4) - tft.width() / 8 - 20, PixelMax - ConvertedTemp, 40, PixelMax - ConvertedTemp, BLANC );
+        tft.setCursor(idx * (tft.width() / 4) + 30, PixelMax - ConvertedTemp);
+        tft.println(Seuils[1][idx] - Hysteresis[Reglage][0]);
+      }
+      else
+      {
+        ConvertedTemp = ConvertTemperature(Seuils[Reglage][0] + Hysteresis[Reglage][0], Min, Max, PixelMax - PixelMin);
+        tft.drawLine(idx * (tft.width() / 4) - tft.width() / 8 - 20, PixelMax - ConvertedTemp, 40, PixelMax - ConvertedTemp, BLANC );
+        tft.setCursor(idx * (tft.width() / 4) + 30, PixelMax - ConvertedTemp);
+        tft.println(Seuils[Reglage][1] + Hysteresis[Reglage][0]);
+      }
     }
 
     //Affichage du nom du thermomètre
