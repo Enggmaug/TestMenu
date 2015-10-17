@@ -63,6 +63,8 @@ void DisplayTempScreen(void)
   noInterrupts();           // Desactivation des interruptions pendant le redessin de l'ecran
   const int PixelMax = 190;
   const int PixelMin = 70;
+  int PositionX;
+  char DisplayedStr[8];
 
   // AFFICHAGE DE LA PREMIERE LIGNE
   tft.fillScreen(NOIR);
@@ -95,6 +97,7 @@ void DisplayTempScreen(void)
       else
       {
         //error
+        color = NOIR;
       }
     }
     else {
@@ -103,72 +106,83 @@ void DisplayTempScreen(void)
       {
         color = BLEU;
       }
-      else if (TemperatureDepasseSeuil[idx] == true)
+      else
       {
         color = ROUGE;
       }
     }
     if (idx == 1)
     {
-      Min = min(Seuils[Reglage][0] - Hysteresis[Reglage][0], MinMax[1][0]) - 1.0;
+      Min = min(Seuils[Reglage][0] - Hysteresis[Reglage][0], MinMax[0][1]) - 1.0;
       Max = max (Seuils[Reglage][1] + Hysteresis[Reglage][1], MinMax[1][1]) + 1.0;
     }
     else
     {
-      Min = min(Seuils[Reglage][idx] - Hysteresis[Reglage][idx], MinMax[idx][0]) - 1.0;
-      Max = max (Seuils[Reglage][idx] + Hysteresis[Reglage][idx], MinMax[idx][1]) + 1.0;
+      Min = min(Seuils[Reglage][idx] - Hysteresis[Reglage][idx], MinMax[0][idx]) - 1.0;
+      Max = max (Seuils[Reglage][idx] + Hysteresis[Reglage][idx], MinMax[1][idx]) + 1.0;
     }
-    //Clacul de la hauteur de mercure
+
+    //Calcul de la hauteur de mercure
     ConvertedTemp = ConvertTemperature(Temperatures[idx], Min, Max, PixelMax - PixelMin);
 
     //Dessin du thermomètre
-    tft.drawCircle(idx * (tft.width() / 4) - tft.width() / 8, PixelMax, 19, BLANC);
-    tft.drawCircle(idx * (tft.width() / 4) - tft.width() / 8, PixelMin, 10, BLANC);
-    tft.drawRect(idx * (tft.width() / 4) - tft.width() / 8 - 11, PixelMin, 22, PixelMax - PixelMin, BLANC);
-    tft.fillRect(idx * (tft.width() / 4) - tft.width() / 8 - 10, PixelMin, 20, PixelMax - PixelMin, NOIR);
+    PositionX = idx * (tft.width() / 4) - tft.width() / 8;
+    tft.drawRect  (PositionX - 11, PixelMin,                 22, PixelMax - PixelMin, BLANC);
+    tft.fillCircle(PositionX,      PixelMax,                 19,                     color);
+    tft.drawCircle(PositionX,      PixelMax,                 19,                     BLANC);
+    tft.drawCircle(PositionX,      PixelMin,                 10,                     BLANC);
+    tft.fillRect  (PositionX - 10, PixelMin,                 20, PixelMax - PixelMin - 15, NOIR );
     //Dessin du mercure
-    tft.fillCircle(idx * (tft.width() / 4) - tft.width() / 8, PixelMax, 18, color);
-    tft.fillRect(idx * (tft.width() / 4) - tft.width() / 8 - 10, PixelMax - ConvertedTemp, 20, ConvertedTemp, color);
+
+    tft.fillRect  (PositionX - 10, PixelMax - ConvertedTemp, 20, ConvertedTemp - 15,       color);
     //Affichage de la valeur de température
-    tft.setCursor(idx * (tft.width() / 4) - 30, PixelMax - ConvertedTemp);
-    tft.println(Temperatures[idx]);
+    tft.setTextColor(NOIR);
+    tft.setCursor (PositionX - 10, PixelMax - 2);
+    sprintf(DisplayedStr, "%2.1f", Temperatures[idx]);
+    tft.println(DisplayedStr);
 
     // Affichage des seuils
+    tft.setTextColor(BLANC);
     if (TemperatureDepasseSeuil[idx] == true)
     {
       ConvertedTemp = ConvertTemperature(Seuils[Reglage][idx] - Hysteresis[Reglage][idx], Min, Max, PixelMax - PixelMin);
-      tft.drawLine(idx * (tft.width() / 4) - tft.width() / 8 - 20, PixelMax - ConvertedTemp, 40, PixelMax - ConvertedTemp, BLANC );
-      tft.setCursor(idx * (tft.width() / 4) + 30, PixelMax - ConvertedTemp);
-      tft.println(Seuils[Reglage][idx] - Hysteresis[Reglage][0]);
+      tft.drawLine (PositionX - 15, PixelMax - ConvertedTemp, PositionX + 10, PixelMax - ConvertedTemp, BLANC );
+      tft.setCursor(PositionX + 12, PixelMax - ConvertedTemp - 4);
+      sprintf(DisplayedStr, "%2.1f", Seuils[Reglage][idx] - Hysteresis[Reglage][idx]);
+      tft.println(DisplayedStr);
     }
     else
     {
       ConvertedTemp = ConvertTemperature(Seuils[Reglage][idx] + Hysteresis[Reglage][idx], Min, Max, PixelMax - PixelMin);
-      tft.drawLine(idx * (tft.width() / 4) - tft.width() / 8 - 20, PixelMax - ConvertedTemp, 40, PixelMax - ConvertedTemp, BLANC );
-      tft.setCursor(idx * (tft.width() / 4) + 30, PixelMax - ConvertedTemp);
-      tft.println(Seuils[Reglage][idx] + Hysteresis[Reglage][0]);
+      tft.drawLine (PositionX - 15, PixelMax - ConvertedTemp, PositionX + 10, PixelMax - ConvertedTemp, BLANC );
+      tft.setCursor(PositionX + 12, PixelMax - ConvertedTemp - 4);
+      sprintf(DisplayedStr, "%2.1f", Seuils[Reglage][idx] + Hysteresis[Reglage][idx]);
+      tft.println(DisplayedStr);
     }
+
 
     if (idx == 1) // Affichage du seuil Bas pour l'exterieur
     {
       if (TemperatureDepasseSeuil[0] == true)
       {
         ConvertedTemp = ConvertTemperature(Seuils[Reglage][0] - Hysteresis[Reglage][0], Min, Max, PixelMax - PixelMin);
-        tft.drawLine(idx * (tft.width() / 4) - tft.width() / 8 - 20, PixelMax - ConvertedTemp, 40, PixelMax - ConvertedTemp, BLANC );
-        tft.setCursor(idx * (tft.width() / 4) + 30, PixelMax - ConvertedTemp);
-        tft.println(Seuils[1][idx] - Hysteresis[Reglage][0]);
+        tft.drawLine(PositionX - 15, PixelMax - ConvertedTemp, PositionX + 10, PixelMax - ConvertedTemp, BLANC );
+        tft.setCursor(PositionX + 12, PixelMax - ConvertedTemp - 4);
+        sprintf(DisplayedStr, "%2.1f", Seuils[Reglage][0] - Hysteresis[Reglage][0]);
+        tft.println(DisplayedStr);
       }
       else
       {
         ConvertedTemp = ConvertTemperature(Seuils[Reglage][0] + Hysteresis[Reglage][0], Min, Max, PixelMax - PixelMin);
-        tft.drawLine(idx * (tft.width() / 4) - tft.width() / 8 - 20, PixelMax - ConvertedTemp, 40, PixelMax - ConvertedTemp, BLANC );
-        tft.setCursor(idx * (tft.width() / 4) + 30, PixelMax - ConvertedTemp);
-        tft.println(Seuils[Reglage][1] + Hysteresis[Reglage][0]);
+        tft.drawLine(PositionX - 15, PixelMax - ConvertedTemp, PositionX + 10, PixelMax - ConvertedTemp, BLANC );
+        tft.setCursor(PositionX + 12, PixelMax - ConvertedTemp - 4);
+        sprintf(DisplayedStr, "%2.1f", Seuils[Reglage][0] + Hysteresis[Reglage][0]);
+        tft.println(DisplayedStr);
       }
     }
 
     //Affichage du nom du thermomètre
-    tft.setCursor(idx * (tft.width() / 4) - tft.width() / 8 - (strlen((char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * idx)) / 2) * (tft.width() / 52), 220);      // On se positionne au centre, sur la base de 34 caracteres/ligne
+    tft.setCursor(PositionX - (strlen((char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * idx)) / 2) * (tft.width() / 52), 220);      // On se positionne au centre, sur la base de 34 caracteres/ligne
     tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * idx));
 
   }
@@ -181,7 +195,8 @@ void DisplayTempScreen(void)
 void DisableSD(void)
 {
   int idx;
-  bool   tab_SauvegarderEnableTemp[ct_MenuHistNbItems]            =  {true, false, true , true                    };
+  const bool   tab_SauvegarderEnableTemp[ct_MenuHistNbItems]            =  {true, false, true , true};
+
   for (idx = 0; idx < ct_SauvegarderNbItems; idx ++)
   {
     tab_SauvegarderSDEnable[idx] = tab_SauvegarderEnableTemp[idx];
@@ -195,11 +210,11 @@ void DisableSD(void)
 void DisableRTC(void)
 {
   int idx;
-  bool   tab_MenuMainEnableTemp[ct_MenuMainNbItems]        =  {true, true , true , true , true , false, true};
-  bool   tab_MenuDateHeureEnableTemp[ct_MenuSeuilsNbItems] =  {true, false, false, true                     };
-  bool   tab_MenuDateEnableTemp[ct_MenuHistNbItems]        =  {true, false, false, false, true              };
-  bool   tab_MenuHeureEnableTemp[ct_MenuHistNbItems]       =  {true, false, false, true                     };
-  bool   tab_SauvegarderEnableTemp[ct_MenuHistNbItems]            =  {true, false, true , true                    };
+  const bool   tab_MenuMainEnableTemp[ct_MenuMainNbItems]        =  {true, true , true , true , true , false, true};
+  const bool   tab_MenuDateHeureEnableTemp[ct_MenuSeuilsNbItems] =  {true, false, false, true                     };
+  const bool   tab_MenuDateEnableTemp[ct_MenuHistNbItems]        =  {true, false, false, false, true              };
+  const bool   tab_MenuHeureEnableTemp[ct_MenuHistNbItems]       =  {true, false, false, true                     };
+  const bool   tab_SauvegarderEnableTemp[ct_MenuHistNbItems]     =  {true, false, true , true                     };
 
   for (idx = 0; idx < ct_MenuMainNbItems; idx ++)
   {

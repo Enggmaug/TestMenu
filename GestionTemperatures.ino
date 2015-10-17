@@ -45,6 +45,15 @@ void CheckTemperatures (void)
         TemperatureDepasseSeuil[idx] = true;
       }
     }
+
+    if (Temperatures[idx] < MinMax[0][idx])
+    {
+      MinMax[0][idx] = Temperatures[idx];
+    }
+    else if (Temperatures[idx] > MinMax[1][idx])
+    {
+      MinMax[1][idx] = Temperatures[idx];
+    }
   }
 }
 
@@ -53,13 +62,9 @@ void CheckTemperatures (void)
 /*---------------------------------------------------------------------------------------------*/
 int ConvertTemperature(float InputTemp, float Min, float Max, int HauteurMax)
 {
-  float diff_MinMax;
   float RegleDeTroyes;
 
-  diff_MinMax = Max - Min;
+  RegleDeTroyes = (((InputTemp - Min) / (Max - Min)) * (float) HauteurMax);
 
-  RegleDeTroyes = (diff_MinMax * InputTemp) / (float) HauteurMax;
   return ((int) RegleDeTroyes);
-
-
 }

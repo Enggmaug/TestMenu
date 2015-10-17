@@ -28,7 +28,7 @@ void loop(void)
     RTClockAlarm = false;
     DS3234_clear_a1f(RTCLK_CS);
     counter++;
-    GetTemperatures();
+    //GetTemperatures();
     CheckTemperatures();
     ReadTime();
 

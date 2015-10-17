@@ -10,6 +10,11 @@
 #define DEFAULT_SEUILS {15.0, 24.0, 22.0, 40.0, 16.0}
 #define DEFAULT_HYSTERESIS {0.0, 0.0, 0.0, 0.0, 0.0}
 #define NB_TEMP 5
+#define EXTERIEUR_L 0
+#define EXTERIEUR_H 1
+#define INTERIEUR   2
+#define CHEMINEE    4
+#define PUIT_CANAD  3
 
 //DEFINE des Numeros de Pins à remplacer par les bonnes valeurs
 #define TFT_DC         9
