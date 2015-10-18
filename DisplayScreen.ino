@@ -189,6 +189,28 @@ void DisplayTempScreen(void)
   interrupts();
 }
 
+
+/*---------------------------------------------------------------------------------------------*/
+/*                                    AFFICHAGE DES COURBES                                    */
+/*---------------------------------------------------------------------------------------------*/
+void DisplayCourbeScreen(void)
+{
+  const char TypeHisto[NBTYPHISTO][16] = {"24 Heures","7 Jours", "30 Jours", "365 Jours"};
+  // AFFICHAGE DE LA PREMIERE LIGNE
+  tft.fillScreen(NOIR);
+  tft.setTextColor(NOIR);
+  tft.fillRect(0, 0, tft.width(), (tft.height() / ct_NbItemMax), BLANC);
+  tft.drawFastHLine(0, (tft.height() / ct_NbItemMax) - 1, tft.width(), NOIR);
+  tft.setCursor(tft.width() / 2 - (strlen(EcranEnCours.pt_tab_menu) / 2) * (tft.width() / 17), 5);       // On se positionne au centre, sur la base de 17 caracteres/ligne
+  tft.setTextSize(3);
+  tft.println(EcranEnCours.pt_tab_menu);
+
+  tft.setCursor(10, (tft.height() / ct_NbItemMax) );       // On se positionne au centre, sur la base de 17 caracteres/ligne
+  tft.setTextColor(BLANC);
+  tft.setTextSize(2);
+  tft.println(TypeHisto[EcranEnCours.SelectedItem-1]);
+}
+
 /*---------------------------------------------------------------------------------------------*/
 /*             Interdiction des Items qui ne sont pas accessibles si pas de SD                 */
 /*---------------------------------------------------------------------------------------------*/

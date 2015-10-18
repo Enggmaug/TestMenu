@@ -15,7 +15,12 @@ void loop(void)
       case TEMPERATURES :
         DisplayTempScreen();
       case SORTIES :
+        break;
       case MAINTENANCE :
+        break;
+      case HISTO :
+        DisplayCourbeScreen();
+        break;
       default :
         break;
     }
@@ -30,10 +35,17 @@ void loop(void)
     counter++;
     //GetTemperatures();
     CheckTemperatures();
-    ReadTime();
-
-    if ((counter % 10) == 0)
+    if (counter % 60 == 0)
     {
+      ReadTime();
+    }
+    if (counter == 270)
+    {
+      SaveHistoriques();
+    }
+    if (counter >= 540)
+    {
+      counter = 0;
       SaveHistoriques();
     }
   }

@@ -15,6 +15,7 @@
 #define INTERIEUR   2
 #define CHEMINEE    4
 #define PUIT_CANAD  3
+#define NBTYPHISTO  4
 
 //DEFINE des Numeros de Pins à remplacer par les bonnes valeurs
 #define TFT_DC         9
@@ -158,7 +159,8 @@ typedef enum
   MENU,
   TEMPERATURES,
   SORTIES,
-  MAINTENANCE
+  MAINTENANCE,
+  HISTO
 } ScreenType;
 
 typedef struct
@@ -202,3 +204,6 @@ const struct ts BlankDateHeure = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 bool RTClockAlarm = false;
 bool InhibRTCAlarms = false;
+
+float Historiques[NB_TEMP - 1][NBTYPHISTO][380] = {0};
+

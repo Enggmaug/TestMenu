@@ -188,6 +188,41 @@ void GotoCourbes(void)
   EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem];
   EcranEnCours.TypeEcran = MENU;
 }
+/*-NIVEAU 4------------------------------------------------------------------------------------*/
+/*                      Navigation vers l'ecran d'affichage de courbe Exterieure               */
+/*---------------------------------------------------------------------------------------------*/
+void ShowHistoExt(void)
+{
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuCourbes[1][0];
+  EcranEnCours.SelectedItem = 1;
+  EcranEnCours.NbItems = NBTYPHISTO;
+  EcranEnCours.Droite = Suivant;
+  EcranEnCours.Gauche = Precedent;
+  EcranEnCours.Select = GotoHisto;
+  EcranEnCours.TypeEcran = HISTO;
+}
+
+/*-NIVEAU 4------------------------------------------------------------------------------------*/
+/*                      Navigation vers l'ecran d'affichage de courbe Intérieure               */
+/*---------------------------------------------------------------------------------------------*/
+void ShowHistoInt(void)
+{
+}
+
+/*-NIVEAU 4------------------------------------------------------------------------------------*/
+/*                      Navigation vers l'ecran d'affichage de courbe Puit Canadien            */
+/*---------------------------------------------------------------------------------------------*/
+void ShowHistoPuit(void)
+{
+}
+
+/*-NIVEAU 4------------------------------------------------------------------------------------*/
+/*                      Navigation vers l'ecran d'affichage de courbe Cheminée                 */
+/*---------------------------------------------------------------------------------------------*/
+void ShowHistoChem(void)
+{
+}
 
 /*-NIVEAU 3------------------------------------------------------------------------------------*/
 /*                              Navigation vers l'ecran des MIN/MAX                            */
@@ -383,12 +418,18 @@ void SaveYesNo(void)
 /*---------------------------------------------------------------------------------------------*/
 void Suivant(void)
 {
-  ChangeItem(1);
+  if (EcranEnCours.TypeEcran == HISTO)
+    ChangeHisto(1);
+  else
+    ChangeItem(1);
 }
 
 void Precedent(void)
 {
-  ChangeItem(-1);
+  if (EcranEnCours.TypeEcran == HISTO)
+    ChangeHisto(-1);
+  else
+    ChangeItem(-1);
 }
 /*---------------------------------------------------------------------------------------------*/
 /*                             GENERIQUE : Changement d'item                                   */
@@ -530,4 +571,22 @@ char* AddModeToLine(int idx)
   return (str);
 }
 
+/*---------------------------------------------------------------------------------------------*/
+/*                                   Changement d'historique                                   */
+/*---------------------------------------------------------------------------------------------*/
+void ChangeHisto(int Direction)
+{
+  MenuChanged = true;
+  if (Direction > 0) Direction = 1;
+  else Direction = -1;
 
+  EcranEnCours.SelectedItem += Direction;
+  if (EcranEnCours.SelectedItem > EcranEnCours.NbItems)
+  {
+    EcranEnCours.SelectedItem = 1;
+  }
+  else if (EcranEnCours.SelectedItem < 1)
+  {
+    EcranEnCours.SelectedItem = EcranEnCours.NbItems;
+  }
+}

@@ -85,25 +85,38 @@ void WriteHysterToFile(void) // Ecriture des Seuils dans le fichier Seuils.par
 /*                          SAUVEGARDE DES HISTORIQUES SUR SD ET RAM                           */
 /*---------------------------------------------------------------------------------------------*/
 
-void SaveHistoriques(void) // A Ecrire
+void SaveHistoriques(void)
 {
-  Serial.println("Save Historique");
+  int idx;
+  static unsigned int CompteJours = 0;
+  static unsigned int CompteSemaines = 0;
+  static unsigned int CompteMois = 0;
+  static unsigned int CompteAnnee = 0;
+
+  CompteJours ++;
+  CompteSemaines ++;
+  CompteMois ++;
+  CompteAnnee ++;
+
+  for (idx = 0; idx < NB_TEMP - 1 ; idx ++)
+  {
+    Historiques[idx][0][CompteJours] = Temperatures[idx + 1];
+    if ((CompteSemaines % 7) == 0)
+      Historiques[idx][1][CompteSemaines / 7] = Temperatures[idx + 1];
+    if ((CompteMois % 30) == 0)
+      Historiques[idx][2][CompteMois / 30] = Temperatures[idx + 1];
+    if ((CompteAnnee % 365) == 0)
+      Historiques[idx][3][CompteAnnee / 365] = Temperatures[idx + 1];
+  }
+  if (CompteJours >= 320) CompteJours = 0;
+  if (CompteSemaines >= 2240) CompteSemaines = 0;
+  if (CompteMois >= 9600) CompteMois = 0;
+  if (CompteAnnee >= 116800) CompteAnnee = 0;
 }
 
 
 /*---------------------------------------------------------------------------------------------*/
 /*                                AFFICHAGE DES HISTORIQUES                                    */
 /*---------------------------------------------------------------------------------------------*/
-void ShowHistoExt(void)
-{
-}
-void ShowHistoInt(void)
-{
-}
-void ShowHistoPuit(void)
-{
-}
-void ShowHistoChem(void)
-{
-}
+
 
