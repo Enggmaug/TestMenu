@@ -234,7 +234,7 @@ void DisplayCourbeScreen(void)
     TempToDisplay = 0;
   }
   color = BLEU;
-  Serial.println(TempToDisplay);
+  
   for (idx = 0; idx < tft.width(); idx ++)
   {
     ConvertedTemp = ConvertTemperature(Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx],
