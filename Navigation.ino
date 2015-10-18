@@ -196,10 +196,10 @@ void ShowHistoExt(void)
   MenuChanged = true;
   EcranEnCours.pt_tab_menu = (char *)&tab_MenuCourbes[1][0];
   EcranEnCours.SelectedItem = 1;
-  EcranEnCours.NbItems = NBTYPHISTO;
+  EcranEnCours.NbItems = NBTYPHISTO - 1;
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
-  EcranEnCours.Select = GotoHisto;
+  EcranEnCours.Select = GotoCourbes;
   EcranEnCours.TypeEcran = HISTO;
 }
 
@@ -208,6 +208,14 @@ void ShowHistoExt(void)
 /*---------------------------------------------------------------------------------------------*/
 void ShowHistoInt(void)
 {
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuCourbes[2][0];
+  EcranEnCours.SelectedItem = 1;
+  EcranEnCours.NbItems = NBTYPHISTO - 1;
+  EcranEnCours.Droite = Suivant;
+  EcranEnCours.Gauche = Precedent;
+  EcranEnCours.Select = GotoCourbes;
+  EcranEnCours.TypeEcran = HISTO;
 }
 
 /*-NIVEAU 4------------------------------------------------------------------------------------*/
@@ -215,6 +223,14 @@ void ShowHistoInt(void)
 /*---------------------------------------------------------------------------------------------*/
 void ShowHistoPuit(void)
 {
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuCourbes[3][0];
+  EcranEnCours.SelectedItem = 1;
+  EcranEnCours.NbItems = NBTYPHISTO - 1;
+  EcranEnCours.Droite = Suivant;
+  EcranEnCours.Gauche = Precedent;
+  EcranEnCours.Select = GotoCourbes;
+  EcranEnCours.TypeEcran = HISTO;
 }
 
 /*-NIVEAU 4------------------------------------------------------------------------------------*/
@@ -222,6 +238,14 @@ void ShowHistoPuit(void)
 /*---------------------------------------------------------------------------------------------*/
 void ShowHistoChem(void)
 {
+  MenuChanged = true;
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuCourbes[4][0];
+  EcranEnCours.SelectedItem = 1;
+  EcranEnCours.NbItems = NBTYPHISTO - 1;
+  EcranEnCours.Droite = Suivant;
+  EcranEnCours.Gauche = Precedent;
+  EcranEnCours.Select = GotoCourbes;
+  EcranEnCours.TypeEcran = HISTO;
 }
 
 /*-NIVEAU 3------------------------------------------------------------------------------------*/

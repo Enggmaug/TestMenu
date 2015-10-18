@@ -195,7 +195,11 @@ void DisplayTempScreen(void)
 /*---------------------------------------------------------------------------------------------*/
 void DisplayCourbeScreen(void)
 {
-  const char TypeHisto[NBTYPHISTO][16] = {"24 Heures","7 Jours", "30 Jours", "365 Jours"};
+  int idx;
+  unsigned int TempToDisplay;
+  unsigned int ConvertedTemp;
+  int color;
+  const char TypeHisto[NBTYPHISTO][16] = {"", "24 Heures", "7 Jours", "30 Jours", "365 Jours"};
   // AFFICHAGE DE LA PREMIERE LIGNE
   tft.fillScreen(NOIR);
   tft.setTextColor(NOIR);
@@ -208,7 +212,53 @@ void DisplayCourbeScreen(void)
   tft.setCursor(10, (tft.height() / ct_NbItemMax) );       // On se positionne au centre, sur la base de 17 caracteres/ligne
   tft.setTextColor(BLANC);
   tft.setTextSize(2);
-  tft.println(TypeHisto[EcranEnCours.SelectedItem-1]);
+  tft.println(TypeHisto[EcranEnCours.SelectedItem]);
+  if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuCourbes[1][0]) == 0)
+  {
+    TempToDisplay = 1;
+  }
+  else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuCourbes[2][0]) == 0)
+  {
+    TempToDisplay = 2;
+  }
+  else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuCourbes[3][0]) == 0)
+  {
+    TempToDisplay = 3;
+  }
+  else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuCourbes[4][0]) == 0)
+  {
+    TempToDisplay = 4;
+  }
+  else
+  {
+    TempToDisplay = 0;
+  }
+  color = BLEU;
+  Serial.println(TempToDisplay);
+  for (idx = 0; idx < tft.width(); idx ++)
+  {
+    ConvertedTemp = ConvertTemperature(Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx],
+                                       MinMax[0][TempToDisplay],
+                                       MinMax[1][TempToDisplay],
+                                       (tft.height() / ct_NbItemMax) * (ct_NbItemMax - 1));
+    if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx] > (Seuils[Reglage][TempToDisplay] + Hysteresis[Reglage][TempToDisplay]))
+      color = ROUGE;
+    if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx] < (Seuils[Reglage][TempToDisplay] - Hysteresis[Reglage][TempToDisplay]))
+    {
+      if (TempToDisplay == 1)
+      {
+
+        if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx] < (Seuils[Reglage][TempToDisplay - 1] - Hysteresis[Reglage][TempToDisplay - 1]))
+          color =  BLEU;
+        if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx] > (Seuils[Reglage][TempToDisplay - 1] + Hysteresis[Reglage][TempToDisplay - 1]))
+          color = VERT;
+      }
+      else
+        color =  BLEU;
+    }
+
+    tft.drawPixel(idx, tft.height() - ConvertedTemp, color);
+  }
 }
 
 /*---------------------------------------------------------------------------------------------*/
