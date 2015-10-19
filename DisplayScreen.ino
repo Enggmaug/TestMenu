@@ -198,21 +198,12 @@ void DisplayCourbeScreen(void)
   int idx;
   unsigned int TempToDisplay;
   unsigned int ConvertedTemp;
+  unsigned int Grid;
   int color;
   const char TypeHisto[NBTYPHISTO][16] = {"", "24 Heures", "7 Jours", "30 Jours", "365 Jours"};
-  // AFFICHAGE DE LA PREMIERE LIGNE
-  tft.fillScreen(NOIR);
-  tft.setTextColor(NOIR);
-  tft.fillRect(0, 0, tft.width(), (tft.height() / ct_NbItemMax), BLANC);
-  tft.drawFastHLine(0, (tft.height() / ct_NbItemMax) - 1, tft.width(), NOIR);
-  tft.setCursor(tft.width() / 2 - (strlen(EcranEnCours.pt_tab_menu) / 2) * (tft.width() / 17), 5);       // On se positionne au centre, sur la base de 17 caracteres/ligne
-  tft.setTextSize(3);
-  tft.println(EcranEnCours.pt_tab_menu);
 
-  tft.setCursor(10, (tft.height() / ct_NbItemMax) );       // On se positionne au centre, sur la base de 17 caracteres/ligne
-  tft.setTextColor(BLANC);
-  tft.setTextSize(2);
-  tft.println(TypeHisto[EcranEnCours.SelectedItem]);
+  tft.fillScreen(NOIR);
+
   if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuCourbes[1][0]) == 0)
   {
     TempToDisplay = 1;
@@ -233,8 +224,40 @@ void DisplayCourbeScreen(void)
   {
     TempToDisplay = 0;
   }
+
+
+  // AFFICHAGE de la grille
+  if (MinMax[1][TempToDisplay] - MinMax[0][TempToDisplay] > 80)
+    Grid = 20;
+  else if (MinMax[1][TempToDisplay] - MinMax[0][TempToDisplay] > 40)
+    Grid = 10;
+  else if (MinMax[1][TempToDisplay] - MinMax[0][TempToDisplay] > 20)
+    Grid = 5;
+  else if (MinMax[1][TempToDisplay] - MinMax[0][TempToDisplay] > 10)
+    Grid = 2;
+  else
+    Grid = 1;
+
+  for (idx = MinMax[0][TempToDisplay]; idx <= MinMax[1][TempToDisplay]; idx ++)
+  {
+    if (idx % Grid == 0)
+    {
+      ConvertedTemp = ConvertTemperature(idx,
+                                         MinMax[0][TempToDisplay],
+                                         MinMax[1][TempToDisplay],
+                                         (tft.height() / ct_NbItemMax) * (ct_NbItemMax - 1));
+      tft.drawFastHLine(0, tft.height()-ConvertedTemp, tft.width() - 30, GRIS);
+      tft.setTextSize(1);
+      tft.setCursor(tft.width() - 30, tft.height()-ConvertedTemp);
+      tft.setTextColor(GRIS);
+      tft.println((float)idx);
+    }
+  }
+
+
+
   color = BLEU;
-  
+
   for (idx = 0; idx < tft.width(); idx ++)
   {
     ConvertedTemp = ConvertTemperature(Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx],
@@ -259,6 +282,20 @@ void DisplayCourbeScreen(void)
 
     tft.drawPixel(idx, tft.height() - ConvertedTemp, color);
   }
+
+
+  tft.setCursor(10, (tft.height() / ct_NbItemMax) );
+  tft.setTextColor(BLANC);
+  tft.setTextSize(2);
+  tft.println(TypeHisto[EcranEnCours.SelectedItem]);
+
+  // AFFICHAGE DE LA PREMIERE LIGNE
+  tft.setTextColor(NOIR);
+  tft.fillRect(0, 0, tft.width(), (tft.height() / ct_NbItemMax), BLANC);
+  tft.drawFastHLine(0, (tft.height() / ct_NbItemMax) - 1, tft.width(), NOIR);
+  tft.setCursor(tft.width() / 2 - (strlen(EcranEnCours.pt_tab_menu) / 2) * (tft.width() / 17), 5);       // On se positionne au centre, sur la base de 17 caracteres/ligne
+  tft.setTextSize(3);
+  tft.println(EcranEnCours.pt_tab_menu);
 }
 
 /*---------------------------------------------------------------------------------------------*/
