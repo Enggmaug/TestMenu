@@ -88,6 +88,7 @@ void WriteHysterToFile(void) // Ecriture des Seuils dans le fichier Seuils.par
 void SaveHistoriques(void)
 {
   int idx;
+  char Filename[16];
 
   CompteJours ++;
   CompteSemaines ++;
@@ -98,12 +99,30 @@ void SaveHistoriques(void)
   static float MoyenneMois[30] = {0};
   static float MoyenneAnnee[365] = {0};
 
+  sprintf(Filename, "%d_rec.crb", DateHeureCourante.year);
+  File dataFile = SD.open(Filename, FILE_WRITE);
+  dataFile.write(DateHeureCourante.year);
+  dataFile.write(";");
+  dataFile.write(DateHeureCourante.mon);
+  dataFile.write(";");
+  dataFile.write(DateHeureCourante.mday);
+  dataFile.write(";");
+  dataFile.write(DateHeureCourante.hour);
+  dataFile.write(";");
+  dataFile.write(DateHeureCourante.min);
+  dataFile.write(";");
+
+
+
   for (idx = 0; idx < NB_TEMP - 1 ; idx ++)
   {
     Historiques[idx][0][CompteJours] = Temperatures[idx + 1];
     MoyenneSemaine[CompteSemaines % 7] = Temperatures[idx + 1];
     MoyenneMois[CompteMois % 30] = Temperatures[idx + 1];
     MoyenneAnnee[CompteAnnee % 365] = Temperatures[idx + 1];
+    dataFile.write(Temperatures[idx + 1]);
+    dataFile.write(";");
+
 
     if ((CompteSemaines % 7) == 0)
     {
@@ -123,6 +142,7 @@ void SaveHistoriques(void)
   if (CompteMois >= 9600) CompteMois = 0;
   if (CompteAnnee >= 116800) CompteAnnee = 0;
 
+  dataFile.close();
 }
 
 
