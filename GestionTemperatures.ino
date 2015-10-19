@@ -68,3 +68,16 @@ int ConvertTemperature(float InputTemp, float Min, float Max, int HauteurMax)
 
   return ((int) RegleDeTroyes);
 }
+
+
+float Moyenne (float *pt_tab, int NbOfElements)
+{
+  int idx;
+  double value = 0.0;
+  for (idx = 0; idx < NbOfElements; idx ++)
+  {
+    value = value + (double)pt_tab[idx];
+  }
+  value = value / NbOfElements;
+  return (float) value;
+}

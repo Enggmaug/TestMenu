@@ -205,6 +205,11 @@ const struct ts BlankDateHeure = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 bool RTClockAlarm = false;
 bool InhibRTCAlarms = false;
 
+unsigned int CompteJours = 0;
+unsigned int CompteSemaines = 0;
+unsigned int CompteMois = 0;
+unsigned int CompteAnnee = 0;
+
 float Historiques[NB_TEMP - 1][NBTYPHISTO - 1][380] =
 {
   {

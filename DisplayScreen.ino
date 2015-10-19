@@ -201,32 +201,38 @@ void DisplayCourbeScreen(void)
   unsigned int Grid;
   int color;
   const char TypeHisto[NBTYPHISTO][16] = {"", "24 Heures", "7 Jours", "30 Jours", "365 Jours"};
+  int CourbeStart;
 
   tft.fillScreen(NOIR);
 
   if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuCourbes[1][0]) == 0)
   {
     TempToDisplay = 1;
+    CourbeStart = CompteJours;
   }
   else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuCourbes[2][0]) == 0)
   {
     TempToDisplay = 2;
+    CourbeStart = CompteSemaines;
   }
   else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuCourbes[3][0]) == 0)
   {
     TempToDisplay = 3;
+    CourbeStart = CompteMois;
   }
   else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuCourbes[4][0]) == 0)
   {
     TempToDisplay = 4;
+    CourbeStart = CompteAnnee;
   }
   else
   {
     TempToDisplay = 0;
+    CourbeStart = CompteJours;
   }
 
 
-  // AFFICHAGE de la grille
+  // AFFICHAGE de la grille (Lignes H)
   if (MinMax[1][TempToDisplay] - MinMax[0][TempToDisplay] > 80)
     Grid = 20;
   else if (MinMax[1][TempToDisplay] - MinMax[0][TempToDisplay] > 40)
@@ -246,34 +252,61 @@ void DisplayCourbeScreen(void)
                                          MinMax[0][TempToDisplay],
                                          MinMax[1][TempToDisplay],
                                          (tft.height() / ct_NbItemMax) * (ct_NbItemMax - 1));
-      tft.drawFastHLine(0, tft.height()-ConvertedTemp, tft.width() - 30, GRIS);
+      tft.drawFastHLine(0, tft.height() - ConvertedTemp, tft.width() - 30, GRIS);
       tft.setTextSize(1);
-      tft.setCursor(tft.width() - 30, tft.height()-ConvertedTemp);
+      tft.setCursor(tft.width() - 30, tft.height() - ConvertedTemp);
       tft.setTextColor(GRIS);
       tft.println((float)idx);
     }
   }
+  // AFFICHAGE de la grille (Lignes V)
+  switch (TempToDisplay)
+  {
+    case 1: // 24 H
+      Grid = 4;
+      break;
+    case 2: // 7 J
+      Grid = 7;
+      break;
+    case 3: // 30 J
+      Grid = 4;
+      break;
+    case 4: //365 J
+      Grid = 12;
+      break;
+    default:
+      Grid = 1;
+      break;
+  }
+  Grid = tft.width() / Grid;
+  for (idx = 0; idx < tft.width(); idx = idx + Grid)
+  {
+    tft.drawFastVLine(idx, 0, tft.height(), GRIS);
+  }
 
-
-
+  // Affichage des Courbes
   color = BLEU;
 
   for (idx = 0; idx < tft.width(); idx ++)
   {
-    ConvertedTemp = ConvertTemperature(Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx],
+    if (CourbeStart > tft.width())
+    {
+      CourbeStart = tft.width() - CourbeStart;
+    }
+    ConvertedTemp = ConvertTemperature(Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx + CourbeStart],
                                        MinMax[0][TempToDisplay],
                                        MinMax[1][TempToDisplay],
                                        (tft.height() / ct_NbItemMax) * (ct_NbItemMax - 1));
-    if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx] > (Seuils[Reglage][TempToDisplay] + Hysteresis[Reglage][TempToDisplay]))
+    if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx + CourbeStart] > (Seuils[Reglage][TempToDisplay] + Hysteresis[Reglage][TempToDisplay]))
       color = ROUGE;
-    if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx] < (Seuils[Reglage][TempToDisplay] - Hysteresis[Reglage][TempToDisplay]))
+    if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx + CourbeStart] < (Seuils[Reglage][TempToDisplay] - Hysteresis[Reglage][TempToDisplay]))
     {
       if (TempToDisplay == 1)
       {
 
-        if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx] < (Seuils[Reglage][TempToDisplay - 1] - Hysteresis[Reglage][TempToDisplay - 1]))
+        if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx + CourbeStart] < (Seuils[Reglage][TempToDisplay - 1] - Hysteresis[Reglage][TempToDisplay - 1]))
           color =  BLEU;
-        if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx] > (Seuils[Reglage][TempToDisplay - 1] + Hysteresis[Reglage][TempToDisplay - 1]))
+        if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx + CourbeStart] > (Seuils[Reglage][TempToDisplay - 1] + Hysteresis[Reglage][TempToDisplay - 1]))
           color = VERT;
       }
       else
@@ -282,7 +315,6 @@ void DisplayCourbeScreen(void)
 
     tft.drawPixel(idx, tft.height() - ConvertedTemp, color);
   }
-
 
   tft.setCursor(10, (tft.height() / ct_NbItemMax) );
   tft.setTextColor(BLANC);
