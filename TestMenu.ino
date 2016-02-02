@@ -18,20 +18,41 @@
 #define NBTYPHISTO  5
 
 //DEFINE des Numeros de Pins à remplacer par les bonnes valeurs
-#define TFT_DC         9
+#define TFT_DC         33
 #define TFT_CS         10
 #define TFT_RST        -1
-#define COD_CLK        6
-#define COD_DT         7
-#define COD_SW         8
+#define COD_CLK        25
+#define COD_DT         32
+#define COD_SW         24
 #define SDCARD_CS      15
-#define T_EXT          23
-#define T_INT          22
-#define T_CHEMINEE     19
-#define T_PUIT         20
-#define RTCLK_CS       21
-#define RTCLK_INT      18
-
+#define T_EXT          7 //A7 = 21
+#define T_INT          6 //A6 = 20
+#define T_CHEMINEE     9 //A9 = 23
+#define T_PUIT         8 //A8 = 22
+#define RTCLK_CS       9
+#define RTCLK_INT      8
+#define BYPASS_1_F     0
+#define BYPASS_1_O     1
+#define BYPASS_2_F     2
+#define BYPASS_2_O     3
+#define VENT_CAVE      4
+#define VENT_CHEM      5
+#define V12_1_ON       6
+#define SELECT_VMC     7
+#define SPI_MOSI       11
+#define SPI_MISO       12
+#define SPI_CLK        13
+#define V12_CHECK      14
+#define ENDSTOP_1_1    19
+#define ENDSTOP_1_2    18
+#define ENDSTOP_2_1    17 
+#define ENDSTOP_2_2    16
+#define RX_SPARE       26
+#define TX_SPARE       31
+#define SELECT_12V     27
+#define V12_1_ON       28
+#define SCL1_SPARE     29
+#define SDA1_SPARE     30
 //test
 #define BUFF_MAX 256
 
