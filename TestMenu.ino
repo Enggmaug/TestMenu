@@ -1,8 +1,9 @@
 #include "SPI.h"
 #include "Adafruit_GFX.h"
-#include "ILI9341_t3.h"
+#include "Adafruit_ILI9341.h"
 #include <SD.h>
 #include "ds3234.h"
+#include "TestMenu.h"
 
 // DEFINE
 #define NB_CAR_LIGNE   24
@@ -50,7 +51,7 @@
 #define RX_SPARE       26
 #define TX_SPARE       31
 #define SELECT_12V     27
-#define V12_1_ON       28
+#define V12_2_ON       28
 #define SCL1_SPARE     29
 #define SDA1_SPARE     30
 //test
@@ -172,7 +173,7 @@ bool TemperatureDepasseSeuil[NB_TEMP];
 bool SdCardPresent;
 
 // TFT Screen
-ILI9341_t3 tft = ILI9341_t3(TFT_CS, TFT_DC, TFT_RST);
+Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, SPI_MOSI, SPI_CLK, TFT_RST, SPI_MISO);
 
 //Gestion de navigation - écrans menu
 typedef enum
