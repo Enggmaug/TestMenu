@@ -43,7 +43,7 @@ void loop(void)
     {
       SaveHistoriques();
     }
-    if (counter >= 540)
+    else if (counter >= 1)//540) Pour voir en vitesse accelérée les courbes
     {
       counter = 0;
       SaveHistoriques();

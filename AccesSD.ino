@@ -95,10 +95,6 @@ void SaveHistoriques(void)
   CompteMois ++;
   CompteAnnee ++;
 
-  static float MoyenneSemaine[7] = {0};
-  static float MoyenneMois[30] = {0};
-  static float MoyenneAnnee[365] = {0};
-
   sprintf(Filename, "%d_rec.crb", DateHeureCourante.year);
   File dataFile = SD.open(Filename, FILE_WRITE);
   dataFile.write(DateHeureCourante.year);
@@ -117,24 +113,21 @@ void SaveHistoriques(void)
   for (idx = 0; idx < NB_TEMP - 1 ; idx ++)
   {
     Historiques[idx][0][CompteJours] = Temperatures[idx + 1];
-    MoyenneSemaine[CompteSemaines % 7] = Temperatures[idx + 1];
-    MoyenneMois[CompteMois % 30] = Temperatures[idx + 1];
-    MoyenneAnnee[CompteAnnee % 365] = Temperatures[idx + 1];
     dataFile.write(Temperatures[idx + 1]);
     dataFile.write(";");
 
 
     if ((CompteSemaines % 7) == 0)
     {
-      Historiques[idx][1][CompteSemaines / 7] = Moyenne(&MoyenneSemaine[0], 7);
+      Historiques[idx][1][CompteSemaines / 7] = Moyenne(&Historiques[idx][0][CompteJours-7], 7);
     }
     if ((CompteMois % 30) == 0)
     {
-      Historiques[idx][2][CompteMois / 30] = Moyenne(&MoyenneMois[0], 30);
+      Historiques[idx][2][CompteMois / 30] = Moyenne(&Historiques[idx][1][CompteSemaines-4], 4);
     }
     if ((CompteAnnee % 365) == 0)
     {
-      Historiques[idx][3][CompteAnnee / 365] = Moyenne(&MoyenneAnnee[0], 365);
+      Historiques[idx][3][CompteAnnee / 365] = Moyenne(&Historiques[idx][1][CompteMois-12], 12);
     }
   }
   if (CompteJours >= 320) CompteJours = 0;
