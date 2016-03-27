@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------------------*/
-/*                         AFFICHAGE DU MENU SELECTIONNE - EntrÃ©e sur ecran                    */
+/*                         AFFICHAGE DU MENU SELECTIONNE - Entrée sur ecran                    */
 /*---------------------------------------------------------------------------------------------*/
 
 void DisplayMenuScreen(void)
@@ -19,21 +19,21 @@ void DisplayMenuScreen(void)
   tft.setTextSize(2);
   for (idx = 1; idx < EcranEnCours.NbItems; idx++)              // Pour chaque Item du menu
   {
-    if (EcranEnCours.pt_tab_EnabledItems[idx] == false)         // Si Item DesactivÃ©
+    if (EcranEnCours.pt_tab_EnabledItems[idx] == false)         // Si Item Desactivé
     {
-      if (idx == EcranEnCours.SelectedItem)                     //Et si item selectionnÃ©, on change d'item selectionnÃ©
+      if (idx == EcranEnCours.SelectedItem)                     //Et si item selectionné, on change d'item selectionné
       {
         Suivant();
       }
       tft.setTextColor(GRIS);                         // Police grise sur fond noir
       tft.fillRect(0, (tft.height() / ct_NbItemMax) * idx, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
     }
-    else if (idx == EcranEnCours.SelectedItem)                       // Item SelectionnÃ©
+    else if (idx == EcranEnCours.SelectedItem)                       // Item Selectionné
     {
       tft.setTextColor(NOIR);                          // Police noire sur fond blanc
       tft.fillRect(0, (tft.height() / ct_NbItemMax) * idx, tft.width(), (tft.height() / ct_NbItemMax), BLANC);
     }
-    else                                                       // Item DÃ©selectionnÃ©
+    else                                                       // Item Déselectionné
     {
       tft.setTextColor(BLANC);                         // Police blanche sur fond noir
       tft.fillRect(0, (tft.height() / ct_NbItemMax) * idx, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
@@ -75,7 +75,7 @@ void DisplayTempScreen(void)
   tft.setTextSize(3);
   tft.println(EcranEnCours.pt_tab_menu);
   tft.setTextSize(1);
-  tft.setCursor(0, 200);    // Test du nombre de caractÃ¨res sur une ligne
+  tft.setCursor(0, 200);    // Test du nombre de caractères sur une ligne
   tft.setTextColor(ROUGE);
 
   for (idx = 1; idx < EcranEnCours.NbItems; idx++)              // Pour chaque Item du menu
@@ -125,7 +125,7 @@ void DisplayTempScreen(void)
     //Calcul de la hauteur de mercure
     ConvertedTemp = ConvertTemperature(Temperatures[idx], Min, Max, PixelMax - PixelMin);
 
-    //Dessin du thermomÃ¨tre
+    //Dessin du thermomètre
     PositionX = idx * (tft.width() / 4) - tft.width() / 8;
     tft.drawRect  (PositionX - 11, PixelMin,                 22, PixelMax - PixelMin, BLANC);
     tft.fillCircle(PositionX,      PixelMax,                 19,                     color);
@@ -135,7 +135,7 @@ void DisplayTempScreen(void)
     //Dessin du mercure
 
     tft.fillRect  (PositionX - 10, PixelMax - ConvertedTemp, 20, ConvertedTemp - 15,       color);
-    //Affichage de la valeur de tempÃ©rature
+    //Affichage de la valeur de température
     tft.setTextColor(NOIR);
     tft.setCursor (PositionX - 10, PixelMax - 2);
     sprintf(DisplayedStr, "%2.1f", Temperatures[idx]);
@@ -181,7 +181,7 @@ void DisplayTempScreen(void)
       }
     }
 
-    //Affichage du nom du thermomÃ¨tre
+    //Affichage du nom du thermomètre
     tft.setCursor(PositionX - (strlen((char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * idx)) / 2) * (tft.width() / 52), 220);      // On se positionne au centre, sur la base de 34 caracteres/ligne
     tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * idx));
 
@@ -200,7 +200,7 @@ void DisplayCourbeScreen(void)
   unsigned int ConvertedTemp;
   unsigned int Grid;
   int color;
-  const char TypeHisto[NBTYPHISTO][16] = {"", "24 Heures", "7 Jours", "30 Jours", "365 Jours"};
+  const char TypeHisto[NB_TYP_HISTO][16] = {"", "24 Heures", "7 Jours", "30 Jours", "365 Jours"};
   int CourbeStart;
 
   tft.fillScreen(NOIR);
@@ -313,7 +313,7 @@ void DisplayCourbeScreen(void)
         color =  BLEU;
     }
 
-    tft.drawPixel(idx, tft.height() - ConvertedTemp, color);
+    tft.drawPixel(tft.width()-(idx+CourbeStart), tft.height() - ConvertedTemp, color);
   }
 
   tft.setCursor(10, (tft.height() / ct_NbItemMax) );
