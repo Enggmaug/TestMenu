@@ -1,12 +1,12 @@
 void setup(void)
 {
   pinMode(RTCLK_CS, OUTPUT);       // chip select pin
-  DS3234_init(RTCLK_CS, DS3234_INTCN);
-
   pinMode(COD_CLK, INPUT);
   pinMode(COD_DT, INPUT);
   pinMode(COD_SW, INPUT);
   pinMode(RTCLK_INT, INPUT);
+
+  DS3234_init(RTCLK_CS, DS3234_INTCN);
 
   MenuChanged = true;
   RotDetect = false;

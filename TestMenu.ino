@@ -1,6 +1,4 @@
-#include "SPI.h"
-#include "Adafruit_GFX.h"
-#include "Adafruit_ILI9341.h"
+#include "ILI9341_t3.h"
 #include <SD.h>
 #include "ds3234.h"
 #include "TestMenu.h"
@@ -19,19 +17,7 @@
 #define NBTYPHISTO  5
 
 //DEFINE des Numeros de Pins à remplacer par les bonnes valeurs
-#define TFT_DC         33
-#define TFT_CS         10
-#define TFT_RST        -1
-#define COD_CLK        25
-#define COD_DT         32
-#define COD_SW         24
-#define SDCARD_CS      15
-#define T_EXT          7 //A7 = 21
-#define T_INT          6 //A6 = 20
-#define T_CHEMINEE     9 //A9 = 23
-#define T_PUIT         8 //A8 = 22
-#define RTCLK_CS       9
-#define RTCLK_INT      8
+
 #define BYPASS_1_F     0
 #define BYPASS_1_O     1
 #define BYPASS_2_F     2
@@ -40,20 +26,45 @@
 #define VENT_CHEM      5
 #define V12_1_ON       6
 #define SELECT_VMC     7
+#define RTCLK_INT      8
+#define RTCLK_CS       9
+#define TFT_CS         10
 #define SPI_MOSI       11
 #define SPI_MISO       12
 #define SPI_CLK        13
 #define V12_CHECK      14
-#define ENDSTOP_1_1    19
-#define ENDSTOP_1_2    18
-#define ENDSTOP_2_1    17 
+#define SDCARD_CS      15
 #define ENDSTOP_2_2    16
+#define ENDSTOP_2_1    17 
+#define ENDSTOP_1_2    18
+#define ENDSTOP_1_1    19
+#define TFT_DC         20
+#define T_EXT          -1 //A7 = 21
+#define T_PUIT         -1 //A8 = 22
+#define T_CHEMINEE     -1 //A9 = 23
+#define COD_SW         24
+#define COD_CLK        25
 #define RX_SPARE       26
-#define TX_SPARE       31
-#define SELECT_12V     27
+#define T_INT          -1 //A16 = 27
 #define V12_2_ON       28
 #define SCL1_SPARE     29
 #define SDA1_SPARE     30
+#define TX_SPARE       31
+#define COD_DT         32
+#define SELECT_12V     33
+#define TFT_RST        -1
+
+
+
+
+
+
+
+
+
+
+
+
 //test
 #define BUFF_MAX 256
 
@@ -173,7 +184,7 @@ bool TemperatureDepasseSeuil[NB_TEMP];
 bool SdCardPresent;
 
 // TFT Screen
-Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, SPI_MOSI, SPI_CLK, TFT_RST, SPI_MISO);
+ILI9341_t3 tft = ILI9341_t3(TFT_CS, TFT_DC);
 
 //Gestion de navigation - écrans menu
 typedef enum
