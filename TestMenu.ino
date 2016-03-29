@@ -1,4 +1,3 @@
-
 #include "ILI9341_t3.h"
 #include <SD.h>
 #include "ds3234.h"
@@ -17,7 +16,7 @@
 #define PUIT_CANAD  3
 #define NB_TYP_HISTO  5
 
-//DEFINE des Numeros de Pins à remplacer par les bonnes valeurs
+//DEFINE des Numeros de Pins Ã  remplacer par les bonnes valeurs
 
 
 
@@ -175,7 +174,7 @@ const FctPtr tab_SaveHoursFonct[ct_SauvegarderNbItems]            =  {None      
 const char* BlankLine = "                       ";
 char tab_MenuTemp[ct_NbItemMax][NB_CAR_LIGNE];
 
-//Seuils et Température par défaut
+//Seuils et TempÃ©rature par dÃ©faut
 float Seuils[3][NB_TEMP] = {DEFAULT_SEUILS, DEFAULT_SEUILS, DEFAULT_SEUILS};
 float Hysteresis[3][NB_TEMP] = {DEFAULT_HYSTERESIS, DEFAULT_HYSTERESIS, DEFAULT_HYSTERESIS};
 float MinMax[2][NB_TEMP] = {DEFAULT_SEUILS, DEFAULT_SEUILS};
@@ -183,13 +182,13 @@ float Temperatures[NB_TEMP];
 bool TemperatureDepasseSeuil[NB_TEMP];
 
 
-// Si carte SD présente
+// Si carte SD prÃ©sente
 bool SdCardPresent;
 
 // TFT Screen
 ILI9341_t3 tft = ILI9341_t3(TFT_CS, TFT_DC);
 
-//Gestion de navigation - écrans menu
+//Gestion de navigation - Ã©crans menu
 typedef enum
 {
   MENU,
@@ -227,7 +226,7 @@ enum CodeurActions
 } MenuAction;
 
 
-// Definition des Réglages
+// Definition des RÃ©glages
 enum Reglages {
   ETE = 0,
   MI_SAISON = 1,

@@ -15,6 +15,7 @@ void loop(void)
       case TEMPERATURES :
         DisplayTempScreen();
       case SORTIES :
+        DisplayOutputs();
         break;
       case MAINTENANCE :
         break;

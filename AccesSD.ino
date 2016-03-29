@@ -38,6 +38,11 @@ void WriteSeuilsToFile(void) // Ecriture des Seuils dans le fichier Seuils.par
     dataFile.write(pt_read[idx]);
   }
   dataFile.close();
+
+  if (SD.exists("Seuils.par"))
+    SdCardPresent = true;
+  else 
+    SdCardPresent = false;
 }
 
 /*---------------------------------------------------------------------------------------------*/
@@ -79,6 +84,11 @@ void WriteHysterToFile(void) // Ecriture des Seuils dans le fichier Seuils.par
     dataFile.write(pt_read[idx]);
   }
   dataFile.close();
+
+  if (SD.exists("Hyst.par"))
+    SdCardPresent = true;
+  else 
+    SdCardPresent = false;
 }
 
 /*---------------------------------------------------------------------------------------------*/
@@ -136,6 +146,11 @@ void SaveHistoriques(void)
   if (CompteAnnee >= 116800) CompteAnnee = 0;
 
   dataFile.close();
+
+  if (SD.exists(Filename))
+    SdCardPresent = true;
+  else 
+    SdCardPresent = false;
 }
 
 
