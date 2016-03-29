@@ -205,6 +205,31 @@ void DisplayTempScreen(void)
 
 
 /*---------------------------------------------------------------------------------------------*/
+/*                                 AFFICHAGE DES SORTIES                                       */
+/*---------------------------------------------------------------------------------------------*/
+void DisplayOutputs(void)
+{
+  int color;
+
+ noInterrupts();   
+  //Affichage du status SD
+ if (SdCardPresent)
+  {
+    color = VERT;
+  }
+  else
+  {
+    color = ROUGE;
+  }
+  tft.setCursor(5, 10);      // Coin en haut à Gauche
+  tft.setTextColor(color);
+  tft.setTextSize(2);
+  tft.println("SD");
+      
+  interrupts();
+}
+   
+/*---------------------------------------------------------------------------------------------*/
 /*                                    AFFICHAGE DES COURBES                                    */
 /*---------------------------------------------------------------------------------------------*/
 void DisplayCourbeScreen(void)
@@ -344,28 +369,6 @@ void DisplayCourbeScreen(void)
   tft.println(EcranEnCours.pt_tab_menu);
 }
 
-/*---------------------------------------------------------------------------------------------*/
-/*                            Affichage de l'écran des outputs                                 */
-/*---------------------------------------------------------------------------------------------*/
-void DisplayOutputs(void)
-{
-  int color;
-
-  //Affichage du status SD
- if (SdCardPresent)
-  {
-    color = VERT;
-  }
-  else
-  {
-    color = ROUGE;
-  }
-    tft.setCursor(5, 10);      // Coin en haut à Gauche
-    tft.setTextColor(color);
-    tft.setTextSize(2);
-    tft.println("SD");
-}
-   
 /*---------------------------------------------------------------------------------------------*/
 /*             Interdiction des Items qui ne sont pas accessibles si pas de SD                 */
 /*---------------------------------------------------------------------------------------------*/
