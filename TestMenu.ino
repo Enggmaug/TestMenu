@@ -237,7 +237,7 @@ enum Reglages {
 struct ts DateHeureCourante;
 const struct ts BlankDateHeure = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-bool RTClockAlarm = false;
+bool RTClockAlarm = true;
 bool InhibRTCAlarms = false;
 
 unsigned int CompteJours = 0;
