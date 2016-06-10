@@ -33,7 +33,7 @@ void loop(void)
     RTClockAlarm = false;
     DS3234_clear_a1f(RTCLK_CS);
     counter++;
-    //GetTemperatures();
+    GetTemperatures();
     CheckTemperatures();
     if (counter % 60 == 0)
     {
@@ -48,5 +48,7 @@ void loop(void)
       counter = 0;
       SaveHistoriques();
     }
+    MenuChanged = true;
+    NOIR = 0xF000;
   }
 }
