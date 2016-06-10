@@ -205,7 +205,7 @@ void DisplayCourbeScreen(void)
   int CourbeStart;
   noInterrupts();           // Desactivation des interruptions pendant le redessin de l'ecran
   
-  tft.fillScreen(NOIR);
+  tft.fillRect(0, (tft.height() / ct_NbItemMax), tft.width(),tft.height() , NOIR);
 
   if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuCourbes[1][0]) == 0)
   {
@@ -254,7 +254,7 @@ void DisplayCourbeScreen(void)
                                          MinMax[0][TempToDisplay],
                                          MinMax[1][TempToDisplay],
                                          (tft.height() / ct_NbItemMax) * (ct_NbItemMax - 1));
-      tft.drawFastHLine(0, tft.height() - ConvertedTemp, tft.width() - 30, GRIS);
+      tft.drawFastHLine(0, tft.height() - ConvertedTemp, tft.width() - 31, GRIS);
       tft.setTextSize(1);
       tft.setCursor(tft.width() - 30, tft.height() - ConvertedTemp);
       tft.setTextColor(GRIS);
@@ -283,7 +283,7 @@ void DisplayCourbeScreen(void)
   Grid = tft.width() / Grid;
   for (idx = 0; idx < tft.width(); idx = idx + Grid)
   {
-    tft.drawFastVLine(idx, 0, tft.height(), GRIS);
+    tft.drawFastVLine(idx, (tft.height() / ct_NbItemMax), tft.height(), GRIS);
   }
 
   // Affichage des Courbes
