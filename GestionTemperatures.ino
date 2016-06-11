@@ -18,7 +18,7 @@ float ReadTemperature(int AnalogPinNumber) // A ECRIRE
 {
   if (AnalogPinNumber > 0)
   {
-    return (20.0);
+    return (20.0);    
     //return (analogRead(AnalogPinNumber));
   }
   else
@@ -46,13 +46,13 @@ void CheckTemperatures (void)
       }
     }
 
-    if (Temperatures[idx] < MinMax[0][idx])
+    if (Temperatures[idx] < MinMax[MIN][idx])
     {
-      MinMax[0][idx] = Temperatures[idx];
+      MinMax[MIN][idx] = Temperatures[idx];
     }
-    else if (Temperatures[idx] > MinMax[1][idx])
+    else if (Temperatures[idx] > MinMax[MAX][idx])
     {
-      MinMax[1][idx] = Temperatures[idx];
+      MinMax[MAX][idx] = Temperatures[idx];
     }
   }
 }

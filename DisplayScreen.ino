@@ -5,6 +5,8 @@
 void DisplayMenuScreen(void)
 {
   int idx;
+  int SDColor;
+  
   noInterrupts();           // Desactivation des interruptions pendant le redessin de l'ecran
 
   // AFFICHAGE DE LA PREMIERE LIGNE
@@ -47,6 +49,19 @@ void DisplayMenuScreen(void)
   {
     tft.fillRect(0, (tft.height() / ct_NbItemMax) * idx, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
   }
+
+  //AFFICHAGE DE L'ETAT SD
+  if (SdCardPresent)
+   SDColor = VERT;
+  else
+   SDColor = ROUGE;
+  tft.fillCircle(16,16,15,SDColor);
+  tft.setTextColor(GRIS);
+  tft.setTextSize(2);
+  tft.setCursor(5, 10);
+  tft.print("SD");
+
+  //Reautorisation des interruptions
   interrupts();
 }
 
@@ -58,12 +73,14 @@ void DisplayTempScreen(void)
   int idx;
   int color;
   int ConvertedTemp;
-  float Min;
-  float Max;
+  float MinTemp;
+  float MaxTemp;
   const int PixelMax = 190;
   const int PixelMin = 70;
   int PositionX;
   char DisplayedStr[8];
+  int SDColor;
+
   
   noInterrupts();           // Desactivation des interruptions pendant le redessin de l'ecran
   
@@ -114,17 +131,17 @@ void DisplayTempScreen(void)
     }
     if (idx == 1)
     {
-      Min = min(Seuils[Reglage][0] - Hysteresis[Reglage][0], MinMax[0][1]) - 1.0;
-      Max = max (Seuils[Reglage][1] + Hysteresis[Reglage][1], MinMax[1][1]) + 1.0;
+      MinTemp = min(Seuils[Reglage][0] - Hysteresis[Reglage][0], MinMax[MIN][1]) - 1.0;
+      MaxTemp = max (Seuils[Reglage][1] + Hysteresis[Reglage][1], MinMax[MAX][1]) + 1.0;
     }
     else
     {
-      Min = min(Seuils[Reglage][idx] - Hysteresis[Reglage][idx], MinMax[0][idx]) - 1.0;
-      Max = max (Seuils[Reglage][idx] + Hysteresis[Reglage][idx], MinMax[1][idx]) + 1.0;
+      MinTemp = min(Seuils[Reglage][idx] - Hysteresis[Reglage][idx], MinMax[MIN][idx]) - 1.0;
+      MaxTemp = max (Seuils[Reglage][idx] + Hysteresis[Reglage][idx], MinMax[MAX][idx]) + 1.0;
     }
 
     //Calcul de la hauteur de mercure
-    ConvertedTemp = ConvertTemperature(Temperatures[idx], Min, Max, PixelMax - PixelMin);
+    ConvertedTemp = ConvertTemperature(Temperatures[idx], MinTemp, MaxTemp, PixelMax - PixelMin);
 
     //Dessin du thermom�tre
     PositionX = idx * (tft.width() / 4) - tft.width() / 8;
@@ -146,7 +163,7 @@ void DisplayTempScreen(void)
     tft.setTextColor(BLANC);
     if (TemperatureDepasseSeuil[idx] == true)
     {
-      ConvertedTemp = ConvertTemperature(Seuils[Reglage][idx] - Hysteresis[Reglage][idx], Min, Max, PixelMax - PixelMin);
+      ConvertedTemp = ConvertTemperature(Seuils[Reglage][idx] - Hysteresis[Reglage][idx], MinTemp, MaxTemp, PixelMax - PixelMin);
       tft.drawLine (PositionX - 15, PixelMax - ConvertedTemp, PositionX + 10, PixelMax - ConvertedTemp, BLANC );
       tft.setCursor(PositionX + 12, PixelMax - ConvertedTemp - 4);
       sprintf(DisplayedStr, "%2.1f", Seuils[Reglage][idx] - Hysteresis[Reglage][idx]);
@@ -154,7 +171,7 @@ void DisplayTempScreen(void)
     }
     else
     {
-      ConvertedTemp = ConvertTemperature(Seuils[Reglage][idx] + Hysteresis[Reglage][idx], Min, Max, PixelMax - PixelMin);
+      ConvertedTemp = ConvertTemperature(Seuils[Reglage][idx] + Hysteresis[Reglage][idx], MinTemp, MaxTemp, PixelMax - PixelMin);
       tft.drawLine (PositionX - 15, PixelMax - ConvertedTemp, PositionX + 10, PixelMax - ConvertedTemp, BLANC );
       tft.setCursor(PositionX + 12, PixelMax - ConvertedTemp - 4);
       sprintf(DisplayedStr, "%2.1f", Seuils[Reglage][idx] + Hysteresis[Reglage][idx]);
@@ -166,7 +183,7 @@ void DisplayTempScreen(void)
     {
       if (TemperatureDepasseSeuil[0] == true)
       {
-        ConvertedTemp = ConvertTemperature(Seuils[Reglage][0] - Hysteresis[Reglage][0], Min, Max, PixelMax - PixelMin);
+        ConvertedTemp = ConvertTemperature(Seuils[Reglage][0] - Hysteresis[Reglage][0], MinTemp, MaxTemp, PixelMax - PixelMin);
         tft.drawLine(PositionX - 15, PixelMax - ConvertedTemp, PositionX + 10, PixelMax - ConvertedTemp, BLANC );
         tft.setCursor(PositionX + 12, PixelMax - ConvertedTemp - 4);
         sprintf(DisplayedStr, "%2.1f", Seuils[Reglage][0] - Hysteresis[Reglage][0]);
@@ -174,7 +191,7 @@ void DisplayTempScreen(void)
       }
       else
       {
-        ConvertedTemp = ConvertTemperature(Seuils[Reglage][0] + Hysteresis[Reglage][0], Min, Max, PixelMax - PixelMin);
+        ConvertedTemp = ConvertTemperature(Seuils[Reglage][0] + Hysteresis[Reglage][0], MinTemp, MaxTemp, PixelMax - PixelMin);
         tft.drawLine(PositionX - 15, PixelMax - ConvertedTemp, PositionX + 10, PixelMax - ConvertedTemp, BLANC );
         tft.setCursor(PositionX + 12, PixelMax - ConvertedTemp - 4);
         sprintf(DisplayedStr, "%2.1f", Seuils[Reglage][0] + Hysteresis[Reglage][0]);
@@ -187,6 +204,18 @@ void DisplayTempScreen(void)
     tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * idx));
 
   }
+  //AFFICHAGE DE L'ETAT SD
+  if (SdCardPresent)
+   SDColor = VERT;
+  else
+   SDColor = ROUGE;
+  tft.fillCircle(16,16,15,SDColor);
+  tft.setTextColor(GRIS);
+  tft.setTextSize(2);
+  tft.setCursor(5, 10);
+  tft.print("SD");
+
+  //Reautorisation des interruptions
   interrupts();
 }
 
@@ -203,6 +232,10 @@ void DisplayCourbeScreen(void)
   int color;
   const char TypeHisto[NB_TYP_HISTO][16] = {"", "24 Heures", "7 Jours", "30 Jours", "365 Jours"};
   int CourbeStart;
+  int SDColor;
+  float MinTemp, MaxTemp;
+
+  
   noInterrupts();           // Desactivation des interruptions pendant le redessin de l'ecran
   
   tft.fillRect(0, (tft.height() / ct_NbItemMax), tft.width(),tft.height() , NOIR);
@@ -229,30 +262,44 @@ void DisplayCourbeScreen(void)
   }
   else
   {
-    TempToDisplay = 0;
+    TempToDisplay = 1;
     CourbeStart = CompteJours;
   }
 
+//Calcul des valeurs Min et Max sur l'interval
+MinTemp = Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][0];
+MaxTemp = MinTemp;
+  for (idx = 1; idx < tft.width(); idx ++)
+  {
+    float TabTemp;
+    TabTemp = Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx] ;
+    if (TabTemp < MinTemp)
+      MinTemp = TabTemp;
+    if (TabTemp > MaxTemp)
+      MaxTemp = TabTemp;    
+  }
 
-  // AFFICHAGE de la grille (Lignes H)
-  if (MinMax[1][TempToDisplay] - MinMax[0][TempToDisplay] > 80)
+
+  
+// AFFICHAGE de la grille (Lignes H)
+  if (MaxTemp - MinTemp > 80)
     Grid = 20;
-  else if (MinMax[1][TempToDisplay] - MinMax[0][TempToDisplay] > 40)
+  else if (MaxTemp - MinTemp > 40)
     Grid = 10;
-  else if (MinMax[1][TempToDisplay] - MinMax[0][TempToDisplay] > 20)
+  else if (MaxTemp - MinTemp > 20)
     Grid = 5;
-  else if (MinMax[1][TempToDisplay] - MinMax[0][TempToDisplay] > 10)
+  else if (MaxTemp - MinTemp > 10)
     Grid = 2;
   else
     Grid = 1;
 
-  for (idx = MinMax[0][TempToDisplay]; idx <= MinMax[1][TempToDisplay]; idx ++)
+  for (idx = MinTemp; idx <= MaxTemp; idx ++)
   {
     if (idx % Grid == 0)
     {
       ConvertedTemp = ConvertTemperature(idx,
-                                         MinMax[0][TempToDisplay],
-                                         MinMax[1][TempToDisplay],
+                                         MinTemp,
+                                         MaxTemp,
                                          (tft.height() / ct_NbItemMax) * (ct_NbItemMax - 1));
       tft.drawFastHLine(0, tft.height() - ConvertedTemp, tft.width() - 31, GRIS);
       tft.setTextSize(1);
@@ -289,15 +336,15 @@ void DisplayCourbeScreen(void)
   // Affichage des Courbes
   color = BLEU;
 
-  for (idx = 0; idx < tft.width(); idx ++)
+  for (idx = 1; idx <= tft.width(); idx ++)
   {
-    if (CourbeStart > tft.width())
+    if ((idx + CourbeStart) > tft.width())
     {
-      CourbeStart = tft.width() - CourbeStart;
+      CourbeStart = CourbeStart-tft.width();
     }
     ConvertedTemp = ConvertTemperature(Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx + CourbeStart],
-                                       MinMax[0][TempToDisplay],
-                                       MinMax[1][TempToDisplay],
+                                       MinTemp,
+                                       MaxTemp,
                                        (tft.height() / ct_NbItemMax) * (ct_NbItemMax - 1));
     if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx + CourbeStart] > (Seuils[Reglage][TempToDisplay] + Hysteresis[Reglage][TempToDisplay]))
       color = ROUGE;
@@ -315,7 +362,7 @@ void DisplayCourbeScreen(void)
         color =  BLEU;
     }
 
-    tft.drawPixel(tft.width()-(idx+CourbeStart), tft.height() - ConvertedTemp, color);
+    tft.drawPixel(idx, tft.height() - ConvertedTemp, color);
   }
 
   tft.setCursor(10, (tft.height() / ct_NbItemMax) );
@@ -331,6 +378,18 @@ void DisplayCourbeScreen(void)
   tft.setTextSize(3);
   tft.println(EcranEnCours.pt_tab_menu);
 
+  //AFFICHAGE DE L'ETAT SD
+  if (SdCardPresent)
+   SDColor = VERT;
+  else
+   SDColor = ROUGE;
+  tft.fillCircle(16,16,15,SDColor);
+  tft.setTextColor(GRIS);
+  tft.setTextSize(2);
+  tft.setCursor(5, 10);
+  tft.print("SD");
+
+  //Reautorisation des interruptions
   interrupts();
 }
 

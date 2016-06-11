@@ -17,10 +17,7 @@
 #define PUIT_CANAD  3
 #define NB_TYP_HISTO  5
 
-//DEFINE des Numeros de Pins à remplacer par les bonnes valeurs
-
-
-
+//DEFINE des Numeros de Pins
 #define BYPASS_1_F     0
 #define BYPASS_1_O     1
 #define BYPASS_2_F     2
@@ -42,13 +39,13 @@
 #define ENDSTOP_1_2    18
 #define ENDSTOP_1_1    19
 #define TFT_DC         20
-#define T_EXT          -1 //A7 = 21
-#define T_PUIT         -1 //A8 = 22
-#define T_CHEMINEE     -1 //A9 = 23
+#define T_EXT          21
+#define T_PUIT         22
+#define T_CHEMINEE     23
 #define COD_SW         24
 #define COD_CLK        25
 #define RX_SPARE       26
-#define T_INT          -1 //A16 = 27
+#define T_INT          27
 #define V12_2_ON       28
 #define SCL1_SPARE     29
 #define SDA1_SPARE     30
@@ -56,20 +53,6 @@
 #define COD_DT         32
 #define SELECT_12V     33
 #define TFT_RST        -1
-
-
-
-
-
-
-
-
-
-
-
-
-//test
-#define BUFF_MAX 256
 
 //Couleurs
 //                       R     V      B
@@ -79,6 +62,10 @@
 #define ROUGE 0xF800 //11111 000000 00000
 #define BLEU  0x001F //00000 000000 11111
 #define VERT  0x07E0 //00000 111111 00000
+
+//TEMPERATURES
+#define MIN 0
+#define MAX 1
 
 //Definitions des Ecrans Menu
 typedef void(*FctPtr)(void);

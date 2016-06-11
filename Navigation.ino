@@ -5,7 +5,7 @@
 /*---------------------------------------------------------------------------------------------*/
 
 /*-NIVEAU 0------------------------------------------------------------------------------------*/
-/*                             Navigation vers écran démarrage                                 */
+/*                             Navigation vers ï¿½cran dï¿½marrage                                 */
 /*---------------------------------------------------------------------------------------------*/
 void GotoStartMenu(void)
 {
@@ -32,7 +32,7 @@ void GotoStartMenu(void)
   EcranEnCours.TypeEcran = MENU;
 }
 /*-NIVEAU 1------------------------------------------------------------------------------------*/
-/*                     Navigation vers l'ecran d'affichage des Températures                    */
+/*                     Navigation vers l'ecran d'affichage des Tempï¿½ratures                    */
 /*---------------------------------------------------------------------------------------------*/
 void GotoDisplayTemp(void)
 {
@@ -66,7 +66,7 @@ void GotoDisplayOutputs(void)
 }
 
 /*-NIVEAU 1------------------------------------------------------------------------------------*/
-/*                             Navigation vers écran menu principal                            */
+/*                             Navigation vers ï¿½cran menu principal                            */
 /*---------------------------------------------------------------------------------------------*/
 void GotoMainMenu(void)
 {
@@ -89,7 +89,7 @@ void GotoMainMenu(void)
 }
 
 /*-NIVEAU 2------------------------------------------------------------------------------------*/
-/*     Navigation vers l'ecran de réglage des déclenchements (Seuils et Hysteresis)            */
+/*     Navigation vers l'ecran de rï¿½glage des dï¿½clenchements (Seuils et Hysteresis)            */
 /*---------------------------------------------------------------------------------------------*/
 void GotoDeclenche(void)
 {
@@ -105,7 +105,7 @@ void GotoDeclenche(void)
   EcranEnCours.TypeEcran = MENU;
 }
 /*-NIVEAU 3------------------------------------------------------------------------------------*/
-/*                     Navigation vers l'ecran de réglage des Hystéresis                       */
+/*                     Navigation vers l'ecran de rï¿½glage des Hystï¿½resis                       */
 /*---------------------------------------------------------------------------------------------*/
 void GotoHysteresis(void)
 {
@@ -204,7 +204,7 @@ void ShowHistoExt(void)
 }
 
 /*-NIVEAU 4------------------------------------------------------------------------------------*/
-/*                      Navigation vers l'ecran d'affichage de courbe Intérieure               */
+/*                      Navigation vers l'ecran d'affichage de courbe Intï¿½rieure               */
 /*---------------------------------------------------------------------------------------------*/
 void ShowHistoInt(void)
 {
@@ -234,7 +234,7 @@ void ShowHistoPuit(void)
 }
 
 /*-NIVEAU 4------------------------------------------------------------------------------------*/
-/*                      Navigation vers l'ecran d'affichage de courbe Cheminée                 */
+/*                      Navigation vers l'ecran d'affichage de courbe Cheminï¿½e                 */
 /*---------------------------------------------------------------------------------------------*/
 void ShowHistoChem(void)
 {
@@ -255,9 +255,9 @@ void GotoMinMax(void)
 {
 
   int idx;
-  EcranEnCours.pt_tab_menu = (char *)&tab_MenuMinMax[0][0];
+  EcranEnCours.pt_tab_menu = (char *)&tab_MenuMinMax[MIN][0];
   MenuChanged = true;
-  strcpy(tab_MenuTemp[0], tab_MenuMinMax[0]);
+  strcpy(tab_MenuTemp[0], tab_MenuMinMax[MIN]);
   for (idx = 1; idx < ct_MenuMinMaxNbItems - 1; idx ++)
   {
     AddValToLine(idx);
@@ -298,7 +298,7 @@ void GotoMaintenance(void)
 }
 
 /*-NIVEAU 2------------------------------------------------------------------------------------*/
-/*                     Navigation vers l'ecran de réglage Date/Heure                           */
+/*                     Navigation vers l'ecran de rï¿½glage Date/Heure                           */
 /*---------------------------------------------------------------------------------------------*/
 void GotoSetDateHeure(void)
 {
@@ -334,7 +334,7 @@ void GotoSetDateHeure(void)
 }
 
 /*-NIVEAU 3------------------------------------------------------------------------------------*/
-/*                     Navigation vers l'ecran de réglage de la date                           */
+/*                     Navigation vers l'ecran de rï¿½glage de la date                           */
 /*---------------------------------------------------------------------------------------------*/
 void GotoSetDate(void)
 {
@@ -365,7 +365,7 @@ void GotoSetDate(void)
 }
 
 /*-NIVEAU 3------------------------------------------------------------------------------------*/
-/*                     Navigation vers l'ecran de réglage de l'heure                           */
+/*                     Navigation vers l'ecran de rï¿½glage de l'heure                           */
 /*---------------------------------------------------------------------------------------------*/
 void GotoSetHeure(void)
 {
@@ -396,7 +396,7 @@ void GotoSetHeure(void)
 }
 
 /*-NIVEAU 4------------------------------------------------------------------------------------*/
-/*                    Navigation vers l'ecran de Sauvegarde Paramètres                         */
+/*                    Navigation vers l'ecran de Sauvegarde Paramï¿½tres                         */
 /*---------------------------------------------------------------------------------------------*/
 
 void SaveYesNo(void)
@@ -463,13 +463,13 @@ void ChangeItem(int Direction)
   if (Direction > 0) Direction = 1;
   else Direction = -1;
 
-  // Redessin de l'item précedemnet sélectionné, avec police blanche sur fond noir
+  // Redessin de l'item prï¿½cedemnet sï¿½lectionnï¿½, avec police blanche sur fond noir
   tft.setTextColor(BLANC);
   tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), NOIR);
   tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
   tft.println( (char*)(EcranEnCours.pt_tab_menu + NB_CAR_LIGNE * EcranEnCours.SelectedItem));
 
-  do // Tant qu'on tombe sur un item desactivé, on passe au prochain
+  do // Tant qu'on tombe sur un item desactivï¿½, on passe au prochain
   {
     EcranEnCours.SelectedItem += Direction;
     if (EcranEnCours.SelectedItem >= EcranEnCours.NbItems)
@@ -482,9 +482,9 @@ void ChangeItem(int Direction)
     }
   } while (EcranEnCours.pt_tab_EnabledItems[EcranEnCours.SelectedItem] == false);
 
-  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem]; //Reaffectation du pointeur de fonction correspondant à l'item
+  EcranEnCours.Select = EcranEnCours.pt_MenuFonct[EcranEnCours.SelectedItem]; //Reaffectation du pointeur de fonction correspondant ï¿½ l'item
 
-  // Redessin de l'item  sélectionné, avec police noire sur fond blanc
+  // Redessin de l'item  sï¿½lectionnï¿½, avec police noire sur fond blanc
   tft.setTextColor(NOIR);
   tft.fillRect(0, (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem, tft.width(), (tft.height() / ct_NbItemMax), BLANC);
   tft.setCursor(20, 10 + (tft.height() / ct_NbItemMax) * EcranEnCours.SelectedItem);
@@ -545,11 +545,11 @@ char* AddValToLine(int idx)
     str = strncat(str + strlen(str), BlankLine, NB_CAR_LIGNE - NB_CAR_T - strlen(str));
     sprintf(DisplayedVal, " : %2.1f", Hysteresis[Reglage][idx - 1]);
   }
-  else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuMinMax[0][0]) == 0)
+  else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuMinMax[MIN][0]) == 0)
   {
     str = strcpy(tab_MenuTemp[idx], &tab_MenuMinMax[idx][0]);
     str = strncat(str + strlen(str), BlankLine, NB_CAR_LIGNE - 13 - strlen(str));
-    sprintf(DisplayedVal, " : %2.1f/%2.1f", MinMax[0][idx - 1], MinMax[1][idx - 1]);
+    sprintf(DisplayedVal, " : %2.1f/%2.1f", MinMax[MIN][idx - 1], MinMax[MAX][idx - 1]);
 
   }
   else

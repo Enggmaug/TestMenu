@@ -33,6 +33,7 @@ void loop(void)
     RTClockAlarm = false;
     DS3234_clear_a1f(RTCLK_CS);
     counter++;
+    Serial.println(counter);
     GetTemperatures();
     CheckTemperatures();
     if (counter % 60 == 0)
@@ -43,12 +44,11 @@ void loop(void)
     {
       SaveHistoriques();
     }
-    else if (counter >= 1)//540) Pour voir en vitesse accelérée les courbes
+    else if (counter >= 540)
     {
       counter = 0;
       SaveHistoriques();
     }
     MenuChanged = true;
-    NOIR = 0xF000;
   }
 }
