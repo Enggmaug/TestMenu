@@ -22,7 +22,6 @@ void SetAlarmMinutes(void)
 
   // activate Alarm1
   DS3234_set_creg(RTCLK_CS, DS3234_INTCN | DS3234_A1IE);
-
 }
 
 /*---------------------------------------------------------------------------------------------*/

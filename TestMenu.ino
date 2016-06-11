@@ -1,4 +1,3 @@
-
 #include "ILI9341_t3.h"
 #include <SD.h>
 #include "ds3234.h"
@@ -225,7 +224,7 @@ enum Reglages {
 struct ts DateHeureCourante;
 const struct ts BlankDateHeure = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-bool RTClockAlarm = false;
+bool RTClockAlarm = true;
 bool InhibRTCAlarms = false;
 
 unsigned int CompteJours = 0;

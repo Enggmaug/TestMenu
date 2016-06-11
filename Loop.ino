@@ -14,7 +14,10 @@ void loop(void)
         break;
       case TEMPERATURES :
         DisplayTempScreen();
+        break;
       case SORTIES :
+        DisplayMenuScreen();
+        DisplayOutputs();
         break;
       case MAINTENANCE :
         break;

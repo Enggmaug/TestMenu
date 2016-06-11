@@ -221,6 +221,30 @@ void DisplayTempScreen(void)
 
 
 /*---------------------------------------------------------------------------------------------*/
+/*                                 AFFICHAGE DES SORTIES                                       */
+/*---------------------------------------------------------------------------------------------*/
+void DisplayOutputs(void)
+{
+  int SDColor;
+
+  noInterrupts();   
+
+  //AFFICHAGE DE L'ETAT SD
+  if (SdCardPresent)
+   SDColor = VERT;
+  else
+   SDColor = ROUGE;
+  tft.fillCircle(16,16,15,SDColor);
+  tft.setTextColor(GRIS);
+  tft.setTextSize(2);
+  tft.setCursor(5, 10);
+  tft.print("SD");
+
+  //Reautorisation des interruptions
+  interrupts();
+}
+   
+/*---------------------------------------------------------------------------------------------*/
 /*                                    AFFICHAGE DES COURBES                                    */
 /*---------------------------------------------------------------------------------------------*/
 void DisplayCourbeScreen(void)

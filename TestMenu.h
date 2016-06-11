@@ -44,6 +44,7 @@ char* AddModeToLine(int idx);
 void ChangeHisto(int Direction);
 void DisplayMenuScreen(void);
 void DisplayTempScreen(void);
+void DisplayOutputs(void);
 void DisplayCourbeScreen(void);
 void DisableSD(void);
 void DisableRTC(void);
