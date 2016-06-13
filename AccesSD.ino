@@ -129,17 +129,28 @@ void SaveHistoriques(void)
 
     if ((CompteSemaines % 7) == 0)
     {
-      Historiques[idx][1][CompteSemaines / 7] = Moyenne(&Historiques[idx][0][CompteJours-7], 7);
+      Historiques[idx][1][CompteSemaines / 7] = Moyenne(&Historiques[idx][0][0],CompteJours, 7);
+      if ((idx == 0 ) && ( Historiques[idx][1][CompteSemaines / 7] < 19.0))
+        {
+          Serial.println("");
+          Serial.println(CompteSemaines);
+          Serial.println(Historiques[0][1][CompteSemaines / 7]);
+          Serial.println(tft.width());
+        }
+       else if (idx == 0)Serial.print(".");
     }
     if ((CompteMois % 30) == 0)
     {
-      Historiques[idx][2][CompteMois / 30] = Moyenne(&Historiques[idx][1][(CompteSemaines/7)-4], 4);
+      Historiques[idx][2][CompteMois / 30] = Moyenne(&Historiques[idx][1][0],(CompteSemaines/7), 4);
     }
     if ((CompteAnnee % 365) == 0)
     {
-      Historiques[idx][3][CompteAnnee / 365] = Moyenne(&Historiques[idx][1][(CompteMois/30)-12], 12);
+      Historiques[idx][3][CompteAnnee / 365] = Moyenne(&Historiques[idx][2][0],(CompteMois/30), 12);
     }
   }
+
+
+   
   if (CompteJours >= 320) CompteJours = 0;
   if (CompteSemaines >= 2240) CompteSemaines = 0;
   if (CompteMois >= 9600) CompteMois = 0;

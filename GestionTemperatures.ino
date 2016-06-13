@@ -70,14 +70,29 @@ int ConvertTemperature(float InputTemp, float Min, float Max, int HauteurMax)
 }
 
 
-float Moyenne (float *pt_tab, int NbOfElements)
+float Moyenne (float *pt_tab, unsigned int EndIndex, unsigned int NbOfElements)
 {
   int idx;
   double value = 0.0;
+  unsigned int StartIndex;
+  
+  if (EndIndex >= (NbOfElements - 1)) // Ex. : EndIndex = 10 NbE = 7  => 10 9 8 7 6 5 4  => EndIndex - NbE = 3
+    {
+      StartIndex = EndIndex - (NbOfElements - 1); // => = 4
+    }
+
+  else // Ex. : EndIndex = 5 NbE = 7  => 5 4 3 2 1 0 379  => NbE - EndIndex = 2 
+    {
+      StartIndex = SCREEN_WIDTH - (NbOfElements - 1) + EndIndex; // => = 379
+    }
+    
   for (idx = 0; idx < NbOfElements; idx ++)
   {
-    value = value + (double)pt_tab[idx];
+    if ((StartIndex + idx) == SCREEN_WIDTH)
+      StartIndex = 0; 
+    value = value + (double)pt_tab[StartIndex + idx];
   }
+  
   value = value / NbOfElements;
   return (float) value;
 }

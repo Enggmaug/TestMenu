@@ -196,7 +196,7 @@ void ShowHistoExt(void)
   MenuChanged = true;
   EcranEnCours.pt_tab_menu = (char *)&tab_MenuCourbes[1][0];
   EcranEnCours.SelectedItem = 1;
-  EcranEnCours.NbItems = NB_TYP_HISTO - 1;
+  EcranEnCours.NbItems = NB_TYP_HISTO;
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = GotoCourbes;
@@ -211,7 +211,7 @@ void ShowHistoInt(void)
   MenuChanged = true;
   EcranEnCours.pt_tab_menu = (char *)&tab_MenuCourbes[2][0];
   EcranEnCours.SelectedItem = 1;
-  EcranEnCours.NbItems = NB_TYP_HISTO - 1;
+  EcranEnCours.NbItems = NB_TYP_HISTO;
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = GotoCourbes;
@@ -226,7 +226,7 @@ void ShowHistoPuit(void)
   MenuChanged = true;
   EcranEnCours.pt_tab_menu = (char *)&tab_MenuCourbes[3][0];
   EcranEnCours.SelectedItem = 1;
-  EcranEnCours.NbItems = NB_TYP_HISTO - 1;
+  EcranEnCours.NbItems = NB_TYP_HISTO;
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = GotoCourbes;
@@ -241,7 +241,7 @@ void ShowHistoChem(void)
   MenuChanged = true;
   EcranEnCours.pt_tab_menu = (char *)&tab_MenuCourbes[4][0];
   EcranEnCours.SelectedItem = 1;
-  EcranEnCours.NbItems = NB_TYP_HISTO - 1;
+  EcranEnCours.NbItems = NB_TYP_HISTO;
   EcranEnCours.Droite = Suivant;
   EcranEnCours.Gauche = Precedent;
   EcranEnCours.Select = GotoCourbes;

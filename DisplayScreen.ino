@@ -256,7 +256,7 @@ void DisplayCourbeScreen(void)
   unsigned int ConvertedTemp;
   unsigned int Grid;
   int color;
-  const char TypeHisto[NB_TYP_HISTO][16] = {"", "24 Heures", "7 Jours", "30 Jours", "365 Jours"};
+  const char TypeHisto[NB_TYP_HISTO][16] = {"24 Heures", "7 Jours", "30 Jours", "365 Jours"};
   int CourbeStart;
   int SDColor;
   float MinTemp, MaxTemp;
@@ -291,7 +291,6 @@ switch(EcranEnCours.SelectedItem)
   default:
     CourbeStart = CompteJours;
 }
-
 
 //Calcul des valeurs Min et Max sur l'interval
 MinTemp = Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][0];
@@ -395,7 +394,7 @@ MaxTemp = MinTemp;
   tft.setCursor(10, (tft.height() / ct_NbItemMax) );
   tft.setTextColor(BLANC);
   tft.setTextSize(2);
-  tft.println(TypeHisto[EcranEnCours.SelectedItem]);
+  tft.println(TypeHisto[EcranEnCours.SelectedItem - 1]);
 
   // AFFICHAGE DE LA PREMIERE LIGNE
   tft.setTextColor(NOIR);

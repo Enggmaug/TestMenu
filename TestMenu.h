@@ -56,7 +56,7 @@ void GetTemperatures(void);
 float ReadTemperature(int AnalogPinNumber);
 void CheckTemperatures (void);
 int ConvertTemperature(float InputTemp, float Min, float Max, int HauteurMax);
-float Moyenne (float *pt_tab, int NbOfElements);
+float Moyenne (float *pt_tab,  unsigned int EndIndex, unsigned int NbOfElements);
 void SetOnOff(void);
 void SetSeuilPlus(void);
 void SetSeuilMoins(void);
