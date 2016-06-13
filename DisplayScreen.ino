@@ -10,6 +10,7 @@ void DisplayMenuScreen(void)
   noInterrupts();           // Desactivation des interruptions pendant le redessin de l'ecran
 
   // AFFICHAGE DE LA PREMIERE LIGNE
+  tft.fillScreen(NOIR);
   tft.setTextColor(NOIR);
   tft.fillRect(0, 0, tft.width(), (tft.height() / ct_NbItemMax), BLANC);
   tft.drawFastHLine(0, (tft.height() / ct_NbItemMax) - 1, tft.width(), NOIR);
@@ -17,6 +18,7 @@ void DisplayMenuScreen(void)
   tft.setTextSize(3);
   tft.println(EcranEnCours.pt_tab_menu);
 
+  
   // AFFICHAGE DES LIGNES SUIVANTES
   tft.setTextSize(2);
   for (idx = 1; idx < EcranEnCours.NbItems; idx++)              // Pour chaque Item du menu
@@ -264,31 +266,32 @@ void DisplayCourbeScreen(void)
   
   tft.fillRect(0, (tft.height() / ct_NbItemMax), tft.width(),tft.height() , NOIR);
 
-  if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuCourbes[1][0]) == 0)
+for (TempToDisplay = 1; TempToDisplay <= 4 ; TempToDisplay ++)
+{
+  if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuCourbes[TempToDisplay][0]) == 0)
   {
-    TempToDisplay = 1;
+    break;
+  }
+}
+  
+switch(EcranEnCours.SelectedItem)
+{
+  case 1: 
+      CourbeStart = CompteJours;
+  break;
+  case 2 :
+      CourbeStart = CompteSemaines/7;
+  break;
+  case 3:
+      CourbeStart = CompteMois/30;
+  break;
+  case 4 :
+      CourbeStart = CompteAnnee/365;
+  break;
+  default:
     CourbeStart = CompteJours;
-  }
-  else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuCourbes[2][0]) == 0)
-  {
-    TempToDisplay = 2;
-    CourbeStart = CompteSemaines;
-  }
-  else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuCourbes[3][0]) == 0)
-  {
-    TempToDisplay = 3;
-    CourbeStart = CompteMois;
-  }
-  else if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuCourbes[4][0]) == 0)
-  {
-    TempToDisplay = 4;
-    CourbeStart = CompteAnnee;
-  }
-  else
-  {
-    TempToDisplay = 1;
-    CourbeStart = CompteJours;
-  }
+}
+
 
 //Calcul des valeurs Min et Max sur l'interval
 MinTemp = Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][0];

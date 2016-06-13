@@ -133,11 +133,11 @@ void SaveHistoriques(void)
     }
     if ((CompteMois % 30) == 0)
     {
-      Historiques[idx][2][CompteMois / 30] = Moyenne(&Historiques[idx][1][CompteSemaines-4], 4);
+      Historiques[idx][2][CompteMois / 30] = Moyenne(&Historiques[idx][1][(CompteSemaines/7)-4], 4);
     }
     if ((CompteAnnee % 365) == 0)
     {
-      Historiques[idx][3][CompteAnnee / 365] = Moyenne(&Historiques[idx][1][CompteMois-12], 12);
+      Historiques[idx][3][CompteAnnee / 365] = Moyenne(&Historiques[idx][1][(CompteMois/30)-12], 12);
     }
   }
   if (CompteJours >= 320) CompteJours = 0;
