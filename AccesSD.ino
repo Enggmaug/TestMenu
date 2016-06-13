@@ -105,6 +105,12 @@ void SaveHistoriques(void)
   CompteMois ++;
   CompteAnnee ++;
 
+  if (CompteJours    >= (unsigned int) tft.width())                   CompteJours = 0;
+  if (CompteSemaines >= (unsigned int) (tft.width() * 7))             CompteSemaines = 0;
+  if (CompteMois     >= (unsigned int) (tft.width() * 7 * 30))        CompteMois = 0;
+  if (CompteAnnee    >= (unsigned int) (tft.width() * 7 * 30 * 365))  CompteAnnee = 0;
+
+  
   sprintf(Filename, "%d_rec.crb", DateHeureCourante.year);
   File dataFile = SD.open(Filename, FILE_WRITE);
   dataFile.write(DateHeureCourante.year);
@@ -130,14 +136,6 @@ void SaveHistoriques(void)
     if ((CompteSemaines % 7) == 0)
     {
       Historiques[idx][1][CompteSemaines / 7] = Moyenne(&Historiques[idx][0][0],CompteJours, 7);
-      if ((idx == 0 ) && ( Historiques[idx][1][CompteSemaines / 7] < 19.0))
-        {
-          Serial.println("");
-          Serial.println(CompteSemaines);
-          Serial.println(Historiques[0][1][CompteSemaines / 7]);
-          Serial.println(tft.width());
-        }
-       else if (idx == 0)Serial.print(".");
     }
     if ((CompteMois % 30) == 0)
     {
@@ -148,13 +146,6 @@ void SaveHistoriques(void)
       Historiques[idx][3][CompteAnnee / 365] = Moyenne(&Historiques[idx][2][0],(CompteMois/30), 12);
     }
   }
-
-
-   
-  if (CompteJours >= 320) CompteJours = 0;
-  if (CompteSemaines >= 2240) CompteSemaines = 0;
-  if (CompteMois >= 9600) CompteMois = 0;
-  if (CompteAnnee >= 116800) CompteAnnee = 0;
 
   dataFile.close();
 

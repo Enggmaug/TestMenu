@@ -72,7 +72,7 @@ int ConvertTemperature(float InputTemp, float Min, float Max, int HauteurMax)
 
 float Moyenne (float *pt_tab, unsigned int EndIndex, unsigned int NbOfElements)
 {
-  int idx;
+  unsigned int idx;
   double value = 0.0;
   unsigned int StartIndex;
   

@@ -305,6 +305,11 @@ MaxTemp = MinTemp;
       MaxTemp = TabTemp;    
   }
 
+if (MaxTemp == MinTemp)
+{
+  MaxTemp =( MaxTemp + 2.0);
+  MinTemp =( MinTemp - 2.0);
+}
 
   
 // AFFICHAGE de la grille (Lignes H)
@@ -327,9 +332,9 @@ MaxTemp = MinTemp;
                                          MinTemp,
                                          MaxTemp,
                                          (tft.height() / ct_NbItemMax) * (ct_NbItemMax - 1));
-      tft.drawFastHLine(0, tft.height() - ConvertedTemp, tft.width() - 31, GRIS);
+      tft.drawFastHLine(0, tft.height() - ConvertedTemp -1, tft.width() - 31, GRIS);
       tft.setTextSize(1);
-      tft.setCursor(tft.width() - 30, tft.height() - ConvertedTemp);
+      tft.setCursor(tft.width() - 30, tft.height() - ConvertedTemp -1);
       tft.setTextColor(GRIS);
       tft.println((float)idx);
     }
@@ -388,7 +393,7 @@ MaxTemp = MinTemp;
         color =  BLEU;
     }
 
-    tft.drawPixel(idx, tft.height() - ConvertedTemp, color);
+    tft.drawPixel(idx, tft.height() - ConvertedTemp -1, color);
   }
 
   tft.setCursor(10, (tft.height() / ct_NbItemMax) );
