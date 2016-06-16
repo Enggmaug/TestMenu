@@ -41,7 +41,7 @@ void WriteSeuilsToFile(void) // Ecriture des Seuils dans le fichier Seuils.par
 
   if (SD.exists("Seuils.par"))
     SdCardPresent = true;
-  else 
+  else
     SdCardPresent = false;
 }
 
@@ -87,7 +87,7 @@ void WriteHysterToFile(void) // Ecriture des Seuils dans le fichier Seuils.par
 
   if (SD.exists("Hyst.par"))
     SdCardPresent = true;
-  else 
+  else
     SdCardPresent = false;
 }
 
@@ -95,22 +95,11 @@ void WriteHysterToFile(void) // Ecriture des Seuils dans le fichier Seuils.par
 /*                          SAUVEGARDE DES HISTORIQUES SUR SD ET RAM                           */
 /*---------------------------------------------------------------------------------------------*/
 
-void SaveHistoriques(void)
+void SaveTemperatures(void)
 {
   int idx;
   char Filename[16];
 
-  CompteJours ++;
-  CompteSemaines ++;
-  CompteMois ++;
-  CompteAnnee ++;
-
-  if (CompteJours    >= (unsigned int) tft.width())                   CompteJours = 0;
-  if (CompteSemaines >= (unsigned int) (tft.width() * 7))             CompteSemaines = 0;
-  if (CompteMois     >= (unsigned int) (tft.width() * 7 * 30))        CompteMois = 0;
-  if (CompteAnnee    >= (unsigned int) (tft.width() * 7 * 30 * 365))  CompteAnnee = 0;
-
-  
   sprintf(Filename, "%d_rec.crb", DateHeureCourante.year);
   File dataFile = SD.open(Filename, FILE_WRITE);
   dataFile.write(DateHeureCourante.year);
@@ -128,36 +117,17 @@ void SaveHistoriques(void)
 
   for (idx = 0; idx < NB_TEMP - 1 ; idx ++)
   {
-    Historiques[idx][0][CompteJours] = Temperatures[idx + 1];
     dataFile.write(Temperatures[idx + 1]);
     dataFile.write(";");
-
-
-    if ((CompteSemaines % 7) == 0)
-    {
-      Historiques[idx][1][CompteSemaines / 7] = Moyenne(&Historiques[idx][0][0],CompteJours, 7);
-    }
-    if ((CompteMois % 30) == 0)
-    {
-      Historiques[idx][2][CompteMois / 30] = Moyenne(&Historiques[idx][1][0],(CompteSemaines/7), 4);
-    }
-    if ((CompteAnnee % 365) == 0)
-    {
-      Historiques[idx][3][CompteAnnee / 365] = Moyenne(&Historiques[idx][2][0],(CompteMois/30), 12);
-    }
   }
 
   dataFile.close();
 
   if (SD.exists(Filename))
     SdCardPresent = true;
-  else 
+  else
     SdCardPresent = false;
 }
 
-
-/*---------------------------------------------------------------------------------------------*/
-/*                                AFFICHAGE DES HISTORIQUES                                    */
-/*---------------------------------------------------------------------------------------------*/
 
 

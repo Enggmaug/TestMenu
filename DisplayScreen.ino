@@ -6,7 +6,7 @@ void DisplayMenuScreen(void)
 {
   int idx;
   int SDColor;
-  
+
   noInterrupts();           // Desactivation des interruptions pendant le redessin de l'ecran
 
   // AFFICHAGE DE LA PREMIERE LIGNE
@@ -18,7 +18,7 @@ void DisplayMenuScreen(void)
   tft.setTextSize(3);
   tft.println(EcranEnCours.pt_tab_menu);
 
-  
+
   // AFFICHAGE DES LIGNES SUIVANTES
   tft.setTextSize(2);
   for (idx = 1; idx < EcranEnCours.NbItems; idx++)              // Pour chaque Item du menu
@@ -83,9 +83,9 @@ void DisplayTempScreen(void)
   char DisplayedStr[8];
   int SDColor;
 
-  
+
   noInterrupts();           // Desactivation des interruptions pendant le redessin de l'ecran
-  
+
   // AFFICHAGE DE LA PREMIERE LIGNE
   tft.fillScreen(NOIR);
   tft.setTextColor(NOIR);
@@ -229,7 +229,7 @@ void DisplayOutputs(void)
 {
   int SDColor;
 
-  noInterrupts();   
+  noInterrupts();
 
   //AFFICHAGE DE L'ETAT SD
   if (SdCardPresent)
@@ -245,64 +245,45 @@ void DisplayOutputs(void)
   //Reautorisation des interruptions
   interrupts();
 }
-   
+
 /*---------------------------------------------------------------------------------------------*/
 /*                                    AFFICHAGE DES COURBES                                    */
 /*---------------------------------------------------------------------------------------------*/
 void DisplayCourbeScreen(void)
 {
-  int idx;
+  unsigned int idx;
   unsigned int TempToDisplay;
   unsigned int ConvertedTemp;
   unsigned int Grid;
   int color;
   const char TypeHisto[NB_TYP_HISTO][16] = {"24 Heures", "7 Jours", "30 Jours", "365 Jours"};
-  int CourbeStart;
   int SDColor;
   float MinTemp, MaxTemp;
 
-  
+
   noInterrupts();           // Desactivation des interruptions pendant le redessin de l'ecran
-  
+
   tft.fillRect(0, (tft.height() / ct_NbItemMax), tft.width(),tft.height() , NOIR);
 
-for (TempToDisplay = 1; TempToDisplay <= 4 ; TempToDisplay ++)
+for (TempToDisplay = 1; TempToDisplay < NB_TEMP ; TempToDisplay ++)
 {
   if (strcmp(EcranEnCours.pt_tab_menu, (char*)&tab_MenuCourbes[TempToDisplay][0]) == 0)
   {
     break;
   }
 }
-  
-switch(EcranEnCours.SelectedItem)
-{
-  case 1: 
-      CourbeStart = CompteJours;
-  break;
-  case 2 :
-      CourbeStart = CompteSemaines/7;
-  break;
-  case 3:
-      CourbeStart = CompteMois/30;
-  break;
-  case 4 :
-      CourbeStart = CompteAnnee/365;
-  break;
-  default:
-    CourbeStart = CompteJours;
-}
 
 //Calcul des valeurs Min et Max sur l'interval
 MinTemp = Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][0];
 MaxTemp = MinTemp;
-  for (idx = 1; idx < tft.width(); idx ++)
+for (idx = 1; idx < SCREEN_WIDTH; idx ++)
   {
     float TabTemp;
     TabTemp = Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx] ;
     if (TabTemp < MinTemp)
       MinTemp = TabTemp;
     if (TabTemp > MaxTemp)
-      MaxTemp = TabTemp;    
+      MaxTemp = TabTemp;
   }
 
 if (MaxTemp == MinTemp)
@@ -311,7 +292,7 @@ if (MaxTemp == MinTemp)
   MinTemp =( MinTemp - 2.0);
 }
 
-  
+
 // AFFICHAGE de la grille (Lignes H)
   if (MaxTemp - MinTemp > 80)
     Grid = 20;
@@ -358,8 +339,8 @@ if (MaxTemp == MinTemp)
       Grid = 1;
       break;
   }
-  Grid = tft.width() / Grid;
-  for (idx = 0; idx < tft.width(); idx = idx + Grid)
+  Grid = SCREEN_WIDTH / Grid;
+  for (idx = 0; idx < SCREEN_WIDTH; idx = idx + Grid)
   {
     tft.drawFastVLine(idx, (tft.height() / ct_NbItemMax), tft.height(), GRIS);
   }
@@ -367,26 +348,26 @@ if (MaxTemp == MinTemp)
   // Affichage des Courbes
   color = BLEU;
 
-  for (idx = 1; idx <= tft.width(); idx ++)
+  for (idx = 1; idx <= SCREEN_WIDTH; idx ++)
   {
-    if ((idx + CourbeStart) > tft.width())
+    if ((idx + IndexHistoriques[TempToDisplay]) > SCREEN_WIDTH)
     {
-      CourbeStart = CourbeStart-tft.width();
+      IndexHistoriques[TempToDisplay] = IndexHistoriques[TempToDisplay]-SCREEN_WIDTH;
     }
-    ConvertedTemp = ConvertTemperature(Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx + CourbeStart],
+    ConvertedTemp = ConvertTemperature(Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx + IndexHistoriques[TempToDisplay]],
                                        MinTemp,
                                        MaxTemp,
                                        (tft.height() / ct_NbItemMax) * (ct_NbItemMax - 1));
-    if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx + CourbeStart] > (Seuils[Reglage][TempToDisplay] + Hysteresis[Reglage][TempToDisplay]))
+    if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx + IndexHistoriques[TempToDisplay]] > (Seuils[Reglage][TempToDisplay] + Hysteresis[Reglage][TempToDisplay]))
       color = ROUGE;
-    if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx + CourbeStart] < (Seuils[Reglage][TempToDisplay] - Hysteresis[Reglage][TempToDisplay]))
+    if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx + IndexHistoriques[TempToDisplay]] < (Seuils[Reglage][TempToDisplay] - Hysteresis[Reglage][TempToDisplay]))
     {
       if (TempToDisplay == 1)
       {
 
-        if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx + CourbeStart] < (Seuils[Reglage][TempToDisplay - 1] - Hysteresis[Reglage][TempToDisplay - 1]))
+        if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx + IndexHistoriques[TempToDisplay]] < (Seuils[Reglage][TempToDisplay - 1] - Hysteresis[Reglage][TempToDisplay - 1]))
           color =  BLEU;
-        if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx + CourbeStart] > (Seuils[Reglage][TempToDisplay - 1] + Hysteresis[Reglage][TempToDisplay - 1]))
+        if (Historiques[TempToDisplay - 1][EcranEnCours.SelectedItem - 1][idx + IndexHistoriques[TempToDisplay]] > (Seuils[Reglage][TempToDisplay - 1] + Hysteresis[Reglage][TempToDisplay - 1]))
           color = VERT;
       }
       else

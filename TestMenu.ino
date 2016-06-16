@@ -36,7 +36,7 @@
 #define V12_CHECK      14
 #define SDCARD_CS      15
 #define ENDSTOP_2_2    16
-#define ENDSTOP_2_1    17 
+#define ENDSTOP_2_1    17
 #define ENDSTOP_1_2    18
 #define ENDSTOP_1_1    19
 #define TFT_DC         20
@@ -229,10 +229,7 @@ const struct ts BlankDateHeure = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 bool RTClockAlarm = true;
 bool InhibRTCAlarms = false;
 
-unsigned int CompteJours = 0;
-unsigned int CompteSemaines = 0;
-unsigned int CompteMois = 0;
-unsigned long int CompteAnnee = 0;
+unsigned int IndexHistoriques[NB_TYP_HISTO] = {0};
 
 float Historiques[NB_TEMP - 1][NB_TYP_HISTO][SCREEN_WIDTH] =
 {

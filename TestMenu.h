@@ -2,7 +2,7 @@ void ReadSeuilsFromFile(void);
 void WriteSeuilsToFile(void); // Ecriture des Seuils dans le fichier Seuils.par
 void ReadHysterFromFile(void);
 void WriteHysterToFile(void); // Ecriture des Seuils dans le fichier Seuils.par
-void SaveHistoriques(void);
+void SaveTemperatures(void);
 void Reset(void);
 void SetState(void);
 void None(void);
