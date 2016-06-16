@@ -17,7 +17,7 @@ void WriteTime(void)
 void SetAlarmMinutes(void)
 {
   // flags are: A1M1 (seconds), A1M2 (minutes), A1M3 (hour), A1M4 (day) 0 to enable, 1 to disable, DY/DT (dayofweek == 1/dayofmonth == 0)
-  const uint8_t flags[5] = {0, 1, 1, 1, 1};
+  const uint8_t flags[5] = {1, 1, 1, 1, 1};
   DS3234_set_a1(RTCLK_CS, 0, 0, 0, 0, &flags[0]);
 
   // activate Alarm1
