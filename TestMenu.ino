@@ -1,3 +1,5 @@
+#define VERSION "0.1.0"
+
 #include "ILI9341_t3.h"
 #include <SD.h>
 #include "ds3234.h"

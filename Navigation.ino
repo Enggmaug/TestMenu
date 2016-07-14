@@ -20,6 +20,7 @@ void GotoStartMenu(void)
   }
   strcpy(&tab_MenuTemp[0][0], "INITIALISATION");
   sprintf(&tab_MenuTemp[3][0], "%02d/%02d/%04d %02d:%02d", DateHeureCourante.mday, DateHeureCourante.mon, DateHeureCourante.year, DateHeureCourante.hour, DateHeureCourante.min);
+  sprintf(&tab_MenuTemp[4][0], "Version %s", VERSION);
 
   EcranEnCours.pt_tab_menu = (char *)&tab_MenuTemp[0][0];
   EcranEnCours.pt_tab_EnabledItems = (bool *)&tab_enabled[0];
