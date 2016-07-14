@@ -4,7 +4,7 @@ void ReadHysterFromFile(void);
 void WriteHysterToFile(void); // Ecriture des Seuils dans le fichier Seuils.par
 void SaveTemperatures(void);
 void Reset(void);
-void SetState(void);
+void BITE(void);
 void None(void);
 void ReadTime(void);
 void SetAlarmMinutes(void);

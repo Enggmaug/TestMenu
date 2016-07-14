@@ -1,4 +1,4 @@
-#define VERSION "0.1.0"
+#define VERSION "0.1.1"
 
 #include "ILI9341_t3.h"
 #include <SD.h>
@@ -109,7 +109,7 @@ const FctPtr tab_MenuMainFonct[ct_MenuMainNbItems]                =  {None      
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
 const char   tab_MenuMode[ct_MenuModeNbItems][NB_CAR_LIGNE]       =  {"ETE"             , "MI-SAISON"    , "HIVERS"        }; //            |                  |                    |                 |
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
-const char   tab_MenuDeclenche[ct_MenuDeclNbItems][NB_CAR_LIGNE]  =  {"DECLENCHEMENTS"  , "SEUILS"       , "SENSIBILITE"   , "RETOUR"       }; //              |                    |                 |
+const char   tab_MenuDeclenche[ct_MenuDeclNbItems][NB_CAR_LIGNE]  =  {"REGLAGES SEUILS" , "SEUILS"       , "SENSIBILITE"   , "RETOUR"       }; //              |                    |                 |
 const FctPtr tab_MenuDeclencheFonct[ct_MenuDeclNbItems]           =  {None              , GotoSeuils     , GotoHysteresis  , GotoMainMenu   }; //              |                    |                 |
 /*-*/ bool   tab_MenuDeclencheEnable[ct_MenuDeclNbItems]          =  {true              , true           , true            , true           }; //              |                    |                 |
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
@@ -137,8 +137,8 @@ const char   tab_Reset[ct_ResetNbItems][NB_CAR_LIGNE]             =  {"RESET"   
 const FctPtr tab_ResetFonct[ct_ResetNbItems]                      =  {None              , Reset          , GotoHisto       }; //            |                  |                    |                 |
 /*-*/ bool   tab_ResetEnable[ct_ResetNbItems]                     =  {true              , true           , true            }; //            |                  |                    |                 |
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
-const char   tab_MenuMaint[ct_MaintenanceNbItems][NB_CAR_LIGNE]   =  {"MAINTENANCE"     , "ETAT :"       , "RELAIS"        , "     "        , "FINS DE COURSE" , "     "            , "RETOUR"        };
-const FctPtr tab_MenuMaintFonct[ct_MaintenanceNbItems]            =  {None              , SetState       , None            , None           , None             , None               , GotoMainMenu    };
+const char   tab_MenuMaint[ct_MaintenanceNbItems][NB_CAR_LIGNE]   =  {"MAINTENANCE"     , "TESTS SYSTEME", ""              , ""             , ""               , ""                 , "RETOUR"        };
+const FctPtr tab_MenuMaintFonct[ct_MaintenanceNbItems]            =  {None              , BITE           , None            , None           , None             , None               , GotoMainMenu    };
 /*-*/ bool   tab_MenuMaintEnable[ct_MaintenanceNbItems]           =  {true              , true           , true            , false          , true             , false              , true            };
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
 const char   tab_MenuDateHeure[ct_MenuDHNbItems][NB_CAR_LIGNE]    =  {"DATE / HEURE"    , "REGLER DATE"  , "DATE ICI"      , "REGLER HEURE" , "HEURE ICI"      , "RETOUR"           }; //             |
