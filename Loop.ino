@@ -37,7 +37,7 @@ void loop(void)
   MenuChanged = false;
 
   //Lecture des températures
-  if ((RTClockAlarm == true) and (InhibRTCAlarms == false))//(DummyCount == 100000)//
+  if ((RTClockAlarm == true) and (InhibRTCAlarms == false))//or RTC dans les choux et timeout.
   {
 
     RTClockAlarm = false;

@@ -1,4 +1,4 @@
-#define VERSION "0.1.1"
+#define VERSION "0.1.2"
 
 #include "ILI9341_t3.h"
 #include <SD.h>
@@ -19,6 +19,7 @@
 #define NB_TYP_HISTO  4  // Jours / Semaines / Mois / Année
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 240
+#define NB_MODES    3
 
 //DEFINE des Numeros de Pins
 #define BYPASS_1_F     0
@@ -103,7 +104,7 @@ const char   tab_DispOutputs[ct_DispOutputsNbItems][NB_CAR_LIGNE] =  {"SORTIES" 
 const FctPtr tab_DispOutputsFonct[ct_DispOutputsNbItems]          =  {GotoMainMenu      } ; //           |                 |                |                  |                    |                 |
 /*-*/ bool   tab_DispOutputsEnable[ct_DispOutputsNbItems]         =  {true              , true           , true            , true           , true             , true               , true            };
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
-const char   tab_MenuMain[ct_MenuMainNbItems][NB_CAR_LIGNE]       =  {"MENU"            , "MODE"         , "DECLENCHEMENTS", "HISTORIQUE"   , "MAINTENANCE"    , "REGLER DATE/HEURE", "RETOUR"        };
+const char   tab_MenuMain[ct_MenuMainNbItems][NB_CAR_LIGNE]       =  {"MENU"            , "MODE"         , "REGLAGE SEUILS", "HISTORIQUE"   , "MAINTENANCE"    , "REGLER DATE/HEURE", "RETOUR"        };
 const FctPtr tab_MenuMainFonct[ct_MenuMainNbItems]                =  {None              , SetMode        , GotoDeclenche   , GotoHisto      , GotoMaintenance  , GotoSetDateHeure   , GotoDisplayTemp };
 /*-*/ bool   tab_MenuMainEnable[ct_MenuMainNbItems]               =  {true              , true           , true            , true           , true             , true               , true            };
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
@@ -137,7 +138,7 @@ const char   tab_Reset[ct_ResetNbItems][NB_CAR_LIGNE]             =  {"RESET"   
 const FctPtr tab_ResetFonct[ct_ResetNbItems]                      =  {None              , Reset          , GotoHisto       }; //            |                  |                    |                 |
 /*-*/ bool   tab_ResetEnable[ct_ResetNbItems]                     =  {true              , true           , true            }; //            |                  |                    |                 |
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
-const char   tab_MenuMaint[ct_MaintenanceNbItems][NB_CAR_LIGNE]   =  {"MAINTENANCE"     , "TESTS SYSTEME", ""              , ""             , ""               , ""                 , "RETOUR"        };
+const char   tab_MenuMaint[ct_MaintenanceNbItems][NB_CAR_LIGNE]   =  {"MAINTENANCE"     , "TESTS SYSTEME", "FORCER TEMPER.", "LECT. ENTREES", "FORCER SORTIES" , ""                 , "RETOUR"        };
 const FctPtr tab_MenuMaintFonct[ct_MaintenanceNbItems]            =  {None              , BITE           , None            , None           , None             , None               , GotoMainMenu    };
 /*-*/ bool   tab_MenuMaintEnable[ct_MaintenanceNbItems]           =  {true              , true           , true            , false          , true             , false              , true            };
 //-------------------------------------------------------------------+------------------+----------------+-----------------+----------------+------------------+--------------------+-----------------+
@@ -166,9 +167,9 @@ const char* BlankLine = "                       ";
 char tab_MenuTemp[ct_NbItemMax][NB_CAR_LIGNE];
 
 //Seuils et Température par défaut
-float Seuils[3][NB_TEMP] = {DEFAULT_SEUILS, DEFAULT_SEUILS, DEFAULT_SEUILS};
-float Hysteresis[3][NB_TEMP] = {DEFAULT_HYSTERESIS, DEFAULT_HYSTERESIS, DEFAULT_HYSTERESIS};
-float MinMax[2][NB_TEMP] = {DEFAULT_SEUILS, DEFAULT_SEUILS};
+float Seuils[NB_MODES][NB_TEMP]     = {DEFAULT_SEUILS, DEFAULT_SEUILS, DEFAULT_SEUILS};
+float Hysteresis[NB_MODES][NB_TEMP] = {DEFAULT_HYSTERESIS, DEFAULT_HYSTERESIS, DEFAULT_HYSTERESIS};
+float MinMax[2][NB_TEMP]            = {DEFAULT_SEUILS, DEFAULT_SEUILS};
 float Temperatures[NB_TEMP];
 bool TemperatureDepasseSeuil[NB_TEMP];
 
