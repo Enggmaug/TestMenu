@@ -14,12 +14,20 @@ void GetTemperatures(void)
   Temperatures[0] = Temperatures[1];  // Les Deux premieres températures sont la même, car on a 2 seuils pour l'exterieur
 }
 
-float ReadTemperature(int AnalogPinNumber) // A ECRIRE
+float ReadTemperature(int AnalogPinNumber)
 {
+//Temporaire
+  return 20.0;
+  
   if (AnalogPinNumber > 0)
   {
-    return (20.0);    
-    //return (analogRead(AnalogPinNumber));
+    float values[5];
+
+    for (int idx = 0; idx < 5 ; idx ++)
+    {
+      values[idx] = analogRead(AnalogPinNumber);
+    }
+    return (Moyenne(values,4,5));
   }
   else
     return (0.0);

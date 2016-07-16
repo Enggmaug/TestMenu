@@ -1,4 +1,4 @@
-#define VERSION "0.1.2"
+#define VERSION "0.1.3"
 
 #include "ILI9341_t3.h"
 #include <SD.h>

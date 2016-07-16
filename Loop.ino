@@ -43,18 +43,18 @@ void loop(void)
     RTClockAlarm = false;
     DS3234_clear_a1f(RTCLK_CS);
     counter++;
-
-    GetTemperatures();
-    CheckTemperatures();
-
-    ReadTime();
+    
+    if (counter % 30 == 0 ) // Resynchro toutes les 30 secondes
+    {      
+      ReadTime();
+    }
 
     if (counter % 270 == 0 ) // 270 seconds = 4.5 minutes = 320 points sur 24h
-    {
-      counter++;
-
+    {      
       GetTemperatures();
-
+      CheckTemperatures();
+    
+      //Remplissage des Historiques
       for (idx = 0; idx < NB_TYP_HISTO ; idx ++)
       {
         for (IndexTemp = 0; IndexTemp < NB_TEMP - 1; IndexTemp ++)
